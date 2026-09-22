@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Responses | PutForm</title>
+  <style>
+    :root{
+      --bg:#f4f7f6; --surface:#fff; --surface-2:#f8fbfa;
+      --text:#17212b; --muted:#6b7785; --line:#dfe7e4;
+      --teal:#0f766e; --teal-dark:#0b5d56; --teal-soft:#e7f5f2;
+      --gold:#d68b34; --red:#b54840;
+      --shadow:0 10px 30px rgba(23,33,43,.07);
+      --shadow-hover:0 18px 42px rgba(23,33,43,.12);
+      --surface-head:#f8f9fa;
+    }
+    body.dark{
+      --bg:#101716; --surface:#1b2422; --surface-2:#202b28;
+      --text:#f1f5f4; --muted:#aebbb7; --line:#34423e;
+      --teal-soft:#183c38; --gold:#e0a04c;
+      --shadow:0 12px 32px rgba(0,0,0,.28);
+      --shadow-hover:0 18px 42px rgba(0,0,0,.38);
+      --surface-head:#202b28;
+      background:radial-gradient(circle at 10% 0%,rgba(34,145,133,.12),transparent 30%),var(--bg);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0; min-width:320px;
+      background:radial-gradient(circle at 10% 0%, rgba(15,118,110,.08), transparent 30%), var(--bg);
+      color:var(--text);
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+      transition:background .25s ease,color .25s ease;
+      overflow-x:hidden;
+      min-height:100vh;
+      display:flex; flex-direction:column;
+    }
+    main{flex:1 0 auto}
+    button,input,select{font:inherit}
+    button,a{-webkit-tap-highlight-color:transparent}
+    a{color:inherit;text-decoration:none}
+
+    /* ============================================================
+       TOPBAR
+       ============================================================ */
+    .topbar {
+      align-items:center;
+      background:var(--teal-dark);
+      display:flex;
+      justify-content:space-between;
+      min-height:76px;
+      padding:0 clamp(24px,4vw,88px);
+      position:sticky;
+      top:0;
+      z-index:50;
+      gap:24px;
+      box-shadow:0 4px 24px rgba(11,93,86,.28);
+    }
+    .topbar-left{display:flex;align-items:center;gap:42px;min-width:0;flex:1}
+    .brand{
+      font-family:Arial, Helvetica, sans-serif;
+      font-size:25px; font-weight:800; color:#fff;
+      line-height:1; display:inline-flex; align-items:center; gap:5px;
+      flex-shrink:0; letter-spacing:-.02em;
+      transition:opacity .25s ease, transform .25s ease;
+      padding:4px 0; text-decoration:none;
+    }
+    .brand:hover{opacity:.95;transform:translateY(-2px)}
+    .brand-logo{
+      display:block; width:46px; height:46px; object-fit:contain;
+      border-radius:12px; background:rgba(255,255,255,.10);
+      padding:4px; box-shadow:0 4px 12px rgba(0,0,0,.18); flex-shrink:0;
+      transition: transform .35s cubic-bezier(.34,1.56,.64,1), box-shadow .25s ease;
+    }
+    .brand:hover .brand-logo {
+      transform: rotate(-6deg) scale(1.08);
+      box-shadow: 0 8px 22px rgba(0,0,0,.30);
+    }
+    .brand span{color:#a7eee2}
+
+    .nav-links{display:flex;align-items:center;gap:6px;list-style:none;margin:0;padding:0;min-width:0}
+    .nav-link{
+      color:rgba(255,255,255,.78); display:block;
+      font-size:.9rem; font-weight:600; padding:10px 4px; margin:0 12px;
+      white-space:nowrap; position:relative; transition:color .2s ease;
+    }
+    .nav-link::after{
+      content:""; position:absolute; left:0; right:0; bottom:4px;
+      height:2px; background:#a7eee2; border-radius:2px;
+      transform:scaleX(0); transform-origin:center; transition:transform .25s ease;
+    }
+    .nav-link:hover{color:#fff}
+    .nav-link:hover::after{transform:scaleX(1)}
+    .nav-link.active{color:#a7eee2;font-weight:700}
+    .nav-link.active::after{transform:scaleX(1)}
+    .nav-item-mobile{display:none}
+
+    .topbar-right{display:flex;align-items:center;gap:12px;flex-shrink:0}
+    .theme-toggle,.btn-nav-action,.btn-login{
+      align-items:center; display:inline-flex; justify-content:center;
+      height:42px; font-size:.88rem; font-weight:700; white-space:nowrap; cursor:pointer;
+      transition:background .2s ease,color .2s ease,border-color .2s ease,
+                 transform .2s ease,box-shadow .2s ease;
+    }
+    .theme-toggle{
+      background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.32);
+      border-radius:999px; color:#fff; gap:8px; padding:0 18px;
+    }
+    .theme-toggle:hover{
+      background:#fff; border-color:#fff; color:var(--teal-dark);
+      transform:translateY(-1px); box-shadow:0 8px 20px rgba(0,0,0,.18);
+    }
+    .btn-nav-action{
+      background:transparent; border:1px solid rgba(255,255,255,.30);
+      border-radius:10px; color:#fff; padding:0 20px;
+    }
+    .btn-nav-action:hover{
+      background:rgba(255,255,255,.14); border-color:rgba(255,255,255,.55);
+      transform:translateY(-1px);
+    }
+    .btn-login{
+      background:#a7eee2; border:0; border-radius:10px; color:var(--teal-dark);
+      font-weight:800; padding:0 22px; box-shadow:0 6px 16px rgba(167,238,226,.20);
+    }
+    .btn-login:hover{
+      background:#ffffff; transform:translateY(-1px);
+      box-shadow:0 10px 22px rgba(167,238,226,.34);
+    }
+    .menu-toggle{
+      display:none; flex-direction:column; align-items:center; justify-content:center;
+      gap:5px; width:42px; height:42px; padding:0;
+      background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.30);
+      border-radius:10px; cursor:pointer; transition:background .2s ease;
+    }
+    .menu-toggle:hover{background:rgba(255,255,255,.18)}
+    .menu-toggle span{
+      display:block; width:18px; height:2px; background:#fff;
+      border-radius:2px; transition:transform .28s ease,opacity .2s ease;
+    }
+    .menu-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+    .menu-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+    .menu-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+    /* ============================================================
+       PAGE LAYOUT
+       ============================================================ */
+    main { margin:0 auto; max-width:1100px; padding:38px 20px 70px; width:100%; }
+
+    .back {
+      display: inline-flex; align-items: center; gap: 6px;
+      color:var(--teal); font-size:.85rem; font-weight:700;
+      margin-bottom: 20px;
+      transition: gap .2s ease;
+    }
+    .back:hover{ gap: 10px; }
+
+    .heading {
+      background:var(--surface);
+      border:1px solid var(--line);
+      border-top:8px solid var(--teal);
+      border-radius:16px;
+      box-shadow:var(--shadow);
+      display:flex; gap:28px;
+      justify-content:space-between;
+      margin:0 0 22px;
+      padding:30px;
+    }
+    .eyebrow {
+      color:var(--teal); font-size:.73rem; font-weight:800;
+      letter-spacing:.16em; margin:0 0 12px; text-transform:uppercase;
+      display:inline-block; background:var(--teal-soft);
+      padding:6px 12px; border-radius:999px;
+    }
+    h1 {
+      font-family:Arial,sans-serif;
+      font-size:clamp(2rem,5vw,3rem);
+      font-weight:800; letter-spacing:-.03em;
+      line-height:1.1; margin:0 0 12px;
+    }
+    .intro-copy {
+      color:var(--muted); font-size:1rem; line-height:1.6;
+      margin:0; max-width:600px;
+    }
+
+    /* Summary cards */
+    .summary {
+      display:grid; gap:14px;
+      grid-template-columns:repeat(3,1fr);
+      margin-bottom:22px;
+    }
+    .summary-item {
+      background:var(--surface);
+      border:1px solid var(--line);
+      border-radius:14px;
+      box-shadow:var(--shadow);
+      padding:20px 22px;
+      position: relative;
+      overflow: hidden;
+      transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+    }
+    .summary-item::before {
+      content: ""; position: absolute;
+      inset: 0 0 auto; height: 3px;
+      background: linear-gradient(90deg, var(--teal), #55aaa2);
+      opacity: .85;
+    }
+    .summary-item:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-hover);
+      border-color: #c9d9d5;
+    }
+    .summary-label {
+      color:var(--muted); display:block;
+      font-size:.7rem; font-weight:800;
+      letter-spacing:.08em; text-transform:uppercase;
+    }
+    .summary-value {
+      color:var(--teal); display:block;
+      font-size:1.8rem; font-weight:800;
+      letter-spacing:-.03em; margin-top:6px;
+      line-height: 1;
+    }
+
+    /* Toolbar */
+    .toolbar {
+      align-items:center;
+      background:var(--surface);
+      border:1px solid var(--line);
+      border-radius:14px;
+      box-shadow:var(--shadow);
+      display:flex; gap:14px;
+      justify-content:space-between;
+      padding:14px 16px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .count {
+      color:var(--muted); font-size:.85rem; font-weight:700;
+    }
+    .controls { display:flex; gap:10px; flex-wrap: wrap; }
+
+    .control {
+      background:var(--surface);
+      border:1px solid var(--line);
+      border-radius:9px;
+      color:var(--text);
+      font-size:.85rem;
+      padding:10px 13px;
+      outline:none;
+      transition: border-color .2s ease, box-shadow .2s ease;
+    }
+    .control:focus {
+      border-color:var(--teal);
+      box-shadow: 0 0 0 3px var(--teal-soft);
+    }
+    .search { min-width:min(310px,42vw); }
+
+    .export-button {
+      background:var(--teal);
+      border:1px solid var(--teal);
+      border-radius:9px;
+      color:#fff;
+      cursor:pointer;
+      font-size:.84rem;
+      font-weight:800;
+      padding:10px 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: background .2s ease, transform .2s ease, box-shadow .2s ease;
+    }
+    .export-button:hover {
+      background:var(--teal-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(15,118,110,.25);
+    }
+
+    /* ============================================================
+       PROGRESS CARD
+       ============================================================ */
+    .progress-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      padding: 40px 32px;
+      margin: 20px auto;
+      text-align: center;
+      max-width: 560px;
+      animation: fadeInUp .4s ease both;
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .progress-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      background: var(--teal-soft);
+      color: var(--teal);
+      display: grid;
+      place-items: center;
+      font-size: 1.6rem;
+      margin: 0 auto 16px;
+      animation: spinSlow 2.2s linear infinite;
+    }
+    @keyframes spinSlow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .progress-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: -.02em;
+      color: var(--text);
+      margin: 0 0 6px;
+    }
+    .progress-status {
+      font-size: .85rem;
+      color: var(--muted);
+      font-weight: 600;
+      margin: 12px 0 0;
+      min-height: 18px;
+    }
+    .progress-bar {
+      height: 8px;
+      background: var(--teal-soft);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 20px;
+      position: relative;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--teal-dark), var(--teal), #55aaa2);
+      border-radius: 999px;
+      transition: width .4s cubic-bezier(.4,0,.2,1);
+      position: relative;
+      overflow: hidden;
+    }
+    .progress-bar-fill::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.35), transparent);
+      animation: shimmer 1.4s infinite;
+    }
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    .progress-card.error .progress-icon {
+      animation: none;
+      background: #fdecea;
+      color: var(--red);
+    }
+    .progress-card.error .progress-bar-fill {
+      background: var(--red);
+    }
+    .progress-card.error .progress-bar-fill::after {
+      animation: none;
+    }
+
+    /* States */
+    .state {
+      color:var(--muted); font-size:.95rem;
+      padding:58px 0; text-align:center;
+    }
+    .state.error { color:var(--red); }
+
+    /* Table */
+    .response-table-wrap {
+      background:var(--surface);
+      border:1px solid var(--line);
+      border-radius:16px;
+      box-shadow:var(--shadow);
+      margin-top:18px;
+      overflow:hidden;
+      overflow-x:auto;
+    }
+    .response-table {
+      border-collapse:collapse;
+      min-width:900px;
+      width:100%;
+    }
+    .response-table th {
+      background:var(--surface-head);
+      color:var(--muted);
+      font-size:.7rem;
+      font-weight:800;
+      letter-spacing:.08em;
+      padding:16px;
+      text-align:left;
+      text-transform:uppercase;
+      white-space:nowrap;
+    }
+    .response-table td {
+      border-top:1px solid var(--line);
+      font-size:.86rem;
+      line-height:1.5;
+      max-width:280px;
+      padding:16px;
+      vertical-align:top;
+    }
+    .response-table tbody tr { transition: background .15s ease; }
+    .response-table tbody tr:hover { background:var(--teal-soft); }
+
+    .respondent {
+      color:var(--text);
+      font-weight:700;
+      overflow-wrap:anywhere;
+    }
+    .submitted {
+      color:var(--muted);
+      display:block;
+      font-size:.75rem;
+      margin-top:4px;
+    }
+    .answer-value {
+      overflow-wrap:anywhere;
+      white-space:pre-wrap;
+    }
+
+    /* Empty */
+    .empty {
+      background:var(--surface);
+      border:1px solid var(--line);
+      border-radius:16px;
+      box-shadow:var(--shadow);
+      margin-top:18px;
+      padding:64px 24px;
+      text-align:center;
+    }
+    .empty-icon {
+      width: 64px; height: 64px;
+      border-radius: 18px;
+      background: var(--teal-soft);
+      color: var(--teal);
+      display: grid; place-items: center;
+      font-size: 1.8rem;
+      margin: 0 auto 18px;
+    }
+    .empty h2 {
+      font-family: Arial, sans-serif;
+      font-size:1.5rem; font-weight:800;
+      letter-spacing:-.02em;
+      margin:0 0 8px;
+    }
+    .empty p { color:var(--muted); font-size:.9rem; margin:0; }
+
+    /* ============================================================
+       BOTTOM NAVBAR / FOOTER
+       ============================================================ */
+    .site-footer {
+      background: var(--teal-dark);
+      color: #fff;
+      margin-top: auto;
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+      width: 100%;
+    }
+    .site-footer::before {
+      content: "";
+      position: absolute;
+      top: -160px; right: -160px;
+      width: 420px; height: 420px;
+      background: radial-gradient(circle, rgba(167,238,226,.14), transparent 70%);
+      pointer-events: none;
+    }
+    .site-footer::after {
+      content: "";
+      position: absolute;
+      bottom: -180px; left: -160px;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(15,118,110,.35), transparent 70%);
+      pointer-events: none;
+    }
+    .footer-inner {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 60px clamp(20px, 5vw, 72px) 30px;
+      position: relative;
+      z-index: 1;
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 56px;
+      padding-bottom: 40px;
+      border-bottom: 1px solid rgba(255,255,255,.12);
+      align-items: start;
+    }
+    .footer-brand-block { max-width: 380px; }
+    .footer-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -.02em;
+      color: #fff;
+      margin-bottom: 16px;
+      transition: opacity .2s ease;
+      text-decoration: none;
+    }
+    .footer-brand:hover { opacity: .9; }
+    .footer-brand-logo {
+      width: 44px; height: 44px;
+      object-fit: contain;
+      border-radius: 11px;
+      background: rgba(255,255,255,.10);
+      padding: 4px;
+      box-shadow: 0 4px 12px rgba(0,0,0,.20);
+      flex-shrink: 0;
+    }
+    .footer-brand span { color: #a7eee2; }
+    .footer-tagline {
+      color: rgba(255,255,255,.68);
+      font-size: .9rem;
+      line-height: 1.7;
+      margin: 0;
+    }
+    .footer-col h4 {
+      font-size: .78rem;
+      font-weight: 800;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: #a7eee2;
+      margin: 0 0 18px;
+    }
+    .footer-col ul {
+      list-style: none; margin: 0; padding: 0;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .footer-col a {
+      color: rgba(255,255,255,.72);
+      font-size: .88rem; font-weight: 500;
+      transition: color .2s ease, padding-left .2s ease;
+      display: inline-block; position: relative;
+      text-decoration: none;
+    }
+    .footer-col a::before {
+      content: "";
+      position: absolute; left: -14px; top: 50%;
+      transform: translateY(-50%) scaleX(0);
+      width: 8px; height: 2px; background: #a7eee2;
+      border-radius: 2px; transition: transform .2s ease;
+    }
+    .footer-col a:hover { color: #fff; padding-left: 6px; }
+    .footer-col a:hover::before { transform: translateY(-50%) scaleX(1); }
+    .footer-bottom {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-top: 24px; gap: 20px; flex-wrap: wrap;
+      font-size: .84rem; color: rgba(255,255,255,.62);
+    }
+    .footer-bottom .copy strong { color: #fff; }
+    .footer-legal { display: flex; gap: 22px; flex-wrap: wrap; }
+    .footer-legal a { color: rgba(255,255,255,.62); transition: color .2s ease; text-decoration: none; }
+    .footer-legal a:hover { color: #a7eee2; }
+
+    /* ============================================================
+       RESPONSIVE
+       ============================================================ */
+    @media (max-width:1180px){
+      .topbar{padding:0 32px;gap:16px}
+      .topbar-left{gap:26px}
+      .nav-link{margin:0 8px;font-size:.86rem}
+      .topbar-right{gap:8px}
+      .theme-toggle,.btn-nav-action,.btn-login{height:40px;font-size:.84rem;padding:0 14px}
+      .btn-login{padding:0 18px}
+    }
+    @media (max-width:1024px){
+      .footer-top{grid-template-columns:1fr 1fr; gap:40px}
+      .footer-brand-block{grid-column:1 / -1; max-width:520px}
+    }
+    @media (max-width:960px){
+      .topbar{padding:0 20px;min-height:68px}
+      .menu-toggle{display:flex}
+      .topbar-right .btn-nav-action{display:none}
+      .nav-item-mobile{display:block}
+      .topbar-left{gap:0}
+      .nav-links{
+        position:absolute; top:100%; left:0; right:0;
+        flex-direction:column; align-items:stretch; gap:2px;
+        padding:0 20px;
+        background:var(--teal-dark);
+        border-top:1px solid rgba(255,255,255,.14);
+        box-shadow:0 20px 34px rgba(0,0,0,.28);
+        max-height:0; opacity:0; visibility:hidden; overflow:hidden;
+        transition:max-height .32s ease,opacity .25s ease,
+                   padding .32s ease,visibility .32s ease;
+      }
+      .nav-links.open{
+        max-height:400px; opacity:1; visibility:visible;
+        padding:12px 20px 16px;
+      }
+      .nav-link{font-size:.95rem;padding:12px 8px;margin:0}
+      .nav-link::after{display:none}
+      .nav-link.active{
+        background:rgba(167,238,226,.12);
+        border-radius:10px; padding-left:14px;
+      }
+      .summary { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width:700px) {
+      main { padding-top:28px; padding-left: 14px; padding-right: 14px; }
+      .heading, .toolbar { align-items:stretch; flex-direction:column; padding: 22px; }
+      .controls { flex-direction:column; width: 100%; }
+      .search { min-width:0; width:100%; }
+      .export-button { width:100%; justify-content: center; }
+      .summary { grid-template-columns:1fr; }
+      .progress-card { padding: 32px 22px; }
+    }
+    @media (max-width:640px){
+      .theme-label{display:none}
+      .theme-toggle{padding:0 14px;gap:0}
+      .brand{font-size:21px;gap:9px}
+      .brand-logo{width:38px;height:38px;padding:3px}
+      .footer-inner{padding:48px 24px 24px}
+      .footer-top{grid-template-columns:1fr 1fr; gap:36px 24px}
+      .footer-brand-block{grid-column:1 / -1}
+    }
+    @media (max-width:580px){
+      .footer-bottom{flex-direction:column; text-align:center; align-items:center}
+    }
+    @media (max-width:460px){
+      .topbar{padding:0 12px;min-height:62px}
+      .brand{font-size:19px;gap:8px}
+      .brand-logo{width:34px;height:34px;padding:2px;border-radius:10px}
+      .nav-links{padding:0 12px}
+      .nav-links.open{padding:10px 12px 14px}
+      .btn-login{padding:0 14px;font-size:.82rem}
+      .footer-top{grid-template-columns:1fr; gap:32px}
+    }
+
+    @media (prefers-reduced-motion:reduce) {
+      .progress-icon { animation:none; }
+      .progress-bar-fill::after { animation:none; }
+      .progress-card { animation:none; }
+      .summary-item, .response-table tbody tr, .export-button { transition:none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ============================= TOPBAR ============================= -->
+<header class="topbar">
+  <div class="topbar-left">
+    <a class="brand" href="index.html">
+      <img class="brand-logo" src="Glogo.png" alt="PutForm logo"
+           onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 46 46%22><rect width=%2246%22 height=%2246%22 rx=%2212%22 fill=%22%2317b8a6%22/><text x=%2250%25%22 y=%2258%25%22 text-anchor=%22middle%22 font-family=%22Arial%22 font-size=%2224%22 font-weight=%22bold%22 fill=%22white%22>P</text></svg>';">
+      Put<span>Form</span></span>
+    </a>
+
+    <ul class="nav-links" id="navLinks">
+      <li><a class="nav-link" href="index.html">Home</a></li>
+      <li><a class="nav-link active" href="forms.html">Dashboard</a></li>
+      <li><a class="nav-link" href="api.html">API</a></li>
+      <li><a class="nav-link" href="about.html">About</a></li>
+      <li><a class="nav-link" href="contact.html">Contact Us</a></li>
+      <li class="nav-item-mobile"><a class="nav-link" href="profile.html">Profile</a></li>
+    </ul>
+  </div>
+
+  <div class="topbar-right">
+    <a class="btn-nav-action" href="profile.html">Profile</a>
+
+    <div id="authContainer" style="display:flex; align-items:center;">
+      <a class="btn-login" href="login.html">Login</a>
+    </div>
+
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme">
+      <span class="theme-icon">🌙</span><span class="theme-label">Dark mode</span>
+    </button>
+
+    <button class="menu-toggle" id="menuToggle" type="button"
+            aria-label="Toggle navigation menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- ============================= MAIN ============================= -->
+<main>
+  <a class="back" href="forms.html">← Back to all forms</a>
+
+  <section class="heading">
+    <div>
+      <p class="eyebrow">Response inbox</p>
+      <h1 id="formTitle">Form Responses</h1>
+      <p class="intro-copy">Review every submission and inspect the answers.</p>
+    </div>
+  </section>
+
+  <section class="summary" aria-label="Response summary">
+    <div class="summary-item">
+      <span class="summary-label">Total responses</span>
+      <strong class="summary-value" id="totalCount">—</strong>
+    </div>
+    <div class="summary-item">
+      <span class="summary-label">Showing</span>
+      <strong class="summary-value" id="visibleCount">—</strong>
+    </div>
+    <div class="summary-item">
+      <span class="summary-label">Latest response</span>
+      <strong class="summary-value" id="latestDate">—</strong>
+    </div>
+  </section>
+
+  <section class="toolbar" aria-label="Response controls">
+    <span class="count" id="responseCount">Loading responses...</span>
+    <div class="controls">
+      <input class="control search" id="search" type="search" placeholder="Search email or answers" aria-label="Search responses" />
+      <button class="export-button" id="exportExcel" type="button">
+        <span>⬇</span> Export Excel
+      </button>
+    </div>
+  </section>
+
+  <!-- Progress card -->
+  <div class="progress-card" id="progressCard">
+    <div class="progress-icon">⚙️</div>
+    <div class="progress-title">Fetching responses…</div>
+    <div class="progress-bar">
+      <div class="progress-bar-fill" id="progressFill"></div>
+    </div>
+    <div class="progress-status" id="progressStatus">Preparing request</div>
+  </div>
+
+  <section class="response-list" id="responseList" aria-live="polite"></section>
+</main>
+
+<!-- ============================= BOTTOM NAVBAR / FOOTER ============================= -->
+<footer class="site-footer">
+  <div class="footer-inner">
+
+    <div class="footer-top">
+      <div class="footer-brand-block">
+        <a class="brand" href="index.html">
+          <img class="brand-logo" src="Glogo.png" alt="PutForm logo"
+               onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 46 46%22><rect width=%2246%22 height=%2246%22 rx=%2212%22 fill=%22%2317b8a6%22/><text x=%2250%25%22 y=%2258%25%22 text-anchor=%22middle%22 font-family=%22Arial%22 font-size=%2224%22 font-weight=%22bold%22 fill=%22white%22>P</text></svg>';">
+          Put<span>Form</span>
+        </a>
+        <p class="footer-tagline">
+          Build beautiful forms, collect responses, and connect them to your backend —
+          all from one clean, developer-friendly platform.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="forms.html">Dashboard</a></li>
+          <li><a href="creatform.html">Create a Form</a></li>
+          <li><a href="api.html">Developer API</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+          <li><a href="profile.html">Profile</a></li>
+          
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="copy">© 2026 <strong>PutForm</strong>. All rights reserved.</div>
+      <div class="footer-legal">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+        <a href="#">Cookies</a>
+      </div>
+    </div>
+
+  </div>
+</footer>
+
+<script>
+  const API_URL = 'https://putform.onrender.com/api/forms';
+  const LOGOUT_URL = 'https://putform.onrender.com/api/auth/logout';
+  const formId = new URLSearchParams(window.location.search).get('formId');
+
+  const formTitle = document.getElementById('formTitle');
+  const progressCard = document.getElementById('progressCard');
+  const progressFill = document.getElementById('progressFill');
+  const progressStatus = document.getElementById('progressStatus');
+  const responseList = document.getElementById('responseList');
+  const responseCount = document.getElementById('responseCount');
+  const totalCount = document.getElementById('totalCount');
+  const visibleCount = document.getElementById('visibleCount');
+  const latestDate = document.getElementById('latestDate');
+  const search = document.getElementById('search');
+  const exportExcel = document.getElementById('exportExcel');
+
+  const themeToggle = document.getElementById('themeToggle');
+  const menuToggle = document.getElementById('menuToggle');
+  const navLinks = document.getElementById('navLinks');
+  const authContainer = document.getElementById('authContainer');
+
+  let responses = [];
+
+  /* ============================================================
+     PROGRESS BAR
+     ============================================================ */
+  function setProgress(percent, message) {
+    const clamped = Math.max(0, Math.min(100, percent));
+    progressFill.style.width = clamped + '%';
+    if (message) progressStatus.textContent = message;
+  }
+
+  function showProgressError(message) {
+    progressCard.classList.add('error');
+    const title = progressCard.querySelector('.progress-title');
+    if (title) title.textContent = 'Could not load responses';
+    progressStatus.textContent = message;
+    setProgress(100, message);
+  }
+
+  /* ============================================================
+     HELPERS
+     ============================================================ */
+  function escapeHtml(value) {
+    return String(value ?? '').replace(/[&<>'"]/g, c => ({
+      '&':'&amp;', '<':'&lt;', '>':'&gt;', "'":'&#39;', '"':'&quot;'
+    }[c]));
+  }
+
+  function formatDate(value, withTime = false) {
+    if (!value) return 'Unknown date';
+    try {
+      return new Intl.DateTimeFormat(undefined, withTime
+        ? { dateStyle:'medium', timeStyle:'short' }
+        : { dateStyle:'medium' }).format(new Date(value));
+    } catch { return 'Unknown date'; }
+  }
+
+  function formatAnswer(value) {
+    if (value === null || value === undefined || value === '') return 'No answer';
+    if (Array.isArray(value)) return value.map(formatAnswer).join(', ');
+    if (typeof value === 'object') {
+      return Object.entries(value)
+        .map(([key, item]) => `${key}: ${formatAnswer(item)}`)
+        .join('\n');
+    }
+    return String(value);
+  }
+
+  /* ============================================================
+     FILTER + RENDER
+     ============================================================ */
+  function visibleResponses() {
+    const query = search.value.trim().toLowerCase();
+    return responses.filter(response => {
+      const answerText = Object.values(response.answers || {}).map(formatAnswer).join(' ');
+      return `${response.respondentEmail || ''} ${answerText}`.toLowerCase().includes(query);
+    });
+  }
+
+  function answerColumns(rows) {
+    return [...new Set(rows.flatMap(response => Object.keys(response.answers || {})))];
+  }
+
+  function renderResponses() {
+    const visible = visibleResponses();
+
+    totalCount.textContent = responses.length;
+    visibleCount.textContent = visible.length;
+    responseCount.textContent = `${visible.length} ${visible.length === 1 ? 'response' : 'responses'}`;
+    latestDate.textContent = responses.length ? formatDate(responses[0].submittedAt) : '—';
+
+    if (!visible.length) {
+      responseList.innerHTML = `
+        <div class="empty">
+          <div class="empty-icon">📭</div>
+          <h2>${responses.length ? 'No matching responses' : 'No responses yet'}</h2>
+          <p>${responses.length ? 'Try a different search.' : 'Responses will appear here when someone submits this form.'}</p>
+        </div>`;
+      return;
+    }
+
+    const columns = answerColumns(visible);
+    responseList.innerHTML = `
+      <div class="response-table-wrap">
+        <table class="response-table">
+          <thead>
+            <tr>
+              <th>Respondent</th>
+              <th>Submitted</th>
+              ${columns.map(col => `<th>${escapeHtml(col)}</th>`).join('')}
+            </tr>
+          </thead>
+          <tbody>
+            ${visible.map(response => {
+              return `
+                <tr>
+                  <td class="respondent">${escapeHtml(response.respondentEmail || 'Anonymous respondent')}</td>
+                  <td><span class="submitted">${escapeHtml(formatDate(response.submittedAt, true))}</span></td>
+                  ${columns.map(col => `
+                    <td class="answer-value">${escapeHtml(formatAnswer((response.answers || {})[col]))}</td>
+                  `).join('')}
+                </tr>`;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>`;
+  }
+
+  /* ============================================================
+     EXPORT
+     ============================================================ */
+  function csvValue(value) {
+    return `"${String(value ?? '').replace(/"/g, '""')}"`;
+  }
+
+  function exportResponses() {
+    const rows = visibleResponses();
+    const columns = answerColumns(rows);
+    const headers = ['Respondent', 'Submitted', ...columns];
+
+    const csv = [
+      headers,
+      ...rows.map(response => [
+        response.respondentEmail || 'Anonymous respondent',
+        formatDate(response.submittedAt, true),
+        ...columns.map(col => formatAnswer((response.answers || {})[col]))
+      ])
+    ].map(row => row.map(csvValue).join(',')).join('\r\n');
+
+    const blob = new Blob([`\uFEFF${csv}`], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `form-responses-${formId || 'export'}.csv`;
+    link.click();
+    URL.revokeObjectURL(link.href);
+  }
+
+  /* ============================================================
+     LOAD RESPONSES (with progress)
+     ============================================================ */
+  async function loadResponses() {
+    if (!formId) throw new Error('No form id was provided.');
+
+    setProgress(10, 'Validating form id…');
+    await new Promise(r => setTimeout(r, 120));
+
+    setProgress(30, 'Fetching form and responses…');
+
+    const [formResponse, responsesResponse] = await Promise.all([
+      fetch(`${API_URL}/${encodeURIComponent(formId)}`, { credentials: 'include' }),
+      fetch(`${API_URL}/${encodeURIComponent(formId)}/responses`, { credentials: 'include' })
+    ]);
+
+    if (!formResponse.ok) throw new Error(`Could not load form (${formResponse.status})`);
+    if (!responsesResponse.ok) throw new Error(`Could not load responses (${responsesResponse.status})`);
+
+    setProgress(60, 'Parsing response data…');
+    const form = await formResponse.json();
+    responses = await responsesResponse.json();
+    await new Promise(r => setTimeout(r, 120));
+
+    if (!Array.isArray(responses)) throw new Error('The API returned an invalid response list.');
+
+    setProgress(80, 'Sorting responses…');
+    responses.sort((a, b) => new Date(b.submittedAt || 0) - new Date(a.submittedAt || 0));
+    formTitle.textContent = `${form.title || 'Form'} responses`;
+    totalCount.textContent = responses.length;
+    await new Promise(r => setTimeout(r, 150));
+
+    setProgress(95, 'Rendering table…');
+    renderResponses();
+    await new Promise(r => setTimeout(r, 200));
+
+    setProgress(100, 'Ready');
+    await new Promise(r => setTimeout(r, 300));
+
+    // Remove progress card
+    progressCard.remove();
+  }
+
+  /* ============================================================
+     THEME
+     ============================================================ */
+  function applyTheme(theme) {
+    const dark = theme === 'dark';
+    document.body.classList.toggle('dark', dark);
+    themeToggle.innerHTML = dark
+      ? '<span class="theme-icon">☀️</span><span class="theme-label">Light mode</span>'
+      : '<span class="theme-icon">🌙</span><span class="theme-label">Dark mode</span>';
+    localStorage.setItem('putform-theme', dark ? 'dark' : 'light');
+  }
+
+  applyTheme(localStorage.getItem('putform-theme') || 'light');
+
+  themeToggle.addEventListener('click', () => {
+    applyTheme(document.body.classList.contains('dark') ? 'light' : 'dark');
+  });
+
+  /* ============================================================
+     MOBILE MENU
+     ============================================================ */
+  function closeMenu() {
+    navLinks.classList.remove('open');
+    menuToggle.setAttribute('aria-expanded', 'false');
+  }
+
+  menuToggle.addEventListener('click', () => {
+    const isOpen = navLinks.classList.toggle('open');
+    menuToggle.setAttribute('aria-expanded', String(isOpen));
+  });
+
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', closeMenu);
+  });
+
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 960) closeMenu();
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeMenu();
+  });
+
+  /* ============================================================
+     AUTH STATE
+     ============================================================ */
+  async function checkUserSession() {
+    try {
+      const response = await fetch(API_URL, {
+        method: 'GET',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' }
+      });
+
+      if (response.ok) {
+        authContainer.innerHTML =
+          '<button class="btn-login" id="logoutBtn" type="button">Logout</button>';
+        document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+      } else {
+        renderLoginButton();
+      }
+    } catch (error) {
+      renderLoginButton();
+    }
+  }
+
+  function renderLoginButton() {
+    authContainer.innerHTML = '<a class="btn-login" href="login.html">Login</a>';
+  }
+
+  async function handleLogout() {
+    try {
+      await fetch(LOGOUT_URL, { method: 'POST', credentials: 'include' });
+    } catch (error) {
+      console.error('Logout error:', error);
+    } finally {
+      window.location.href = 'login.html';
+    }
+  }
+
+  /* ============================================================
+     INIT
+     ============================================================ */
+  search.addEventListener('input', renderResponses);
+  exportExcel.addEventListener('click', exportResponses);
+
+  checkUserSession();
+
+  setProgress(0, 'Starting…');
+  loadResponses().catch(error => {
+    console.error('Load responses error:', error);
+    showProgressError(error.message || 'Something went wrong.');
+    responseCount.textContent = 'Unavailable';
+  });
+</script>
+</body>
+</html>

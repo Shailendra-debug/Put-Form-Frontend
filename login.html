@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login - GetForm</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Inter, Arial, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f0fdfa, #ecfeff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #17211f;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1050px;
+            min-height: 620px;
+            margin: 20px;
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            box-shadow: 0 20px 60px rgba(15, 118, 110, 0.15);
+        }
+
+        /* =========================
+           LEFT SIDE
+        ========================= */
+
+        .left {
+            background: linear-gradient(145deg, #0f766e, #0b5d56);
+            color: white;
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .left::before {
+            content: "";
+            position: absolute;
+            width: 320px;
+            height: 320px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.07);
+            top: -120px;
+            right: -120px;
+        }
+
+        .left::after {
+            content: "";
+            position: absolute;
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            bottom: -100px;
+            left: -100px;
+        }
+
+    .brand{
+      font-family:Arial, Helvetica, sans-serif;
+      font-size:55px; font-weight:800; color:#fff;
+      line-height:1; display:inline-flex; align-items:center; gap:5px;
+      flex-shrink:0; letter-spacing:-.02em;
+      transition:opacity .25s ease, transform .25s ease;
+      padding:4px 0; text-decoration:none;
+    }
+    .brand:hover{opacity:.95;transform:translateY(-2px)}
+    .brand-logo{
+      display:block; width:60px; height:60px; object-fit:contain;
+      border-radius:12px; background:rgba(255,255,255,.10);
+      padding:4px; box-shadow:0 4px 12px rgba(0,0,0,.18); flex-shrink:0;
+      transition: transform .35s cubic-bezier(.34,1.56,.64,1), box-shadow .25s ease;
+    }
+    .brand:hover .brand-logo {
+      transform: rotate(-6deg) scale(1.08);
+      box-shadow: 0 8px 22px rgba(0,0,0,.30);
+    }
+    .brand span{color:#a7eee2}
+
+        .hero {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 46px;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            letter-spacing: -1.5px;
+        }
+
+        .hero p {
+            color: #ccfbf1;
+            font-size: 16px;
+            line-height: 1.7;
+            max-width: 390px;
+        }
+
+        .features {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #e6fffb;
+            font-size: 14px;
+        }
+
+        .feature-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 9px;
+            background: rgba(255, 255, 255, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+        }
+
+        /* =========================
+           RIGHT SIDE
+        ========================= */
+
+        .right {
+            padding: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-box {
+            width: 100%;
+            max-width: 390px;
+        }
+
+        .login-box h2 {
+            font-size: 32px;
+            margin-bottom: 8px;
+            color: #17211f;
+            letter-spacing: -0.7px;
+        }
+
+        .subtitle {
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 35px;
+            line-height: 1.5;
+        }
+
+        /* =========================
+           MESSAGE
+        ========================= */
+
+        .message {
+            display: none;
+            margin-bottom: 18px;
+            padding: 12px 14px;
+            border-radius: 9px;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        .message.error {
+            display: block;
+            background: #fef2f2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+        }
+
+        .message.success {
+            display: block;
+            background: #f0fdf4;
+            color: #15803d;
+            border: 1px solid #bbf7d0;
+        }
+
+        /* =========================
+           FORM
+        ========================= */
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #334155;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            font-size: 17px;
+            pointer-events: none;
+        }
+
+        input[type="email"],
+        input[type="password"],
+        input[type="text"] {
+            width: 100%;
+            height: 50px;
+            border: 1px solid #dbe4e1;
+            border-radius: 11px;
+            padding: 0 45px;
+            font-size: 14px;
+            outline: none;
+            transition: 0.2s;
+            background: #fbfdfc;
+        }
+
+        input:focus {
+            border-color: #0f766e;
+            box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.08);
+            background: white;
+        }
+
+        input::placeholder {
+            color: #a0aab5;
+        }
+
+        /* =========================
+           PASSWORD BUTTON
+        ========================= */
+
+        .password-toggle {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            color: #64748b;
+            font-size: 17px;
+            padding: 3px;
+        }
+
+        .password-toggle:hover {
+            color: #0f766e;
+        }
+
+        /* =========================
+           OPTIONS
+        ========================= */
+
+        .options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 5px 0 25px;
+            font-size: 13px;
+        }
+
+        .remember {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            color: #64748b;
+            margin: 0;
+            cursor: pointer;
+        }
+
+        .remember input {
+            width: 15px;
+            height: 15px;
+            accent-color: #0f766e;
+            cursor: pointer;
+        }
+
+        .forgot {
+            color: #0f766e;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .forgot:hover {
+            text-decoration: underline;
+        }
+
+        /* =========================
+           LOGIN BUTTON
+        ========================= */
+
+        .login-btn {
+            width: 100%;
+            height: 51px;
+            border: none;
+            border-radius: 11px;
+            background: #0f766e;
+            color: white;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 8px 20px rgba(15, 118, 110, 0.20);
+        }
+
+        .login-btn:hover {
+            background: #0b5d56;
+            transform: translateY(-1px);
+            box-shadow: 0 10px 25px rgba(15, 118, 110, 0.25);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .login-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* =========================
+           SIGN UP
+        ========================= */
+
+        .signup {
+            text-align: center;
+            margin-top: 28px;
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .signup a {
+            color: #0f766e;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .signup a:hover {
+            text-decoration: underline;
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 800px) {
+
+            .container {
+                grid-template-columns: 1fr;
+                max-width: 480px;
+                min-height: auto;
+            }
+
+            .left {
+                display: none;
+            }
+
+            .right {
+                padding: 45px 30px;
+            }
+        }
+
+        @media (max-width: 400px) {
+
+            body {
+                background: white;
+            }
+
+            .container {
+                margin: 0;
+                border-radius: 0;
+                box-shadow: none;
+                min-height: 100vh;
+            }
+
+            .right {
+                padding: 35px 22px;
+            }
+
+            .login-box h2 {
+                font-size: 28px;
+            }
+
+            .options {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- =================================
+         LEFT SECTION
+    ================================== -->
+
+    <section class="left">
+
+        <a class="brand" href="index.html">
+          <img class="brand-logo" src="Glogo.png" alt="PutForm logo"
+              onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 46 46%22><rect width=%2246%22 height=%2246%22 rx=%2212%22 fill=%22%2317b8a6%22/><text x=%2250%25%22 y=%2258%25%22 text-anchor=%22middle%22 font-family=%22Arial%22 font-size=%2224%22 font-weight=%22bold%22 fill=%22white%22>P</text></svg>';">
+          Put<span>Form</span></span>
+        </a>
+
+
+        <div class="hero">
+
+            <h1>
+                Create.<br>
+                Share.<br>
+                Collect.
+            </h1>
+
+            <p>
+                Build powerful forms, collect responses,
+                and manage everything from one simple platform.
+            </p>
+
+        </div>
+
+
+        <div class="features">
+
+            <div class="feature">
+                <div class="feature-icon">✓</div>
+                Easy form creation
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">✓</div>
+                Secure response collection
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">✓</div>
+                Simple response management
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =================================
+         RIGHT SECTION
+    ================================== -->
+
+    <section class="right">
+
+        <div class="login-box">
+
+            <h2>
+                Welcome back
+            </h2>
+
+            <p class="subtitle">
+                Sign in to continue to your GetForm account.
+            </p>
+
+
+            <!-- Message -->
+            <div
+                id="message"
+                class="message">
+            </div>
+
+
+            <!-- Login Form -->
+            <form id="loginForm">
+
+                <!-- Email -->
+
+                <div class="form-group">
+
+                    <label for="email">
+                        Email
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-icon">
+                            ✉
+                        </span>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="you@example.com"
+                            required
+                            autocomplete="email"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- Password -->
+
+                <div class="form-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-icon">
+                            🔒
+                        </span>
+
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Enter your password"
+                            required
+                            autocomplete="current-password"
+                        >
+
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            id="togglePassword"
+                            aria-label="Show password"
+                        >
+                            👁
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Options -->
+
+                <div class="options">
+
+                    <label class="remember">
+
+                        <input
+                            type="checkbox"
+                            id="remember"
+                        >
+
+                        Remember me
+
+                    </label>
+
+
+                    <a
+                        href="forgot-password.html"
+                        class="forgot"
+                    >
+                        Forgot password?
+                    </a>
+
+                </div>
+
+
+                <!-- Login Button -->
+
+                <button
+                    type="submit"
+                    class="login-btn"
+                    id="loginBtn"
+                >
+                    Sign In
+                </button>
+
+            </form>
+
+
+            <!-- Register -->
+
+            <div class="signup">
+
+                Don't have an account?
+
+                <a href="register.html">
+                    Create account
+                </a>
+
+            </div>
+
+
+            <!-- Footer -->
+
+            <div class="footer">
+                © 2026 GetForm. All rights reserved.
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+<script>
+
+    /* =================================
+       ELEMENTS
+    ================================= */
+
+    const loginForm = document.getElementById("loginForm");
+    const loginBtn = document.getElementById("loginBtn");
+    const message = document.getElementById("message");
+
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+
+    const togglePassword =
+        document.getElementById("togglePassword");
+
+
+    /* =================================
+       SHOW / HIDE PASSWORD
+    ================================= */
+
+    togglePassword.addEventListener("click", function () {
+
+        if (passwordInput.type === "password") {
+
+            passwordInput.type = "text";
+
+            togglePassword.textContent = "🙈";
+
+            togglePassword.setAttribute(
+                "aria-label",
+                "Hide password"
+            );
+
+        } else {
+
+            passwordInput.type = "password";
+
+            togglePassword.textContent = "👁";
+
+            togglePassword.setAttribute(
+                "aria-label",
+                "Show password"
+            );
+        }
+
+    });
+
+
+    /* =================================
+       SHOW MESSAGE
+    ================================= */
+
+    function showMessage(type, text) {
+
+        message.className = "message " + type;
+
+        message.textContent = text;
+
+    }
+
+
+    /* =================================
+       LOGIN
+    ================================= */
+
+    loginForm.addEventListener("submit", async function (event) {
+
+        event.preventDefault();
+
+
+        const email = emailInput.value.trim();
+
+        const password = passwordInput.value;
+
+
+        /* Clear previous message */
+
+        message.className = "message";
+        message.textContent = "";
+
+
+        /* Disable button */
+
+        loginBtn.disabled = true;
+
+        loginBtn.textContent = "Signing in...";
+
+
+        try {
+
+            const response = await fetch(
+                "https://putform.onrender.com/api/auth/login",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    /*
+                     * IMPORTANT
+                     *
+                     * Allows browser to receive/send
+                     * the authentication cookie.
+                     */
+                    credentials: "include",
+
+                    /*
+                     * Backend receives exactly:
+                     *
+                     * {
+                     *     "email": "...",
+                     *     "password": "..."
+                     * }
+                     */
+                    body: JSON.stringify({
+                        email: email,
+                        password: password
+                    })
+                }
+            );
+
+
+            /* =================================
+               READ RESPONSE
+            ================================= */
+
+            let data;
+
+            try {
+
+                data = await response.json();
+
+            } catch (error) {
+
+                data = {
+                    message: "Unexpected server response."
+                };
+
+            }
+
+
+            /* =================================
+               LOGIN FAILED
+            ================================= */
+
+            if (!response.ok) {
+
+                showMessage(
+                    "error",
+                    data.message ||
+                    "Invalid email or password."
+                );
+
+                return;
+            }
+
+
+            /* =================================
+               LOGIN SUCCESS
+            ================================= */
+
+            showMessage(
+                "success",
+                data.message ||
+                "Welcome back! Login successful."
+            );
+
+
+            /*
+             * IMPORTANT:
+             *
+             * If Spring Boot returns:
+             *
+             * Set-Cookie: access_token=...
+             *
+             * the browser stores the cookie automatically.
+             *
+             * We DO NOT use document.cookie.
+             */
+
+
+            /* =================================
+               GO TO FORMS PAGE
+            ================================= */
+
+            setTimeout(function () {
+
+                window.location.href = "forms.html";
+
+            }, 700);
+
+
+        } catch (error) {
+
+            console.error(
+                "Login error:",
+                error
+            );
+
+
+            showMessage(
+                "error",
+                "Unable to connect to the server. Please try again."
+            );
+
+
+        } finally {
+
+            loginBtn.disabled = false;
+
+            loginBtn.textContent = "Sign In";
+
+        }
+
+    });
+
+</script>
+
+</body>
+</html>

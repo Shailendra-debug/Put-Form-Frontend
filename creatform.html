@@ -1,0 +1,1900 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create a Form | PutForm</title>
+  <style>
+    :root {
+      --teal:#0f766e;
+      --teal-dark:#0b5d56;
+      --teal-soft:#e8f5f2;
+      --gold:#d97706;
+      --page:#f5f7f6;
+      --surface:#fff;
+      --surface-2:#f8fbfa;
+      --text:#202124;
+      --muted:#6b7280;
+      --line:#dfe3e7;
+      --red:#cf3f35;
+      --shadow:0 10px 30px rgba(23,33,43,.07);
+      --shadow-hover:0 18px 42px rgba(23,33,43,.12);
+    }
+    body.dark {
+      --page:#101716;
+      --surface:#1b2422;
+      --surface-2:#202b28;
+      --text:#f4f0e8;
+      --muted:#b6c1bd;
+      --line:#40524e;
+      --teal-soft:#294943;
+      --shadow:0 12px 32px rgba(0,0,0,.28);
+      --shadow-hover:0 18px 42px rgba(0,0,0,.38);
+      background:radial-gradient(circle at 10% 0%,rgba(34,145,133,.12),transparent 30%),var(--page);
+    }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body {
+      margin:0;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(15,118,110,.08), transparent 30%),
+        var(--page);
+      color:var(--text);
+      font:15px/1.45 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      transition: background .25s ease, color .25s ease;
+      overflow-x:hidden;
+    }
+    button, input, select, textarea { font:inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    a { color:inherit; text-decoration:none; }
+
+    /* ============================================================
+       TOPBAR
+       ============================================================ */
+    .topbar {
+      align-items:center;
+      background:var(--teal-dark);
+      display:flex;
+      justify-content:space-between;
+      min-height:76px;
+      padding:0 clamp(24px,4vw,88px);
+      position:sticky;
+      top:0;
+      z-index:50;
+      gap:24px;
+      box-shadow:0 4px 24px rgba(11,93,86,.28);
+    }
+    .topbar-left{display:flex;align-items:center;gap:42px;min-width:0;flex:1}
+    .brand{
+      font-family:Arial, Helvetica, sans-serif;
+      font-size:25px; font-weight:800; color:#fff;
+      line-height:1; display:inline-flex; align-items:center; gap:5px;
+      flex-shrink:0; letter-spacing:-.02em;
+      transition:opacity .25s ease, transform .25s ease;
+      padding:4px 0; text-decoration:none;
+    }
+    .brand:hover{opacity:.95;transform:translateY(-2px)}
+    .brand-logo{
+      display:block; width:46px; height:46px; object-fit:contain;
+      border-radius:12px; background:rgba(255,255,255,.10);
+      padding:4px; box-shadow:0 4px 12px rgba(0,0,0,.18); flex-shrink:0;
+      transition: transform .35s cubic-bezier(.34,1.56,.64,1), box-shadow .25s ease;
+    }
+    .brand:hover .brand-logo {
+      transform: rotate(-6deg) scale(1.08);
+      box-shadow: 0 8px 22px rgba(0,0,0,.30);
+    }
+    .brand span{color:#a7eee2}
+
+    .nav-links{display:flex;align-items:center;gap:6px;list-style:none;margin:0;padding:0;min-width:0}
+    .nav-link{
+      color:rgba(255,255,255,.78); display:block;
+      font-size:.9rem; font-weight:600; padding:10px 4px; margin:0 12px;
+      white-space:nowrap; position:relative; transition:color .2s ease;
+    }
+    .nav-link::after{
+      content:""; position:absolute; left:0; right:0; bottom:4px;
+      height:2px; background:#a7eee2; border-radius:2px;
+      transform:scaleX(0); transform-origin:center; transition:transform .25s ease;
+    }
+    .nav-link:hover{color:#fff}
+    .nav-link:hover::after{transform:scaleX(1)}
+    .nav-link.active{color:#a7eee2;font-weight:700}
+    .nav-link.active::after{transform:scaleX(1)}
+    .nav-item-mobile{display:none}
+
+    .topbar-right{display:flex;align-items:center;gap:12px;flex-shrink:0}
+    .theme-toggle,.btn-nav-action,.btn-login{
+      align-items:center; display:inline-flex; justify-content:center;
+      height:42px; font-size:.88rem; font-weight:700; white-space:nowrap; cursor:pointer;
+      transition:background .2s ease,color .2s ease,border-color .2s ease,
+                 transform .2s ease,box-shadow .2s ease;
+    }
+    .theme-toggle{
+      background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.32);
+      border-radius:999px; color:#fff; gap:8px; padding:0 18px;
+    }
+    .theme-toggle:hover{
+      background:#fff; border-color:#fff; color:var(--teal-dark);
+      transform:translateY(-1px); box-shadow:0 8px 20px rgba(0,0,0,.18);
+    }
+    .btn-nav-action{
+      background:transparent; border:1px solid rgba(255,255,255,.30);
+      border-radius:10px; color:#fff; padding:0 20px;
+    }
+    .btn-nav-action:hover{
+      background:rgba(255,255,255,.14); border-color:rgba(255,255,255,.55);
+      transform:translateY(-1px);
+    }
+    .btn-login{
+      background:#a7eee2; border:0; border-radius:10px; color:var(--teal-dark);
+      font-weight:800; padding:0 22px; box-shadow:0 6px 16px rgba(167,238,226,.20);
+    }
+    .btn-login:hover{
+      background:#ffffff; transform:translateY(-1px);
+      box-shadow:0 10px 22px rgba(167,238,226,.34);
+    }
+    .menu-toggle{
+      display:none; flex-direction:column; align-items:center; justify-content:center;
+      gap:5px; width:42px; height:42px; padding:0;
+      background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.30);
+      border-radius:10px; cursor:pointer; transition:background .2s ease;
+    }
+    .menu-toggle:hover{background:rgba(255,255,255,.18)}
+    .menu-toggle span{
+      display:block; width:18px; height:2px; background:#fff;
+      border-radius:2px; transition:transform .28s ease,opacity .2s ease;
+    }
+    .menu-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+    .menu-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+    .menu-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+    /* ============================================================
+       PAGE LAYOUT
+       ============================================================ */
+    main { max-width:900px; margin:0 auto; padding:54px 20px 70px; }
+
+    .page-heading { margin:10px 0 30px; }
+    .eyebrow {
+      color:var(--teal); font-size:.73rem; font-weight:800;
+      letter-spacing:.16em; margin:0 0 12px; text-transform:uppercase;
+      display:inline-block; background:var(--teal-soft);
+      padding:6px 12px; border-radius:999px;
+    }
+    h1 {
+      font-family:Arial, sans-serif;
+      font-size:clamp(2.2rem,5vw,3.4rem);
+      font-weight:800;
+      letter-spacing:-.04em;
+      line-height:1.05;
+      margin:0 0 12px;
+    }
+    .page-heading p { color:var(--muted); margin:0; font-size:1rem; line-height:1.6; }
+
+    /* Tips banner */
+    .tips-banner {
+      background: linear-gradient(135deg, var(--teal-dark), var(--teal));
+      border-radius: 16px;
+      padding: 22px 26px;
+      color: #fff;
+      margin: 24px 0 8px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 12px 28px rgba(15,118,110,.22);
+    }
+    .tips-banner::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 85% 20%, rgba(255,255,255,.15), transparent 45%);
+      pointer-events: none;
+    }
+    .tips-icon {
+      width: 44px; height: 44px; border-radius: 12px;
+      background: rgba(255,255,255,.16);
+      border: 1px solid rgba(255,255,255,.24);
+      display: grid; place-items: center;
+      font-size: 1.3rem; flex-shrink: 0;
+      position: relative; z-index: 1;
+    }
+    .tips-content { position: relative; z-index: 1; }
+    .tips-content h4 {
+      font-size: .95rem; font-weight: 800;
+      margin: 0 0 4px; letter-spacing: -.01em;
+    }
+    .tips-content p {
+      font-size: .84rem; color: rgba(255,255,255,.85);
+      margin: 0; line-height: 1.55;
+    }
+
+    /* Templates */
+    .templates-section { margin: 32px 0 24px; }
+    .templates-head {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px; margin-bottom: 16px; flex-wrap: wrap;
+    }
+    .templates-head h2 {
+      font-size: 1.05rem; font-weight: 800; letter-spacing: -.02em;
+      margin: 0; color: var(--text);
+    }
+    .templates-head span {
+      font-size: .82rem; color: var(--muted); font-weight: 600;
+    }
+    .template-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .template-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 18px 16px 16px;
+      cursor: pointer;
+      transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease, background .2s ease;
+      text-align: center;
+      color: var(--text);
+      font: inherit;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    .template-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--teal);
+      box-shadow: 0 12px 24px rgba(15,118,110,.14);
+    }
+    .template-card:active { transform: translateY(-1px); }
+    .template-card.active {
+      border-color: var(--teal);
+      background: var(--teal-soft);
+      box-shadow: 0 12px 24px rgba(15,118,110,.18);
+    }
+    .template-card .loaded-badge {
+      position: absolute;
+      top: 10px; right: 10px;
+      background: var(--teal);
+      color: #fff;
+      font-size: .62rem;
+      font-weight: 800;
+      letter-spacing: .04em;
+      padding: 3px 8px;
+      border-radius: 999px;
+      opacity: 0;
+      transform: translateY(-4px);
+      transition: opacity .25s ease, transform .25s ease;
+      pointer-events: none;
+    }
+    .template-card.active .loaded-badge {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .template-icon {
+      width: 42px; height: 42px; border-radius: 12px;
+      background: var(--teal-soft); color: var(--teal);
+      display: grid; place-items: center;
+      font-size: 1.25rem; margin-bottom: 4px;
+      transition: transform .25s ease, background .2s ease, color .2s ease;
+    }
+    .template-card:hover .template-icon {
+      transform: scale(1.08) rotate(-4deg);
+    }
+    .template-card.active .template-icon {
+      background: var(--teal);
+      color: #fff;
+    }
+    .template-card strong {
+      display: block; font-size: .88rem; font-weight: 800;
+      letter-spacing: -.01em;
+    }
+    .template-card small {
+      font-size: .72rem; color: var(--muted); font-weight: 600;
+    }
+    .template-card .template-desc {
+      font-size: .72rem; color: var(--muted);
+      line-height: 1.4; margin: 4px 0 0;
+      font-weight: 500;
+    }
+    .template-card.active .template-desc { color: var(--teal-dark); }
+    body.dark .template-card.active .template-desc { color: #a7eee2; }
+
+    /* Cards & form */
+    .card {
+      animation: slideUp .5s cubic-bezier(.2,.8,.2,1) both;
+      background:var(--surface);
+      border:1px solid var(--line);
+      border-radius:14px;
+      box-shadow:0 3px 12px rgba(32,33,36,.07);
+      margin:16px 0;
+      padding:30px;
+      transition:box-shadow .25s ease, transform .25s ease;
+    }
+    .card:hover {
+      box-shadow:0 8px 22px rgba(32,33,36,.10);
+      transform:translateY(-1px);
+    }
+    .hero { border-top:6px solid var(--teal); padding:34px; }
+
+    #questions .question:nth-child(1) { animation-delay:.06s; }
+    #questions .question:nth-child(2) { animation-delay:.12s; }
+    #questions .question:nth-child(3) { animation-delay:.18s; }
+    #questions .question:nth-child(4) { animation-delay:.24s; }
+    #questions .question:nth-child(n+5) { animation-delay:.3s; }
+
+    @keyframes slideUp {
+      from { opacity:0; transform:translateY(18px); }
+      to { opacity:1; transform:translateY(0); }
+    }
+
+    input, textarea, select { font:inherit; }
+    input[type=text], input[type=number], input[type=datetime-local], textarea, select {
+      background:#fff;
+      border:1px solid #cfd5da;
+      border-radius:9px;
+      outline:0;
+      padding:14px 15px;
+      width:100%;
+      color:var(--text);
+      transition:border-color .2s, box-shadow .2s;
+    }
+    body.dark input[type=text], body.dark input[type=number],
+    body.dark input[type=datetime-local], body.dark textarea, body.dark select {
+      background:#1c2d2a; color:var(--text); border-color: var(--line);
+    }
+    input:focus, textarea:focus, select:focus {
+      border-color:var(--teal);
+      box-shadow:0 0 0 4px var(--teal-soft);
+    }
+    textarea { min-height:92px; resize:vertical; }
+
+    .title-wrap { position: relative; }
+    .title-counter {
+      position: absolute; right: 14px; bottom: 12px;
+      font-size: .72rem; color: var(--muted); font-weight: 700;
+      background: var(--surface); padding: 2px 6px; border-radius: 6px;
+      pointer-events: none;
+    }
+    .title-counter.warn { color: var(--gold); }
+    .title-counter.limit { color: var(--red); }
+
+    .question-head { display:grid; grid-template-columns:minmax(0,1fr) 230px; gap:20px; }
+    .question-top { align-items:center; display:flex; gap:12px; }
+    .drag-handle {
+      color:var(--muted); cursor:grab; font-size:18px;
+      letter-spacing:2px; padding:7px 4px; user-select:none;
+    }
+    .drag-handle:active { cursor:grabbing; }
+    .question.dragging {
+      box-shadow:0 22px 40px rgba(13,107,104,.2);
+      opacity:.55;
+      transform:rotate(1deg) scale(1.01);
+    }
+    .question.drop-target {
+      border-top:3px solid var(--teal);
+      transform:translateY(-3px);
+    }
+
+    /* ============================================================
+       FORM SETTINGS — aligned labels & inputs
+       ============================================================ */
+    .form-settings {
+      border-top: 1px solid var(--line);
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 30px;
+      padding-top: 26px;
+      align-items: end;
+    }
+    .field-label {
+      color: var(--muted);
+      display: flex;
+      flex-direction: column;
+      font-size: 12px;
+      font-weight: 700;
+      gap: 8px;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      height: 100%;
+    }
+    .field-label > .label-text {
+      min-height: 18px;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      line-height: 1.2;
+    }
+    .field-label .req {
+      color: var(--red);
+      font-weight: 800;
+      margin-left: 2px;
+      line-height: 1;
+    }
+    .field-label > input,
+    .field-label > select {
+      margin-top: auto;
+    }
+    .field-label.required-field input { border-color: #cfd5da; }
+    .field-label.required-field input:focus { border-color: var(--teal); }
+    .field-label.required-field input:invalid:not(:placeholder-shown) { border-color: var(--red); }
+
+    .question-number {
+      color:var(--muted); font-size:13px; margin:0 0 8px;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .question-number .q-badge {
+      background: var(--teal-soft); color: var(--teal);
+      font-weight: 800; font-size: .68rem;
+      padding: 3px 8px; border-radius: 999px;
+      letter-spacing: .04em; text-transform: uppercase;
+    }
+    .question-options { margin:18px 0 12px; }
+    .option { align-items:center; display:flex; gap:10px; margin:10px 0; }
+    .option input { flex:1; }
+    .fake-radio {
+      height:16px; width:16px;
+      border:2px solid #777; border-radius:50%;
+      flex:0 0 auto;
+    }
+    .question-footer {
+      align-items:center;
+      border-top:1px solid var(--line);
+      display:flex; gap:20px;
+      justify-content:flex-end;
+      margin-top:28px; padding-top:20px;
+    }
+    .required-label { display:flex; align-items:center; gap:7px; font-weight: 600; }
+    .delete {
+      background:transparent; border:0;
+      color:var(--muted); cursor:pointer;
+      font-size:22px; line-height:1;
+      transition: color .2s ease;
+    }
+    .delete:hover { color: var(--red); }
+
+    .add-question {
+      align-items:center;
+      background:var(--surface);
+      border:1px solid var(--teal);
+      border-radius:10px;
+      color:var(--teal);
+      cursor:pointer;
+      display:inline-flex;
+      font-size:14px; font-weight:700;
+      gap:6px; justify-content:center;
+      padding:12px 18px;
+      transition:background .2s ease,color .2s ease,box-shadow .2s ease,transform .2s ease;
+    }
+    .add-question:hover {
+      background:var(--teal);
+      color:#fff;
+      box-shadow:0 5px 12px rgba(15,118,110,.18);
+      transform:translateY(-1px);
+    }
+    .add-question:active { transform:translateY(0); }
+
+    .page-links { align-items:center; display:flex; justify-content:space-between; margin-top:14px; }
+
+    .actions {
+      align-items:center; display:flex; gap:12px;
+      justify-content:flex-end; margin-top:22px;
+      flex-wrap: wrap;
+    }
+    .preview-button {
+      background:var(--surface);
+      border:1px solid var(--teal);
+      border-radius:9px;
+      color:var(--teal);
+      cursor:pointer;
+      font-size:14px; font-weight:700;
+      padding:13px 20px;
+      display:inline-flex; align-items:center; gap: 8px;
+      transition:background .2s ease,transform .2s ease,box-shadow .2s ease;
+    }
+    .preview-button:hover {
+      background:var(--teal-soft);
+      transform:translateY(-1px);
+      box-shadow:0 5px 12px rgba(15,118,110,.15);
+    }
+    body.dark .preview-button { background:var(--surface); color:#8ed1c9; border-color:#5faea5; }
+
+    .back, .publish {
+      background:var(--teal);
+      border:0;
+      border-radius:9px;
+      color:#fff;
+      cursor:pointer;
+      font-size:14px; font-weight:700;
+      padding:14px 24px;
+      display: inline-flex; align-items: center; gap: 6px;
+      transition:.2s ease;
+    }
+    .back:hover, .publish:hover {
+      background:var(--teal-dark);
+      box-shadow:0 5px 13px rgba(15,118,110,.22);
+      transform:translateY(-1px);
+    }
+    .submit {
+      background:var(--gold);
+      border:0;
+      border-radius: 9px;
+      color:#fff;
+      cursor:pointer;
+      font-size:14px; font-weight:800;
+      padding:14px 26px;
+      display: inline-flex; align-items: center; gap: 8px;
+      transition:background .2s ease,transform .2s ease,box-shadow .2s ease;
+    }
+    .submit:hover {
+      background:var(--teal-dark);
+      transform:translateY(-1px);
+      box-shadow:0 5px 12px rgba(15,118,110,.22);
+    }
+    .submit:disabled { cursor:not-allowed; opacity:.65; }
+
+    #status { color:var(--muted); flex:1; text-align:right; font-weight: 600; }
+    #status.error { color:#d93025; }
+    #status.success { color:#188038; }
+
+    /* ============================================================
+       PREVIEW MODAL
+       ============================================================ */
+    .preview-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 20, 18, 0.55);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      z-index: 300;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 40px 20px;
+      overflow-y: auto;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity .25s ease, visibility .25s ease;
+    }
+    .preview-overlay.open {
+      opacity: 1;
+      visibility: visible;
+    }
+    .preview-modal {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 640px;
+      box-shadow: 0 30px 80px rgba(0,0,0,.35);
+      transform: translateY(20px) scale(.98);
+      transition: transform .3s cubic-bezier(.16,1,.3,1);
+      overflow: hidden;
+      margin: auto 0;
+    }
+    .preview-overlay.open .preview-modal {
+      transform: translateY(0) scale(1);
+    }
+
+    .preview-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px 24px;
+      background: linear-gradient(135deg, var(--teal-dark), var(--teal));
+      color: #fff;
+    }
+    .preview-header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+    .preview-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,.18);
+      border: 1px solid rgba(255,255,255,.28);
+      padding: 5px 11px;
+      border-radius: 999px;
+      font-size: .68rem;
+      font-weight: 800;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .preview-badge .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #a7eee2;
+      animation: pulseDot 1.8s infinite;
+    }
+    @keyframes pulseDot {
+      0% { box-shadow: 0 0 0 0 rgba(167,238,226,.6); }
+      70% { box-shadow: 0 0 0 8px rgba(167,238,226,0); }
+      100% { box-shadow: 0 0 0 0 rgba(167,238,226,0); }
+    }
+    .preview-close {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: rgba(255,255,255,.14);
+      border: 1px solid rgba(255,255,255,.28);
+      color: #fff;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      font-size: 1.1rem;
+      line-height: 1;
+      flex-shrink: 0;
+      transition: background .2s ease, transform .2s ease;
+    }
+    .preview-close:hover {
+      background: #fff;
+      color: var(--teal-dark);
+      transform: rotate(90deg);
+    }
+
+    .preview-body {
+      padding: 30px 28px;
+      max-height: calc(100vh - 240px);
+      overflow-y: auto;
+    }
+    .preview-title {
+      font-size: 1.55rem;
+      font-weight: 800;
+      letter-spacing: -.03em;
+      margin: 0 0 8px;
+      color: var(--text);
+    }
+    .preview-description {
+      color: var(--muted);
+      font-size: .92rem;
+      line-height: 1.6;
+      margin: 0 0 24px;
+    }
+    .preview-question {
+      padding: 18px 0;
+      border-top: 1px solid var(--line);
+    }
+    .preview-question:first-of-type {
+      border-top: 0;
+      padding-top: 4px;
+    }
+    .preview-q-label {
+      font-size: .92rem;
+      font-weight: 700;
+      color: var(--text);
+      display: block;
+      margin-bottom: 10px;
+      line-height: 1.5;
+    }
+    .preview-q-label .req { color: var(--red); margin-left: 3px; }
+    .preview-q-label .q-index {
+      display: inline-block;
+      background: var(--teal-soft);
+      color: var(--teal);
+      font-size: .68rem;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 6px;
+      margin-right: 8px;
+      letter-spacing: .04em;
+      vertical-align: middle;
+    }
+    .preview-q-label .q-required-note {
+      color: var(--red);
+      font-size: .74rem;
+      font-weight: 700;
+      margin-left: 4px;
+    }
+
+    .preview-input,
+    .preview-select,
+    .preview-textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      background: var(--surface-2);
+      color: var(--text);
+      font-size: .92rem;
+      outline: none;
+      pointer-events: none;
+    }
+    .preview-textarea { min-height: 88px; resize: none; }
+    .preview-select {
+      appearance: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path fill='%236b7785' d='M6 8 0 2l1.4-1.4L6 5.2 10.6.6 12 2z'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      padding-right: 42px;
+    }
+    .preview-choice {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .preview-choice-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      font-size: .9rem;
+      color: var(--text);
+    }
+    .preview-choice-item .circle {
+      width: 16px;
+      height: 16px;
+      border: 2px solid var(--muted);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .preview-choice-item .square {
+      width: 16px;
+      height: 16px;
+      border: 2px solid var(--muted);
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+    .preview-rating {
+      display: flex;
+      gap: 6px;
+      font-size: 1.6rem;
+      color: var(--gold);
+    }
+    .preview-placeholder {
+      color: var(--muted);
+      font-size: .84rem;
+      font-style: italic;
+      padding: 6px 0;
+    }
+
+    .preview-footer {
+      padding: 18px 28px 24px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+      background: var(--surface-2);
+    }
+    .preview-meta {
+      font-size: .78rem;
+      color: var(--muted);
+      font-weight: 600;
+      line-height: 1.6;
+    }
+    .preview-meta strong { color: var(--text); }
+    .preview-submit {
+      background: var(--teal);
+      color: #fff;
+      border: 0;
+      border-radius: 10px;
+      padding: 12px 24px;
+      font-size: .9rem;
+      font-weight: 800;
+      cursor: not-allowed;
+      opacity: .85;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    @media (max-width: 640px) {
+      .preview-overlay { padding: 20px 12px; }
+      .preview-body { padding: 22px 20px; max-height: calc(100vh - 200px); }
+      .preview-footer { padding: 16px 20px 20px; }
+      .preview-title { font-size: 1.3rem; }
+      .preview-submit { width: 100%; justify-content: center; }
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 30px;
+      transform: translateX(-50%) translateY(20px);
+      background: #17312e;
+      color: #fff;
+      padding: 13px 22px;
+      border-radius: 999px;
+      font-size: .88rem;
+      font-weight: 700;
+      box-shadow: 0 12px 32px rgba(0,0,0,.25);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .25s ease, transform .25s ease;
+      z-index: 200;
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      max-width: calc(100% - 40px);
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    .toast .toast-icon {
+      display: inline-grid;
+      place-items: center;
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      background: #a7eee2;
+      color: #17312e;
+      font-size: .72rem;
+      font-weight: 900;
+      flex-shrink: 0;
+    }
+
+    /* ============================================================
+       FOOTER
+       ============================================================ */
+    .site-footer {
+      background: var(--teal-dark);
+      color: #fff;
+      margin-top: 40px;
+      position: relative;
+      overflow: hidden;
+    }
+    .site-footer::before {
+      content: "";
+      position: absolute;
+      top: -160px; right: -160px;
+      width: 420px; height: 420px;
+      background: radial-gradient(circle, rgba(167,238,226,.14), transparent 70%);
+      pointer-events: none;
+    }
+    .site-footer::after {
+      content: "";
+      position: absolute;
+      bottom: -180px; left: -160px;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(15,118,110,.35), transparent 70%);
+      pointer-events: none;
+    }
+    .footer-inner {
+      max-width: 1240px; margin: 0 auto;
+      padding: 64px clamp(20px,5vw,72px) 32px;
+      position: relative; z-index: 1;
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr 1fr;
+      gap: 48px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid rgba(255,255,255,.12);
+    }
+    .footer-brand-block { max-width: 360px; }
+    .footer-brand {
+      display: inline-flex; align-items: center; gap: 12px;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 24px; font-weight: 800; letter-spacing: -.02em;
+      color: #fff; margin-bottom: 16px;
+    }
+    .footer-brand-logo {
+      width: 44px; height: 44px; object-fit: contain;
+      border-radius: 11px; background: rgba(255,255,255,.10);
+      padding: 4px; box-shadow: 0 4px 12px rgba(0,0,0,.20);
+    }
+    .footer-brand span { color: #a7eee2; }
+    .footer-tagline {
+      color: rgba(255,255,255,.68);
+      font-size: .9rem; line-height: 1.7; margin: 0;
+    }
+    .footer-col h4 {
+      font-size: .78rem; font-weight: 800;
+      letter-spacing: .14em; text-transform: uppercase;
+      color: #a7eee2; margin: 0 0 18px;
+    }
+    .footer-col ul {
+      list-style: none; margin: 0; padding: 0;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .footer-col a {
+      color: rgba(255,255,255,.72);
+      font-size: .88rem; font-weight: 500;
+      transition: color .2s ease, padding-left .2s ease;
+      display: inline-block; position: relative;
+    }
+    .footer-col a::before {
+      content: "";
+      position: absolute; left: -14px; top: 50%;
+      transform: translateY(-50%) scaleX(0);
+      width: 8px; height: 2px; background: #a7eee2;
+      border-radius: 2px; transition: transform .2s ease;
+    }
+    .footer-col a:hover { color: #fff; padding-left: 6px; }
+    .footer-col a:hover::before { transform: translateY(-50%) scaleX(1); }
+    .footer-bottom {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-top: 26px; gap: 20px; flex-wrap: wrap;
+      font-size: .84rem; color: rgba(255,255,255,.62);
+    }
+    .footer-bottom .copy strong { color: #fff; }
+    .footer-legal { display: flex; gap: 22px; flex-wrap: wrap; }
+    .footer-legal a { color: rgba(255,255,255,.62); transition: color .2s ease; }
+    .footer-legal a:hover { color: #a7eee2; }
+
+    /* ============================================================
+       RESPONSIVE
+       ============================================================ */
+    @media (max-width:1180px){
+      .topbar{padding:0 32px;gap:16px}
+      .topbar-left{gap:26px}
+      .nav-link{margin:0 8px;font-size:.86rem}
+      .topbar-right{gap:8px}
+      .theme-toggle,.btn-nav-action,.btn-login{height:40px;font-size:.84rem;padding:0 14px}
+      .btn-login{padding:0 18px}
+    }
+    @media (max-width:1024px){
+      .footer-top{grid-template-columns:1fr 1fr; gap:36px}
+      .footer-brand-block{grid-column:1 / -1; max-width:520px}
+    }
+    @media (max-width:960px){
+      .topbar{padding:0 20px;min-height:68px}
+      .menu-toggle{display:flex}
+      .topbar-right .btn-nav-action{display:none}
+      .nav-item-mobile{display:block}
+      .topbar-left{gap:0}
+      .nav-links{
+        position:absolute; top:100%; left:0; right:0;
+        flex-direction:column; align-items:stretch; gap:2px;
+        padding:0 20px;
+        background:var(--teal-dark);
+        border-top:1px solid rgba(255,255,255,.14);
+        box-shadow:0 20px 34px rgba(0,0,0,.28);
+        max-height:0; opacity:0; visibility:hidden; overflow:hidden;
+        transition:max-height .32s ease,opacity .25s ease,
+                   padding .32s ease,visibility .32s ease;
+      }
+      .nav-links.open{
+        max-height:400px; opacity:1; visibility:visible;
+        padding:12px 20px 16px;
+      }
+      .nav-link{font-size:.95rem;padding:12px 8px;margin:0}
+      .nav-link::after{display:none}
+      .nav-link.active{
+        background:rgba(167,238,226,.12);
+        border-radius:10px; padding-left:14px;
+      }
+      .template-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width:760px) {
+      .form-settings { grid-template-columns:repeat(2, minmax(0,1fr)); }
+    }
+    @media (max-width:640px){
+      .theme-label{display:none}
+      .theme-toggle{padding:0 14px;gap:0}
+      .brand{font-size:21px;gap:9px}
+      .brand-logo{width:38px;height:38px;padding:3px}
+      .footer-inner{padding:52px 24px 26px}
+      .footer-top{grid-template-columns:1fr 1fr; gap:36px 28px}
+      .footer-brand-block{grid-column:1 / -1}
+    }
+    @media (max-width:580px){
+      main { padding:24px 14px 50px; }
+      .card { border-radius:10px; padding:22px; }
+      .question-head, .form-settings { grid-template-columns:1fr; gap:12px; }
+      .actions { align-items:stretch; flex-direction:column; }
+      #status { text-align:left; }
+      .preview-button,.submit,.back { width:100%; justify-content: center; }
+      .tips-banner { flex-direction: column; text-align: center; padding: 20px; }
+      .template-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width:460px){
+      .topbar{padding:0 12px;min-height:62px}
+      .brand{font-size:19px;gap:8px}
+      .brand-logo{width:34px;height:34px;padding:2px;border-radius:10px}
+      .nav-links{padding:0 12px}
+      .nav-links.open{padding:10px 12px 14px}
+      .btn-login{padding:0 14px;font-size:.82rem}
+      .footer-top{grid-template-columns:1fr; gap:32px}
+      .template-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (prefers-reduced-motion:reduce) {
+      .card { animation:none; transition:none; }
+      .question.dragging { transform:none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ============================= TOPBAR =========================dd==== -->
+<header class="topbar">
+  <div class="topbar-left">
+    <a class="brand" href="index.html">
+      <img class="brand-logo" src="Glogo.png" alt="PutForm logo"
+           onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 46 46%22><rect width=%2246%22 height=%2246%22 rx=%2212%22 fill=%22%2317b8a6%22/><text x=%2250%25%22 y=%2258%25%22 text-anchor=%22middle%22 font-family=%22Arial%22 font-size=%2224%22 font-weight=%22bold%22 fill=%22white%22>P</text></svg>';">
+      Put<span>Form</span></span>
+    </a>
+
+    <ul class="nav-links" id="navLinks">
+      <li><a class="nav-link" href="index.html">Home</a></li>
+      <li><a class="nav-link active" href="forms.html">Dashboard</a></li>
+      <li><a class="nav-link" href="api.html">API</a></li>
+      <li><a class="nav-link" href="about.html">About</a></li>
+      <li><a class="nav-link" href="contact.html">Contact Us</a></li>
+      <li class="nav-item-mobile"><a class="nav-link" href="profile.html">Profile</a></li>
+    </ul>
+  </div>
+
+  <div class="topbar-right">
+    <a class="btn-nav-action" href="profile.html">Profile</a>
+
+    <div id="authContainer" style="display:flex; align-items:center;">
+      <a class="btn-login" href="login.html">Login</a>
+    </div>
+
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme">
+      <span class="theme-icon">🌙</span><span class="theme-label">Dark mode</span>
+    </button>
+
+    <button class="menu-toggle" id="menuToggle" type="button"
+            aria-label="Toggle navigation menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main>
+  <!-- Page heading -->
+  <section class="page-heading">
+    <p class="eyebrow">Workspace</p>
+    <h1>Create a new form</h1>
+    <p>Build a thoughtful form and start collecting useful responses.</p>
+  </section>
+
+  <!-- Tips banner -->
+  <div class="tips-banner">
+    <div class="tips-icon">💡</div>
+    <div class="tips-content">
+      <h4>Quick tip</h4>
+      <p>Keep it short — forms with 5–7 questions get the highest completion rates. You can always add more later from the editor.</p>
+    </div>
+  </div>
+
+  <!-- Starter templates -->
+  <section class="templates-section">
+    <div class="templates-head">
+      <h2>Start from a template</h2>
+      <span>Click any card to instantly load its questions</span>
+    </div>
+    <div class="template-grid">
+      <button class="template-card" type="button" data-template="feedback">
+        <span class="loaded-badge">✓ Loaded</span>
+        <div class="template-icon">💬</div>
+        <strong>Feedback</strong>
+        <small>4 questions</small>
+        <p class="template-desc">Name, email, rating, comments</p>
+      </button>
+
+      <button class="template-card" type="button" data-template="contact">
+        <span class="loaded-badge">✓ Loaded</span>
+        <div class="template-icon">📩</div>
+        <strong>Contact</strong>
+        <small>4 questions</small>
+        <p class="template-desc">Name, email, subject, message</p>
+      </button>
+
+      <button class="template-card" type="button" data-template="survey">
+        <span class="loaded-badge">✓ Loaded</span>
+        <div class="template-icon">📊</div>
+        <strong>Survey</strong>
+        <small>3 questions</small>
+        <p class="template-desc">Source, rating, recommend</p>
+      </button>
+
+      <button class="template-card" type="button" data-template="rsvp">
+        <span class="loaded-badge">✓ Loaded</span>
+        <div class="template-icon">🎉</div>
+        <strong>RSVP</strong>
+        <small>4 questions</small>
+        <p class="template-desc">Name, email, attending, notes</p>
+      </button>
+    </div>
+  </section>
+
+  <!-- Form hero card -->
+  <section class="card hero">
+    <div class="title-wrap">
+      <input id="title" type="text" placeholder="Untitled form" aria-label="Form title"
+             maxlength="120" required />
+      <span class="title-counter" id="titleCounter">0 / 120</span>
+    </div>
+    <textarea id="description" placeholder="Form description (optional)"
+              aria-label="Form description" maxlength="500" style="margin-top:16px;"></textarea>
+    <div class="form-settings">
+      <label class="field-label">
+        <span class="label-text">Plan</span>
+        <select id="plan" aria-label="Plan" required>
+          <option value="FREE">Free</option>
+          <option value="BASIC">Basic</option>
+          <option value="PREMIUM">Premium</option>
+        </select>
+      </label>
+
+      <label class="field-label required-field">
+        <span class="label-text">Response limit <span class="req">*</span></span>
+        <input id="responseLimit" type="number" min="1" step="1"
+               placeholder="e.g. 100" value="100"
+               aria-label="Response limit" required />
+      </label>
+
+      <label class="field-label">
+        <span class="label-text">Filling amount</span>
+        <input id="fillingAmount" type="number" min="0" step="0.01"
+               value="0.00" aria-label="Filling amount" />
+      </label>
+
+      <label class="field-label required-field">
+        <span class="label-text">Expires at <span class="req">*</span></span>
+        <input id="expiresAt" type="datetime-local"
+               aria-label="Expires at" required />
+      </label>
+    </div>
+  </section>
+
+  <div id="questions"></div>
+
+  <div class="page-links">
+    <button class="add-question" id="addQuestion" type="button">
+      <span>+</span> Add question
+    </button>
+  </div>
+
+  <div class="actions">
+    <button class="back" type="button" onclick="window.location.href='forms.html';">
+      ← Back
+    </button>
+    <span id="status" aria-live="polite"></span>
+    <button class="preview-button" id="previewForm" type="button">
+      👁️ Preview
+    </button>
+    <button class="submit" id="saveForm" type="button">
+      ✨ Create form
+    </button>
+  </div>
+</main>
+
+<template id="questionTemplate">
+  <section class="card question">
+    <div class="question-top">
+      <span class="drag-handle" draggable="true" title="Drag to reorder" aria-label="Drag to reorder">:::</span>
+      <p class="question-number"></p>
+    </div>
+    <div class="question-head">
+      <input class="question-title" type="text" placeholder="Question" aria-label="Question text" required maxlength="200" />
+      <select class="question-type" aria-label="Question type">
+        <option value="SHORT_TEXT">Short answer</option>
+        <option value="LONG_TEXT">Paragraph</option>
+        <option value="NUMBER">Number</option>
+        <option value="EMAIL">Email</option>
+        <option value="DATE">Date</option>
+        <option value="SINGLE_CHOICE">Single choice</option>
+        <option value="MULTIPLE_CHOICE">Multiple choice</option>
+        <option value="DROPDOWN">Dropdown</option>
+        <option value="CHECKBOX">Checkboxes</option>
+        <option value="FILE_UPLOAD">File upload</option>
+        <option value="RATING">Rating</option>
+      </select>
+    </div>
+    <div class="question-options"></div>
+    <div class="question-footer">
+      <button class="delete" type="button" title="Delete question" aria-label="Delete question">⌫</button>
+      <label class="required-label">
+        <input class="required" type="checkbox" /> Required
+      </label>
+    </div>
+  </section>
+</template>
+
+<!-- ============================= FOOTER ============================= -->
+<footer class="site-footer">
+  <div class="footer-inner">
+
+    <div class="footer-top">
+      <div class="footer-brand-block">
+        <a class="brand" href="index.html">
+          <img class="brand-logo" src="Glogo.png" alt="PutForm logo"
+              onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 46 46%22><rect width=%2246%22 height=%2246%22 rx=%2212%22 fill=%22%2317b8a6%22/><text x=%2250%25%22 y=%2258%25%22 text-anchor=%22middle%22 font-family=%22Arial%22 font-size=%2224%22 font-weight=%22bold%22 fill=%22white%22>P</text></svg>';">
+          Put<span>Form</span></span>
+        </a>
+        <p class="footer-tagline">
+          Build beautiful forms, collect responses, and connect them to your backend —
+          all from one clean, developer-friendly platform.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="forms.html">Dashboard</a></li>
+          <li><a href="creatform.html">Create a Form</a></li>
+          <li><a href="api.html">Developer API</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+          <li><a href="profile.html">Profile</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="copy">© 2026 <strong>PutForm</strong>. All rights reserved.</div>
+      <div class="footer-legal">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+        <a href="#">Cookies</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Preview Modal -->
+<div class="preview-overlay" id="previewOverlay" role="dialog" aria-modal="true" aria-labelledby="previewTitle">
+  <div class="preview-modal">
+    <div class="preview-header">
+      <div class="preview-header-left">
+        <span class="preview-badge"><span class="dot"></span> Live preview</span>
+      </div>
+      <button class="preview-close" id="previewClose" type="button" aria-label="Close preview">✕</button>
+    </div>
+
+    <div class="preview-body">
+      <h2 class="preview-title" id="previewTitle">Untitled form</h2>
+      <p class="preview-description" id="previewDescription"></p>
+      <div id="previewQuestions"></div>
+    </div>
+
+    <div class="preview-footer">
+      <div class="preview-meta" id="previewMeta">
+        <strong>Response limit:</strong> —<br>
+        <strong>Expires:</strong> —
+      </div>
+      <button class="preview-submit" type="button" disabled>
+        Submit Response →
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <span class="toast-icon" id="toastIcon">✓</span>
+  <span id="toastMsg">Template loaded</span>
+</div>
+
+<script>
+  const API_URL = 'https://putform.onrender.com/api/forms';
+  const LOGOUT_URL = 'https://putform.onrender.com/api/auth/logout';
+
+  const questions = document.getElementById('questions');
+  const template = document.getElementById('questionTemplate');
+  const status = document.getElementById('status');
+  const themeToggle = document.getElementById('themeToggle');
+  const titleInput = document.getElementById('title');
+  const titleCounter = document.getElementById('titleCounter');
+  const authContainer = document.getElementById('authContainer');
+  const menuToggle = document.getElementById('menuToggle');
+  const navLinks = document.getElementById('navLinks');
+  const toast = document.getElementById('toast');
+  const toastMsg = document.getElementById('toastMsg');
+  const toastIcon = document.getElementById('toastIcon');
+
+  const DEFAULT_RESPONSE_LIMIT = 100;
+  const DEFAULT_EXPIRY_DAYS = 7;
+
+  const optionTypes = ['SINGLE_CHOICE', 'MULTIPLE_CHOICE', 'CHECKBOX', 'DROPDOWN'];
+  let draggedQuestion = null;
+  let toastTimer = null;
+
+  /* ---------------- DEBUG ---------------- */
+  const DEBUG = true;
+  function log(...args) { if (DEBUG) console.log('[PutForm]', ...args); }
+
+  function showToast(message, type = 'success') {
+    toastMsg.textContent = message;
+    toastIcon.textContent = type === 'success' ? '✓' : '⚠';
+    toastIcon.style.background = type === 'success' ? '#a7eee2' : '#ffd4d0';
+    toastIcon.style.color = '#17312e';
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 2600);
+  }
+
+  /* ============================================================
+     DATE HELPERS
+     ============================================================ */
+  function toDateTimeLocal(date) {
+    const pad = n => String(n).padStart(2, '0');
+    return (
+      date.getFullYear() + '-' +
+      pad(date.getMonth() + 1) + '-' +
+      pad(date.getDate()) + 'T' +
+      pad(date.getHours()) + ':' +
+      pad(date.getMinutes())
+    );
+  }
+  function daysFromNow(days) {
+    const d = new Date();
+    d.setDate(d.getDate() + days);
+    return d;
+  }
+  function applyDefaultLimits() {
+    document.getElementById('responseLimit').value = DEFAULT_RESPONSE_LIMIT;
+    document.getElementById('expiresAt').value =
+      toDateTimeLocal(daysFromNow(DEFAULT_EXPIRY_DAYS));
+  }
+
+  /* ---------------- THEME ---------------- */
+  function applyTheme(theme) {
+    const dark = theme === 'dark';
+    document.body.classList.toggle('dark', dark);
+    themeToggle.innerHTML = dark
+      ? '<span class="theme-icon">☀️</span><span class="theme-label">Light mode</span>'
+      : '<span class="theme-icon">🌙</span><span class="theme-label">Dark mode</span>';
+    localStorage.setItem('putform-theme', dark ? 'dark' : 'light');
+  }
+  applyTheme(localStorage.getItem('putform-theme') || 'light');
+  themeToggle.addEventListener('click', () => {
+    applyTheme(document.body.classList.contains('dark') ? 'light' : 'dark');
+  });
+
+  /* ---------------- MOBILE MENU ---------------- */
+  function closeMenu() {
+    navLinks.classList.remove('open');
+    menuToggle.setAttribute('aria-expanded', 'false');
+  }
+  menuToggle.addEventListener('click', () => {
+    const isOpen = navLinks.classList.toggle('open');
+    menuToggle.setAttribute('aria-expanded', String(isOpen));
+  });
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', closeMenu);
+  });
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 960) closeMenu();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeMenu();
+  });
+
+  /* ---------------- TITLE COUNTER ---------------- */
+  const TITLE_MAX = 120;
+  function updateTitleCounter() {
+    const len = titleInput.value.length;
+    titleCounter.textContent = `${len} / ${TITLE_MAX}`;
+    titleCounter.classList.toggle('warn', len > TITLE_MAX * 0.75 && len < TITLE_MAX);
+    titleCounter.classList.toggle('limit', len >= TITLE_MAX);
+  }
+  titleInput.addEventListener('input', updateTitleCounter);
+  updateTitleCounter();
+
+  /* ---------------- QUESTION BUILDER ---------------- */
+  function renumber() {
+    [...questions.children].forEach((q, i) => {
+      const p = q.querySelector('.question-number');
+      p.innerHTML = `<span class="q-badge">Q${i + 1}</span> Question ${i + 1}`;
+    });
+  }
+
+  function renderOptions(question) {
+    const type = question.querySelector('.question-type').value;
+    const area = question.querySelector('.question-options');
+    area.innerHTML = '';
+    if (!optionTypes.includes(type)) return;
+    ['Option 1', 'Option 2'].forEach(placeholder => {
+      const row = document.createElement('div');
+      row.className = 'option';
+      row.innerHTML = `<span class="fake-radio"></span><input class="option-text" type="text" placeholder="${placeholder}" />`;
+      area.append(row);
+    });
+    const add = document.createElement('button');
+    add.type = 'button';
+    add.className = 'add-question';
+    add.textContent = '+ Add option';
+    add.addEventListener('click', () => {
+      const row = document.createElement('div');
+      row.className = 'option';
+      row.innerHTML = '<span class="fake-radio"></span><input class="option-text" type="text" placeholder="New option" />';
+      area.insertBefore(row, add);
+    });
+    area.append(add);
+  }
+
+  function bindDragAndDrop(question) {
+    const handle = question.querySelector('.drag-handle');
+    handle.addEventListener('dragstart', event => {
+      draggedQuestion = question;
+      question.classList.add('dragging');
+      event.dataTransfer.effectAllowed = 'move';
+    });
+    handle.addEventListener('dragend', () => {
+      draggedQuestion = null;
+      [...questions.children].forEach(card => card.classList.remove('dragging', 'drop-target'));
+    });
+    question.addEventListener('dragover', event => {
+      event.preventDefault();
+      if (draggedQuestion && draggedQuestion !== question) question.classList.add('drop-target');
+    });
+    question.addEventListener('dragleave', () => question.classList.remove('drop-target'));
+    question.addEventListener('drop', event => {
+      event.preventDefault();
+      question.classList.remove('drop-target');
+      if (!draggedQuestion || draggedQuestion === question) return;
+      const midpoint = question.getBoundingClientRect().top + question.offsetHeight / 2;
+      questions.insertBefore(draggedQuestion, event.clientY < midpoint ? question : question.nextSibling);
+      renumber();
+    });
+  }
+
+  function createQuestion(data = null) {
+    const q = template.content.firstElementChild.cloneNode(true);
+    q.querySelector('.question-type').addEventListener('change', () => renderOptions(q));
+    q.querySelector('.delete').addEventListener('click', () => {
+      q.remove();
+      renumber();
+      clearTemplateActiveState();
+    });
+    bindDragAndDrop(q);
+
+    if (data) {
+      q.querySelector('.question-title').value = data.question || '';
+      q.querySelector('.question-type').value = data.type || 'SHORT_TEXT';
+      q.querySelector('.required').checked = !!data.required;
+      renderOptions(q);
+      if (Array.isArray(data.configuration?.options)) {
+        const area = q.querySelector('.question-options');
+        const optionInputs = area.querySelectorAll('.option-text');
+        data.configuration.options.forEach((opt, idx) => {
+          if (optionInputs[idx]) {
+            optionInputs[idx].value = opt;
+          } else {
+            const addBtn = area.querySelector('.add-question');
+            const row = document.createElement('div');
+            row.className = 'option';
+            row.innerHTML = `<span class="fake-radio"></span><input class="option-text" type="text" />`;
+            row.querySelector('input').value = opt;
+            area.insertBefore(row, addBtn);
+          }
+        });
+      }
+    } else {
+      renderOptions(q);
+    }
+    return q;
+  }
+
+  function addQuestion(data = null) {
+    const q = createQuestion(data);
+    questions.append(q);
+    renumber();
+    return q;
+  }
+
+  document.getElementById('addQuestion').addEventListener('click', () => {
+    addQuestion();
+    clearTemplateActiveState();
+  });
+
+  /* ---------------- TEMPLATES ---------------- */
+  const TEMPLATES = {
+    feedback: {
+      title: 'Customer Feedback Form',
+      description: 'Help us improve by sharing your experience.',
+      questions: [
+        { question: 'Your name', type: 'SHORT_TEXT', required: true },
+        { question: 'Email address', type: 'EMAIL', required: true },
+        { question: 'How would you rate your overall experience?', type: 'RATING', required: true },
+        { question: 'Any comments or suggestions?', type: 'LONG_TEXT', required: false }
+      ]
+    },
+    contact: {
+      title: 'Contact Us',
+      description: 'Send us a message and we will get back to you shortly.',
+      questions: [
+        { question: 'Full name', type: 'SHORT_TEXT', required: true },
+        { question: 'Email address', type: 'EMAIL', required: true },
+        { question: 'Subject', type: 'DROPDOWN', required: true, configuration: { options: ['General', 'Support', 'Billing', 'Feedback'] } },
+        { question: 'Message', type: 'LONG_TEXT', required: true }
+      ]
+    },
+    survey: {
+      title: 'Quick Survey',
+      description: 'A few quick questions to help us understand your needs.',
+      questions: [
+        { question: 'How did you hear about us?', type: 'SINGLE_CHOICE', required: false, configuration: { options: ['Search', 'Social media', 'Friend', 'Other'] } },
+        { question: 'How satisfied are you overall?', type: 'RATING', required: true },
+        { question: 'Would you recommend us to a friend?', type: 'SINGLE_CHOICE', required: true, configuration: { options: ['Yes', 'Maybe', 'No'] } }
+      ]
+    },
+    rsvp: {
+      title: 'Event RSVP',
+      description: 'Let us know if you can make it.',
+      questions: [
+        { question: 'Your name', type: 'SHORT_TEXT', required: true },
+        { question: 'Email address', type: 'EMAIL', required: true },
+        { question: 'Will you attend?', type: 'SINGLE_CHOICE', required: true, configuration: { options: ['Yes', 'No', 'Maybe'] } },
+        { question: 'Dietary restrictions', type: 'LONG_TEXT', required: false }
+      ]
+    }
+  };
+
+  function clearTemplateActiveState() {
+    document.querySelectorAll('.template-card.active').forEach(c => c.classList.remove('active'));
+  }
+
+  function loadTemplate(key) {
+    const tpl = TEMPLATES[key];
+    if (!tpl) { showToast('Template not found.', 'error'); return; }
+
+    const hasContent =
+      titleInput.value.trim() !== '' ||
+      document.getElementById('description').value.trim() !== '' ||
+      questions.children.length > 0;
+
+    if (hasContent) {
+      const ok = confirm(`Load the "${tpl.title}" template?\n\nThis will replace your current title, description, and questions.`);
+      if (!ok) return;
+    }
+
+    titleInput.value = tpl.title;
+    document.getElementById('description').value = tpl.description || '';
+    applyDefaultLimits();
+
+    questions.innerHTML = '';
+    tpl.questions.forEach(q => addQuestion(q));
+    updateTitleCounter();
+    renumber();
+
+    status.textContent = '';
+    status.className = '';
+    clearTemplateActiveState();
+    const card = document.querySelector(`.template-card[data-template="${key}"]`);
+    if (card) card.classList.add('active');
+
+    showToast(`"${tpl.title}" template loaded`);
+    document.querySelector('.card.hero').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    setTimeout(() => titleInput.focus(), 400);
+  }
+
+  document.querySelectorAll('.template-card').forEach(card => {
+    card.addEventListener('click', () => loadTemplate(card.dataset.template));
+  });
+
+  /* ============================================================
+     PREVIEW (inline modal)
+     ============================================================ */
+  const previewOverlay = document.getElementById('previewOverlay');
+  const previewClose = document.getElementById('previewClose');
+  const previewTitle = document.getElementById('previewTitle');
+  const previewDescription = document.getElementById('previewDescription');
+  const previewQuestions = document.getElementById('previewQuestions');
+  const previewMeta = document.getElementById('previewMeta');
+
+  function escapePreviewHtml(value) {
+    return String(value).replace(/[&<>'"]/g, (c) => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+    }[c]));
+  }
+
+  function formatPreviewDate(value) {
+    if (!value) return '—';
+    try {
+      const d = new Date(value);
+      return d.toLocaleString(undefined, {
+        dateStyle: 'medium',
+        timeStyle: 'short'
+      });
+    } catch {
+      return value;
+    }
+  }
+
+  function openPreview() {
+    const title = document.getElementById('title').value.trim() || 'Untitled form';
+    const description = document.getElementById('description').value.trim();
+    const responseLimit = document.getElementById('responseLimit').value;
+    const expiresAt = document.getElementById('expiresAt').value;
+    const cards = [...questions.querySelectorAll('.question')];
+
+    if (!cards.length) {
+      status.textContent = 'Add at least one question before opening Preview.';
+      status.className = 'error';
+      showToast('Add at least one question first.', 'error');
+      return;
+    }
+
+    previewTitle.textContent = title;
+    previewDescription.textContent = description;
+    previewDescription.style.display = description ? '' : 'none';
+
+    previewMeta.innerHTML =
+      `<strong>Response limit:</strong> ${escapePreviewHtml(responseLimit || '—')}<br>` +
+      `<strong>Expires:</strong> ${escapePreviewHtml(formatPreviewDate(expiresAt))}`;
+
+    previewQuestions.innerHTML = cards.map((q, index) => {
+      const text = q.querySelector('.question-title').value.trim() || `Question ${index + 1}`;
+      const type = q.querySelector('.question-type').value;
+      const required = q.querySelector('.required').checked;
+      const options = [...q.querySelectorAll('.option-text')]
+        .map(i => i.value.trim())
+        .filter(Boolean);
+
+      const reqMark = required ? ' <span class="req">*</span>' : '';
+      const reqNote = required ? '<span class="q-required-note">(required)</span>' : '';
+
+      let body = '';
+
+      switch (type) {
+        case 'SHORT_TEXT':
+          body = `<input class="preview-input" type="text" placeholder="Short answer text" disabled>`;
+          break;
+        case 'LONG_TEXT':
+          body = `<textarea class="preview-textarea" placeholder="Long answer text" disabled></textarea>`;
+          break;
+        case 'NUMBER':
+          body = `<input class="preview-input" type="number" placeholder="0" disabled>`;
+          break;
+        case 'EMAIL':
+          body = `<input class="preview-input" type="email" placeholder="you@example.com" disabled>`;
+          break;
+        case 'DATE':
+          body = `<input class="preview-input" type="date" disabled>`;
+          break;
+        case 'RATING':
+          body = `<div class="preview-rating">★★★★★</div>`;
+          break;
+        case 'DROPDOWN':
+          body = `<select class="preview-select" disabled>
+            <option>${options.length ? 'Select an option...' : 'No options'}</option>
+            ${options.map(o => `<option>${escapePreviewHtml(o)}</option>`).join('')}
+          </select>`;
+          break;
+        case 'SINGLE_CHOICE':
+          body = options.length
+            ? `<div class="preview-choice">${options.map(o =>
+                `<div class="preview-choice-item"><span class="circle"></span>${escapePreviewHtml(o)}</div>`
+              ).join('')}</div>`
+            : `<p class="preview-placeholder">No options added</p>`;
+          break;
+        case 'MULTIPLE_CHOICE':
+        case 'CHECKBOX':
+          body = options.length
+            ? `<div class="preview-choice">${options.map(o =>
+                `<div class="preview-choice-item"><span class="square"></span>${escapePreviewHtml(o)}</div>`
+              ).join('')}</div>`
+            : `<p class="preview-placeholder">No options added</p>`;
+          break;
+        case 'FILE_UPLOAD':
+          body = `<input class="preview-input" type="text" placeholder="Choose a file..." disabled>`;
+          break;
+        default:
+          body = `<input class="preview-input" type="text" placeholder="Your answer" disabled>`;
+      }
+
+      return `
+        <div class="preview-question">
+          <label class="preview-q-label">
+            <span class="q-index">Q${index + 1}</span>${escapePreviewHtml(text)}${reqMark}
+            ${reqNote}
+          </label>
+          ${body}
+        </div>
+      `;
+    }).join('');
+
+    previewOverlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closePreview() {
+    previewOverlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  document.getElementById('previewForm').addEventListener('click', openPreview);
+  previewClose.addEventListener('click', closePreview);
+
+  previewOverlay.addEventListener('click', (e) => {
+    if (e.target === previewOverlay) closePreview();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && previewOverlay.classList.contains('open')) {
+      closePreview();
+    }
+  });
+
+  /* ---------------- SAVE ---------------- */
+  document.getElementById('saveForm').addEventListener('click', async () => {
+    log('=== Create form clicked ===');
+
+    const title = document.getElementById('title').value.trim();
+    const cards = [...questions.querySelectorAll('.question')];
+
+    log('Title:', title);
+    log('Questions count:', cards.length);
+
+    if (!title || !cards.length || cards.some(q => !q.querySelector('.question-title').value.trim())) {
+      status.textContent = 'Enter a form title and at least one question.';
+      status.className = 'error';
+      showToast('Please fill in the form title and every question.', 'error');
+      return;
+    }
+
+    const responseLimitRaw = document.getElementById('responseLimit').value;
+    const fillingAmountRaw = document.getElementById('fillingAmount').value;
+    const expiresAtRaw = document.getElementById('expiresAt').value;
+
+    if (!responseLimitRaw || Number(responseLimitRaw) < 1) {
+      status.textContent = 'Response limit is required (must be at least 1).';
+      status.className = 'error';
+      showToast('Please enter a response limit.', 'error');
+      document.getElementById('responseLimit').focus();
+      return;
+    }
+
+    if (!expiresAtRaw) {
+      status.textContent = 'Expiry date is required.';
+      status.className = 'error';
+      showToast('Please choose an expiry date.', 'error');
+      document.getElementById('expiresAt').focus();
+      return;
+    }
+
+    if (new Date(expiresAtRaw).getTime() <= Date.now()) {
+      status.textContent = 'Expiry date must be in the future.';
+      status.className = 'error';
+      showToast('Expiry must be a future date.', 'error');
+      document.getElementById('expiresAt').focus();
+      return;
+    }
+
+    const payload = {
+      title,
+      description: document.getElementById('description').value.trim(),
+      plan: document.getElementById('plan').value,
+      responseLimit: Number(responseLimitRaw),
+      fillingAmount: fillingAmountRaw || '0.00',
+      expiresAt: expiresAtRaw,
+      questionRequestSet: cards.map((q, index) => ({
+        question: q.querySelector('.question-title').value.trim(),
+        type: q.querySelector('.question-type').value,
+        required: q.querySelector('.required').checked,
+        questionOrder: index + 1,
+        configuration: {
+          options: [...q.querySelectorAll('.option-text')].map(i => i.value.trim()).filter(Boolean)
+        }
+      }))
+    };
+
+    log('Payload →', JSON.stringify(payload, null, 2));
+
+    const save = document.getElementById('saveForm');
+    save.disabled = true;
+    status.textContent = 'Creating form…';
+    status.className = '';
+
+    try {
+      log('POST', API_URL);
+
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      log('Response status:', response.status);
+      log('Response ok:', response.ok);
+
+      const text = await response.text();
+      log('Response body (raw):', text);
+
+      let data = null;
+      try { data = JSON.parse(text); } catch (_) {}
+
+      if (response.status === 401) {
+        status.textContent = 'You are not logged in. Redirecting…';
+        status.className = 'error';
+        showToast('Session expired — please log in again.', 'error');
+        setTimeout(() => window.location.href = 'login.html', 1500);
+        return;
+      }
+
+      if (!response.ok) {
+        const msg = data?.message
+          || (data?.errors ? Object.values(data.errors).join(' · ') : null)
+          || text
+          || `Server returned ${response.status}`;
+        status.textContent = 'Could not create form: ' + msg;
+        status.className = 'error';
+        showToast('Create failed. Check the console.', 'error');
+        log('Server error response:', data || text);
+        return;
+      }
+
+      log('Created form:', data);
+      status.textContent = 'Form created successfully. Opening editor…';
+      status.className = 'success';
+      showToast('Form created — opening editor…');
+
+      const id = data?.id;
+      if (!id) {
+        status.textContent = 'Created but no ID returned. Check backend response.';
+        status.className = 'error';
+        return;
+      }
+      window.location.href = `edit.html?id=${encodeURIComponent(id)}`;
+
+    } catch (err) {
+      log('FETCH ERROR:', err);
+      status.textContent = 'Network error: ' + err.message;
+      status.className = 'error';
+      showToast('Could not reach server. Is it running?', 'error');
+    } finally {
+      save.disabled = false;
+    }
+  });
+
+  /* ---------------- AUTH STATE ---------------- */
+  async function checkUserSession() {
+    try {
+      const response = await fetch(API_URL, {
+        method: 'GET',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' }
+      });
+
+      if (response.ok) {
+        authContainer.innerHTML = `<button class="btn-login" id="logoutBtn" type="button">Logout</button>`;
+        document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+      } else {
+        renderLoginButton();
+      }
+    } catch (error) {
+      renderLoginButton();
+    }
+  }
+
+  function renderLoginButton() {
+    authContainer.innerHTML = `<a class="btn-login" href="login.html">Login</a>`;
+  }
+
+  async function handleLogout() {
+    try {
+      await fetch(LOGOUT_URL, { method: 'POST', credentials: 'include' });
+    } catch (error) {
+      console.error('Logout error:', error);
+    } finally {
+      window.location.href = 'login.html';
+    }
+  }
+
+  /* ---------------- INIT ---------------- */
+  applyDefaultLimits();
+  addQuestion();
+  checkUserSession();
+</script>
+</body>
+</html>

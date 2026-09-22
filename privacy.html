@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy | PutForm</title>
+  <style>
+    :root{
+      --bg:#f4f7f6; --surface:#fff; --surface-2:#f8fbfa;
+      --text:#17212b; --muted:#6b7785; --line:#dfe7e4;
+      --teal:#0f766e; --teal-dark:#0b5d56; --teal-soft:#e7f5f2;
+      --gold:#d68b34; --red:#b54840;
+      --shadow:0 10px 30px rgba(23,33,43,.07);
+      --shadow-hover:0 18px 42px rgba(23,33,43,.12);
+    }
+    body.dark{
+      --bg:#101716; --surface:#1b2422; --surface-2:#202b28;
+      --text:#f1f5f4; --muted:#aebbb7; --line:#34423e;
+      --teal-soft:#183c38; --gold:#e0a04c;
+      --shadow:0 12px 32px rgba(0,0,0,.28);
+      --shadow-hover:0 18px 42px rgba(0,0,0,.38);
+      background:radial-gradient(circle at 10% 0%,rgba(34,145,133,.12),transparent 30%),var(--bg);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0; min-width:320px; background:
+      radial-gradient(circle at 10% 0%, rgba(15,118,110,.08), transparent 30%),
+      var(--bg); color:var(--text);
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+      transition:background .25s ease,color .25s ease;
+      overflow-x:hidden;
+    }
+    button,input,select{font:inherit}
+    button,a{-webkit-tap-highlight-color:transparent}
+    a{color:inherit;text-decoration:none}
+
+    /* ============================================================
+       TOPBAR / NAVIGATION
+       ============================================================ */
+    .topbar {
+      align-items:center;
+      background:var(--teal-dark);
+      display:flex;
+      justify-content:space-between;
+      min-height:76px;
+      padding:0 clamp(24px,4vw,88px);
+      position:sticky;
+      top:0;
+      z-index:50;
+      gap:24px;
+      box-shadow:0 4px 24px rgba(11,93,86,.28);
+    }
+    .topbar-left{display:flex;align-items:center;gap:42px;min-width:0;flex:1}
+    .brand{
+      font-family:Arial, Helvetica, sans-serif;
+      font-size:25px; font-weight:800; color:#fff;
+      line-height:1; display:inline-flex; align-items:center; gap:12px;
+      flex-shrink:0; letter-spacing:-.02em;
+      transition:opacity .2s ease,transform .2s ease;
+      padding:4px 0; text-decoration:none;
+    }
+    .brand{
+      font-family:Arial, Helvetica, sans-serif;
+      font-size:25px; font-weight:800; color:#fff;
+      line-height:1; display:inline-flex; align-items:center; gap:5px;
+      flex-shrink:0; letter-spacing:-.02em;
+      transition:opacity .25s ease, transform .25s ease;
+      padding:4px 0; text-decoration:none;
+    }
+    .brand:hover{opacity:.95;transform:translateY(-2px)}
+    .brand-logo{
+      display:block; width:46px; height:46px; object-fit:contain;
+      border-radius:12px; background:rgba(255,255,255,.10);
+      padding:4px; box-shadow:0 4px 12px rgba(0,0,0,.18); flex-shrink:0;
+      transition: transform .35s cubic-bezier(.34,1.56,.64,1), box-shadow .25s ease;
+    }
+    .brand:hover .brand-logo {
+      transform: rotate(-6deg) scale(1.08);
+      box-shadow: 0 8px 22px rgba(0,0,0,.30);
+    }
+    .brand span{color:#a7eee2}
+    .nav-links{display:flex;align-items:center;gap:6px;list-style:none;margin:0;padding:0;min-width:0}
+    .nav-link{
+      color:rgba(255,255,255,.78); display:block;
+      font-size:.9rem; font-weight:600; padding:10px 4px; margin:0 12px;
+      white-space:nowrap; position:relative; transition:color .2s ease;
+    }
+    .nav-link::after{
+      content:""; position:absolute; left:0; right:0; bottom:4px;
+      height:2px; background:#a7eee2; border-radius:2px;
+      transform:scaleX(0); transform-origin:center; transition:transform .25s ease;
+    }
+    .nav-link:hover{color:#fff}
+    .nav-link:hover::after{transform:scaleX(1)}
+    .nav-link.active{color:#a7eee2;font-weight:700}
+    .nav-link.active::after{transform:scaleX(1)}
+    .nav-item-mobile{display:none}
+
+    .topbar-right{display:flex;align-items:center;gap:12px;flex-shrink:0}
+    .theme-toggle,.btn-nav-action,.btn-login{
+      align-items:center; display:inline-flex; justify-content:center;
+      height:42px; font-size:.88rem; font-weight:700; white-space:nowrap; cursor:pointer;
+      transition:background .2s ease,color .2s ease,border-color .2s ease,
+                 transform .2s ease,box-shadow .2s ease;
+    }
+    .theme-toggle{
+      background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.32);
+      border-radius:999px; color:#fff; gap:8px; padding:0 18px;
+    }
+    .theme-toggle:hover{
+      background:#fff; border-color:#fff; color:var(--teal-dark);
+      transform:translateY(-1px); box-shadow:0 8px 20px rgba(0,0,0,.18);
+    }
+    .btn-nav-action{
+      background:transparent; border:1px solid rgba(255,255,255,.30);
+      border-radius:10px; color:#fff; padding:0 20px;
+    }
+    .btn-nav-action:hover{
+      background:rgba(255,255,255,.14); border-color:rgba(255,255,255,.55);
+      transform:translateY(-1px);
+    }
+    .btn-login{
+      background:#a7eee2; border:0; border-radius:10px; color:var(--teal-dark);
+      font-weight:800; padding:0 22px; box-shadow:0 6px 16px rgba(167,238,226,.20);
+    }
+    .btn-login:hover{
+      background:#ffffff; transform:translateY(-1px);
+      box-shadow:0 10px 22px rgba(167,238,226,.34);
+    }
+    .menu-toggle{
+      display:none; flex-direction:column; align-items:center; justify-content:center;
+      gap:5px; width:42px; height:42px; padding:0;
+      background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.30);
+      border-radius:10px; cursor:pointer; transition:background .2s ease;
+    }
+    .menu-toggle:hover{background:rgba(255,255,255,.18)}
+    .menu-toggle span{
+      display:block; width:18px; height:2px; background:#fff;
+      border-radius:2px; transition:transform .28s ease,opacity .2s ease;
+    }
+    .menu-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+    .menu-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+    .menu-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+    /* ============================================================
+       PRIVACY PAGE CONTENT
+       ============================================================ */
+    main{margin:0 auto; max-width:1240px; padding:64px clamp(18px,5vw,72px) 90px}
+
+    /* Hero */
+    .policy-hero{
+      text-align:center; max-width:780px; margin:0 auto 60px;
+      animation:fadeInUp .7s cubic-bezier(.16,1,.3,1) forwards;
+    }
+    @keyframes fadeInUp{
+      from{opacity:0;transform:translateY(24px)}
+      to{opacity:1;transform:translateY(0)}
+    }
+    .eyebrow{
+      color:var(--teal); font-size:.74rem; font-weight:800;
+      letter-spacing:.16em; text-transform:uppercase;
+      display:inline-block; background:var(--teal-soft);
+      padding:7px 14px; border-radius:999px; margin:0 0 18px;
+    }
+    .policy-hero h1{
+      font-size:clamp(2.2rem,4.5vw,3.4rem); font-weight:800;
+      letter-spacing:-.04em; line-height:1.1; margin:0 0 18px;
+    }
+    .policy-hero h1 span{color:var(--teal)}
+    .policy-hero p{
+      color:var(--muted); font-size:1.05rem; line-height:1.65;
+      margin:0 auto; max-width:640px;
+    }
+    .last-updated{
+      display:inline-flex; align-items:center; gap:8px;
+      margin-top:22px; padding:8px 16px;
+      background:var(--surface); border:1px solid var(--line);
+      border-radius:999px; font-size:.82rem; font-weight:700;
+      color:var(--muted);
+    }
+    .last-updated .dot{
+      width:8px; height:8px; border-radius:50%; background:var(--teal);
+    }
+
+    /* Layout: table of contents + content */
+    .policy-layout{
+      display:grid; grid-template-columns:260px 1fr; gap:48px;
+      align-items:start;
+    }
+
+    /* Sticky sidebar TOC */
+    .policy-toc{
+      position:sticky; top:100px;
+      background:var(--surface); border:1px solid var(--line);
+      border-radius:16px; padding:24px 20px;
+      box-shadow:var(--shadow);
+    }
+    .policy-toc h4{
+      font-size:.72rem; font-weight:800; letter-spacing:.14em;
+      text-transform:uppercase; color:var(--teal);
+      margin:0 0 16px;
+    }
+    .policy-toc ul{
+      list-style:none; margin:0; padding:0;
+      display:flex; flex-direction:column; gap:4px;
+    }
+    .policy-toc a{
+      display:block;
+      padding:9px 12px;
+      font-size:.86rem;
+      font-weight:600;
+      color:var(--muted);
+      border-radius:9px;
+      transition:background .2s ease, color .2s ease, padding-left .2s ease;
+      border-left:2px solid transparent;
+    }
+    .policy-toc a:hover{
+      background:var(--teal-soft);
+      color:var(--teal);
+      padding-left:16px;
+    }
+    .policy-toc a.active{
+      background:var(--teal-soft);
+      color:var(--teal);
+      border-left-color:var(--teal);
+      font-weight:800;
+    }
+
+    /* Main content */
+    .policy-content{
+      background:var(--surface); border:1px solid var(--line);
+      border-radius:22px; padding:44px 44px;
+      box-shadow:var(--shadow);
+    }
+
+    .policy-content section{
+      scroll-margin-top: 110px;
+      padding-bottom:36px;
+      margin-bottom:36px;
+      border-bottom:1px solid var(--line);
+    }
+    .policy-content section:last-child{
+      padding-bottom:0; margin-bottom:0; border-bottom:none;
+    }
+
+    .section-number{
+      display:inline-block;
+      font-size:.72rem; font-weight:800;
+      letter-spacing:.14em; text-transform:uppercase;
+      color:var(--teal);
+      margin-bottom:8px;
+    }
+    .policy-content h2{
+      font-size:1.5rem; font-weight:800;
+      letter-spacing:-.02em; line-height:1.25;
+      margin:0 0 16px;
+      color:var(--text);
+    }
+    .policy-content h3{
+      font-size:1.05rem; font-weight:750;
+      letter-spacing:-.01em;
+      margin:24px 0 10px;
+      color:var(--text);
+    }
+    .policy-content p{
+      color:var(--muted);
+      font-size:.95rem;
+      line-height:1.75;
+      margin:0 0 14px;
+    }
+    .policy-content p:last-child{margin-bottom:0}
+    .policy-content a{
+      color:var(--teal);
+      font-weight:700;
+      border-bottom:1px solid transparent;
+      transition:border-color .2s ease;
+    }
+    .policy-content a:hover{border-bottom-color:var(--teal)}
+    .policy-content strong{color:var(--text);font-weight:700}
+
+    .policy-content ul{
+      list-style:none;
+      padding:0;
+      margin:0 0 16px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .policy-content ul li{
+      position:relative;
+      padding-left:26px;
+      color:var(--muted);
+      font-size:.95rem;
+      line-height:1.7;
+    }
+    .policy-content ul li::before{
+      content:"";
+      position:absolute;
+      left:6px; top:11px;
+      width:6px; height:6px;
+      border-radius:50%;
+      background:var(--teal);
+    }
+
+    /* Callout boxes */
+    .callout{
+      background:var(--teal-soft);
+      border-left:4px solid var(--teal);
+      border-radius:10px;
+      padding:16px 20px;
+      margin:20px 0;
+      font-size:.92rem;
+      color:var(--text);
+      line-height:1.7;
+    }
+    .callout strong{color:var(--teal-dark)}
+    body.dark .callout{background:var(--teal-soft);color:var(--text)}
+    body.dark .callout strong{color:#a7eee2}
+
+    /* Contact strip inside content */
+    .policy-contact{
+      background:linear-gradient(135deg, var(--teal-dark), var(--teal));
+      border-radius:16px;
+      padding:26px 28px;
+      color:#fff;
+      margin-top:20px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+      flex-wrap:wrap;
+      box-shadow:0 12px 28px rgba(15,118,110,.22);
+    }
+    .policy-contact div:first-child{max-width:520px}
+    .policy-contact h4{
+      font-size:1.1rem; font-weight:800;
+      margin:0 0 6px; letter-spacing:-.01em;
+    }
+    .policy-contact p{
+      color:rgba(255,255,255,.85);
+      font-size:.88rem; margin:0; line-height:1.6;
+    }
+    .policy-contact a.contact-btn{
+      background:#fff;
+      color:var(--teal-dark);
+      font-size:.9rem;
+      font-weight:800;
+      padding:12px 22px;
+      border-radius:10px;
+      display:inline-block;
+      white-space:nowrap;
+      transition:background .2s ease,transform .2s ease;
+      box-shadow:0 6px 16px rgba(0,0,0,.15);
+    }
+    .policy-contact a.contact-btn:hover{
+      background:#a7eee2;
+      transform:translateY(-2px);
+    }
+
+    /* CTA at bottom */
+    .policy-cta{
+      margin-top:60px;
+      background:linear-gradient(135deg, var(--teal-dark), var(--teal));
+      border-radius:24px; padding:48px 32px; text-align:center;
+      color:#fff; box-shadow:0 18px 42px rgba(15,118,110,.25);
+    }
+    .policy-cta h2{
+      font-size:clamp(1.6rem,3.6vw,2.4rem);
+      font-weight:800; margin:0 0 12px; letter-spacing:-.03em;
+    }
+    .policy-cta p{
+      font-size:1rem; color:#a7eee2; max-width:520px;
+      margin:0 auto 26px; line-height:1.6;
+    }
+    .policy-cta .cta-row{
+      display:flex; gap:14px; justify-content:center; flex-wrap:wrap;
+    }
+    .cta-primary{
+      background:#fff; color:var(--teal-dark); font-size:.96rem;
+      font-weight:800; padding:14px 26px; border-radius:12px;
+      display:inline-block; transition:all .2s ease;
+      box-shadow:0 8px 20px rgba(0,0,0,.15);
+    }
+    .cta-primary:hover{background:#a7eee2; transform:translateY(-2px)}
+    .cta-secondary{
+      background:rgba(255,255,255,.12); color:#fff; font-size:.96rem;
+      font-weight:700; padding:14px 24px; border-radius:12px;
+      display:inline-block; border:1px solid rgba(255,255,255,.35);
+      transition:all .2s ease;
+    }
+    .cta-secondary:hover{background:rgba(255,255,255,.22); transform:translateY(-2px)}
+
+    /* ============================================================
+       FOOTER
+       ============================================================ */
+    .site-footer{
+      background:var(--teal-dark);
+      color:#fff;
+      margin-top:40px;
+      position:relative;
+      overflow:hidden;
+    }
+    .site-footer::before{
+      content:"";
+      position:absolute;
+      top:-160px; right:-160px;
+      width:420px; height:420px;
+      background:radial-gradient(circle, rgba(167,238,226,.14), transparent 70%);
+      pointer-events:none;
+    }
+    .site-footer::after{
+      content:"";
+      position:absolute;
+      bottom:-180px; left:-160px;
+      width:400px; height:400px;
+      background:radial-gradient(circle, rgba(15,118,110,.35), transparent 70%);
+      pointer-events:none;
+    }
+    .footer-inner{
+      max-width:1240px;
+      margin:0 auto;
+      padding:64px clamp(20px,5vw,72px) 32px;
+      position:relative;
+      z-index:1;
+    }
+    .footer-top{
+      display:grid;
+      grid-template-columns:1.6fr 1fr 1fr;
+      gap:48px;
+      padding-bottom:48px;
+      border-bottom:1px solid rgba(255,255,255,.12);
+    }
+    .footer-brand-block{max-width:360px}
+    .footer-brand{
+      display:inline-flex;
+      align-items:center;
+      gap:12px;
+      font-family:Arial, Helvetica, sans-serif;
+      font-size:24px;
+      font-weight:800;
+      letter-spacing:-.02em;
+      color:#fff;
+      margin-bottom:16px;
+    }
+    .footer-brand-logo{
+      width:44px; height:44px; object-fit:contain;
+      border-radius:11px;
+      background:rgba(255,255,255,.10);
+      padding:4px;
+      box-shadow:0 4px 12px rgba(0,0,0,.20);
+    }
+    .footer-brand span{color:#a7eee2}
+    .footer-tagline{
+      color:rgba(255,255,255,.68);
+      font-size:.9rem;
+      line-height:1.7;
+      margin:0;
+    }
+    .footer-col h4{
+      font-size:.78rem;
+      font-weight:800;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      color:#a7eee2;
+      margin:0 0 18px;
+    }
+    .footer-col ul{
+      list-style:none;
+      margin:0;
+      padding:0;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .footer-col a{
+      color:rgba(255,255,255,.72);
+      font-size:.88rem;
+      font-weight:500;
+      transition:color .2s ease,padding-left .2s ease;
+      display:inline-block;
+      position:relative;
+    }
+    .footer-col a::before{
+      content:"";
+      position:absolute;
+      left:-14px;
+      top:50%;
+      transform:translateY(-50%) scaleX(0);
+      width:8px;
+      height:2px;
+      background:#a7eee2;
+      border-radius:2px;
+      transition:transform .2s ease;
+    }
+    .footer-col a:hover{
+      color:#fff;
+      padding-left:6px;
+    }
+    .footer-col a:hover::before{transform:translateY(-50%) scaleX(1)}
+    .footer-bottom{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding-top:26px;
+      gap:20px;
+      flex-wrap:wrap;
+      font-size:.84rem;
+      color:rgba(255,255,255,.62);
+    }
+    .footer-bottom .copy strong{color:#fff}
+    .footer-legal{
+      display:flex;
+      gap:22px;
+      flex-wrap:wrap;
+    }
+    .footer-legal a{
+      color:rgba(255,255,255,.62);
+      transition:color .2s ease;
+    }
+    .footer-legal a:hover{color:#a7eee2}
+
+    /* ============================================================
+       RESPONSIVE
+       ============================================================ */
+    @media (max-width:1180px){
+      .topbar{padding:0 32px;gap:16px}
+      .topbar-left{gap:26px}
+      .nav-link{margin:0 8px;font-size:.86rem}
+      .topbar-right{gap:8px}
+      .theme-toggle,.btn-nav-action,.btn-login{height:40px;font-size:.84rem;padding:0 14px}
+      .btn-login{padding:0 18px}
+    }
+
+    @media (max-width:1024px){
+      .footer-top{grid-template-columns:1fr 1fr; gap:36px}
+      .footer-brand-block{grid-column:1 / -1; max-width:520px}
+      .policy-layout{grid-template-columns:1fr; gap:28px}
+      .policy-toc{position:static; display:none}
+    }
+
+    @media (max-width:960px){
+      .topbar{padding:0 20px;min-height:68px}
+      .menu-toggle{display:flex}
+      .topbar-right .btn-nav-action{display:none}
+      .nav-item-mobile{display:block}
+      .topbar-left{gap:0}
+      .nav-links{
+        position:absolute; top:100%; left:0; right:0;
+        flex-direction:column; align-items:stretch; gap:2px;
+        padding:0 20px;
+        background:var(--teal-dark);
+        border-top:1px solid rgba(255,255,255,.14);
+        box-shadow:0 20px 34px rgba(0,0,0,.28);
+        max-height:0; opacity:0; visibility:hidden; overflow:hidden;
+        transition:max-height .32s ease,opacity .25s ease,
+                   padding .32s ease,visibility .32s ease;
+      }
+      .nav-links.open{
+        max-height:400px; opacity:1; visibility:visible;
+        padding:12px 20px 16px;
+      }
+      .nav-link{font-size:.95rem;padding:12px 8px;margin:0}
+      .nav-link::after{display:none}
+      .nav-link.active{
+        background:rgba(167,238,226,.12);
+        border-radius:10px; padding-left:14px;
+      }
+    }
+
+    @media (max-width:640px){
+      .theme-label{display:none}
+      .theme-toggle{padding:0 14px;gap:0}
+      .brand{font-size:21px;gap:9px}
+      .brand-logo{width:38px;height:38px;padding:3px}
+
+      .policy-content{padding:30px 24px}
+      .policy-content h2{font-size:1.3rem}
+      .policy-contact{padding:22px}
+      .policy-cta{padding:42px 22px}
+
+      .footer-inner{padding:52px 24px 26px}
+      .footer-top{grid-template-columns:1fr 1fr; gap:36px 28px}
+      .footer-brand-block{grid-column:1 / -1}
+    }
+
+    @media (max-width:620px){
+      main{padding-top:40px}
+      .footer-bottom{flex-direction:column; text-align:center; align-items:center}
+    }
+
+    @media (max-width:460px){
+      .topbar{padding:0 12px;min-height:62px}
+      .brand{font-size:19px;gap:8px}
+      .brand-logo{width:34px;height:34px;padding:2px;border-radius:10px}
+      .nav-links{padding:0 12px}
+      .nav-links.open{padding:10px 12px 14px}
+      .btn-login{padding:0 14px;font-size:.82rem}
+
+      .policy-content{padding:24px 18px}
+      .footer-top{grid-template-columns:1fr; gap:32px}
+    }
+  </style>
+</head>
+<body>
+
+<!-- ============================= TOPBAR ============================= -->
+<header class="topbar">
+  <div class="topbar-left">
+    <a class="brand" href="index.html">
+      <img class="brand-logo" src="Glogo.png" alt="PutForm logo"
+           onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 46 46%22><rect width=%2246%22 height=%2246%22 rx=%2212%22 fill=%22%2317b8a6%22/><text x=%2250%25%22 y=%2258%25%22 text-anchor=%22middle%22 font-family=%22Arial%22 font-size=%2224%22 font-weight=%22bold%22 fill=%22white%22>P</text></svg>';">
+      Put<span>Form</span></span>
+    </a>
+
+    <ul class="nav-links" id="navLinks">
+      <li><a class="nav-link" href="index.html">Home</a></li>
+      <li><a class="nav-link" href="forms.html">Dashboard</a></li>
+      <li><a class="nav-link" href="api.html">API</a></li>
+      <li><a class="nav-link" href="about.html">About</a></li>
+      <li><a class="nav-link" href="contact.html">Contact Us</a></li>
+      <li class="nav-item-mobile"><a class="nav-link" href="profile.html">Profile</a></li>
+    </ul>
+  </div>
+
+  <div class="topbar-right">
+    <a class="btn-nav-action" href="profile.html">Profile</a>
+
+    <div id="authContainer" style="display:flex; align-items:center;">
+      <a class="btn-login" href="login.html">Login</a>
+    </div>
+
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme">
+      <span class="theme-icon">🌙</span><span class="theme-label">Dark mode</span>
+    </button>
+
+    <button class="menu-toggle" id="menuToggle" type="button"
+            aria-label="Toggle navigation menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- ============================= MAIN ============================= -->
+<main>
+
+  <!-- Hero -->
+  <section class="policy-hero">
+    <span class="eyebrow">Legal</span>
+    <h1>Privacy <span>Policy</span></h1>
+    <p>
+      Your privacy matters to us. This policy explains what information PutForm collects,
+      how we use it, and the choices you have as a user of our platform.
+    </p>
+    <span class="last-updated">
+      <span class="dot"></span>
+      Last updated: September 11, 2026
+    </span>
+  </section>
+
+  <!-- Layout: TOC + Content -->
+  <div class="policy-layout">
+
+    <!-- Table of contents -->
+    <aside class="policy-toc">
+      <h4>On this page</h4>
+      <ul>
+        <li><a href="#intro" class="active">1. Introduction</a></li>
+        <li><a href="#collect">2. Information We Collect</a></li>
+        <li><a href="#use">3. How We Use Information</a></li>
+        <li><a href="#cookies">4. Cookies & Sessions</a></li>
+        <li><a href="#sharing">5. Sharing & Disclosure</a></li>
+        <li><a href="#security">6. Data Security</a></li>
+        <li><a href="#retention">7. Data Retention</a></li>
+        <li><a href="#rights">8. Your Rights</a></li>
+        <li><a href="#children">9. Children's Privacy</a></li>
+        <li><a href="#changes">10. Changes to This Policy</a></li>
+        <li><a href="#contact">11. Contact Us</a></li>
+      </ul>
+    </aside>
+
+    <!-- Main content -->
+    <article class="policy-content">
+
+      <section id="intro">
+        <span class="section-number">Section 01</span>
+        <h2>Introduction</h2>
+        <p>
+          PutForm ("we", "us", "our") provides a form-building platform that lets individuals and
+          teams create forms, collect responses, and integrate submissions into their own products.
+          This Privacy Policy describes how we handle personal information when you use our website,
+          dashboard, API, and any related services (collectively, the "Service").
+        </p>
+        <p>
+          By using PutForm, you agree to the collection and use of information in accordance with
+          this policy. If you do not agree with any part of this policy, please do not use the Service.
+        </p>
+        <div class="callout">
+          <strong>Plain English:</strong> We collect only what we need to run the platform, we don't
+          sell your data, and you can ask us to delete it at any time.
+        </div>
+      </section>
+
+      <section id="collect">
+        <span class="section-number">Section 02</span>
+        <h2>Information We Collect</h2>
+        <p>We collect information in three main ways:</p>
+
+        <h3>Information you give us</h3>
+        <ul>
+          <li><strong>Account details</strong> — name, email address, and password when you register.</li>
+          <li><strong>Form responses</strong> — the answers and data your respondents submit through forms you create.</li>
+          <li><strong>Contact messages</strong> — name, email, phone, subject, and message when you use our contact form.</li>
+          <li><strong>Profile data</strong> — optional details you add to your account, like a company name or profile picture.</li>
+        </ul>
+
+        <h3>Information collected automatically</h3>
+        <ul>
+          <li><strong>Session data</strong> — cookie-based session identifiers used to keep you logged in.</li>
+          <li><strong>Usage data</strong> — pages visited, features used, and timestamps of activity.</li>
+          <li><strong>Device data</strong> — browser type, operating system, and general location (country level).</li>
+        </ul>
+
+        <h3>Information from third parties</h3>
+        <p>
+          If you sign in using an external identity provider, we may receive your basic profile
+          information (name and email) from that provider to create or link your account.
+        </p>
+      </section>
+
+      <section id="use">
+        <span class="section-number">Section 03</span>
+        <h2>How We Use Information</h2>
+        <p>We use the information we collect to:</p>
+        <ul>
+          <li>Provide, operate, and maintain the PutForm platform.</li>
+          <li>Authenticate your session and keep your account secure.</li>
+          <li>Deliver form responses to the form owner and power the dashboard experience.</li>
+          <li>Respond to your support requests and contact messages.</li>
+          <li>Send service-related notifications such as security alerts or important product changes.</li>
+          <li>Monitor usage patterns to improve performance, fix bugs, and plan new features.</li>
+          <li>Comply with legal obligations and enforce our Terms of Service.</li>
+        </ul>
+        <p>
+          We do <strong>not</strong> use your form responses or contact messages for advertising,
+          and we do not sell them to third parties.
+        </p>
+      </section>
+
+      <section id="cookies">
+        <span class="section-number">Section 04</span>
+        <h2>Cookies & Sessions</h2>
+        <p>
+          PutForm uses cookie-based sessions to authenticate users. When you log in, the server
+          sets a secure, HTTP-only session cookie that identifies your account for the duration
+          of your session. This cookie is required for the dashboard and authenticated API
+          endpoints to work.
+        </p>
+        <ul>
+          <li><strong>Essential cookies</strong> — required for login, security, and core functionality.</li>
+          <li><strong>Preference storage</strong> — we store your theme choice (light or dark mode) in your browser's local storage.</li>
+          <li><strong>No advertising cookies</strong> — we do not use third-party tracking or ad cookies.</li>
+        </ul>
+        <p>
+          You can clear cookies and local storage at any time from your browser settings. Doing so
+          will log you out and reset your theme preference, but will not affect any content you've
+          created on PutForm.
+        </p>
+      </section>
+
+      <section id="sharing">
+        <span class="section-number">Section 05</span>
+        <h2>Sharing & Disclosure</h2>
+        <p>We share information only in limited situations:</p>
+        <ul>
+          <li><strong>With your consent</strong> — when you explicitly ask us to share data with another service.</li>
+          <li><strong>Service providers</strong> — trusted vendors who help us host, secure, and operate the platform (e.g. cloud hosting, email delivery). They are bound by confidentiality agreements.</li>
+          <li><strong>Legal requirements</strong> — when required by law, subpoena, or to protect the rights and safety of PutForm, our users, or the public.</li>
+          <li><strong>Business transfers</strong> — if PutForm is acquired or merged, user data may be transferred as part of that transaction. We will notify you before any such change takes effect.</li>
+        </ul>
+        <p>
+          We never sell your personal information or your form responses to advertisers or data brokers.
+        </p>
+      </section>
+
+      <section id="security">
+        <span class="section-number">Section 06</span>
+        <h2>Data Security</h2>
+        <p>
+          We take reasonable technical and organizational measures to protect your data:
+        </p>
+        <ul>
+          <li>All traffic between your browser and PutForm is encrypted using HTTPS.</li>
+          <li>Session cookies are marked HTTP-only and SameSite to reduce exposure to cross-site attacks.</li>
+          <li>Passwords are hashed using industry-standard algorithms and never stored in plain text.</li>
+          <li>Access to production systems is restricted to authorized personnel only.</li>
+        </ul>
+        <p>
+          While we work hard to protect your information, no online service can guarantee absolute
+          security. If you believe your account has been compromised, contact us immediately at
+          <a href="mailto:security@putform.com">security@putform.com</a>.
+        </p>
+      </section>
+
+      <section id="retention">
+        <span class="section-number">Section 07</span>
+        <h2>Data Retention</h2>
+        <p>
+          We keep your information for as long as your account is active and as long as needed to
+          provide the Service. Specifically:
+        </p>
+        <ul>
+          <li><strong>Account data</strong> — retained until you delete your account.</li>
+          <li><strong>Form responses</strong> — retained until the form owner deletes the form or the responses.</li>
+          <li><strong>Contact messages</strong> — retained for up to 24 months to help us track recurring issues.</li>
+          <li><strong>Logs and usage data</strong> — retained for up to 90 days for security and debugging purposes.</li>
+        </ul>
+        <p>
+          When you delete your account, we delete or anonymize your personal information within
+          30 days, unless we are required by law to retain it longer.
+        </p>
+      </section>
+
+      <section id="rights">
+        <span class="section-number">Section 08</span>
+        <h2>Your Rights</h2>
+        <p>Depending on your location, you may have the following rights:</p>
+        <ul>
+          <li><strong>Access</strong> — request a copy of the personal information we hold about you.</li>
+          <li><strong>Correction</strong> — ask us to correct inaccurate or incomplete data.</li>
+          <li><strong>Deletion</strong> — request that we delete your personal information.</li>
+          <li><strong>Portability</strong> — request your data in a machine-readable format.</li>
+          <li><strong>Objection</strong> — object to certain types of processing, such as analytics.</li>
+          <li><strong>Withdraw consent</strong> — where processing is based on consent, you may withdraw it at any time.</li>
+        </ul>
+        <p>
+          To exercise any of these rights, email us at
+          <a href="mailto:privacy@putform.com">privacy@putform.com</a>.
+          We will respond within 30 days. You may also have the right to lodge a complaint with your
+          local data protection authority.
+        </p>
+      </section>
+
+      <section id="children">
+        <span class="section-number">Section 09</span>
+        <h2>Children's Privacy</h2>
+        <p>
+          PutForm is not intended for children under 13 (or under 16 in some jurisdictions). We do
+          not knowingly collect personal information from children. If you believe a child has
+          provided us with personal data, please contact us and we will delete it promptly.
+        </p>
+      </section>
+
+      <section id="changes">
+        <span class="section-number">Section 10</span>
+        <h2>Changes to This Policy</h2>
+        <p>
+          We may update this Privacy Policy from time to time. When we make material changes, we
+          will notify you by email or by posting a prominent notice on the platform before the
+          change takes effect. The "Last updated" date at the top of this page will always reflect
+          the most recent version.
+        </p>
+        <p>
+          Your continued use of PutForm after the changes take effect means you accept the revised
+          policy.
+        </p>
+      </section>
+
+      <section id="contact">
+        <span class="section-number">Section 11</span>
+        <h2>Contact Us</h2>
+        <p>
+          If you have questions about this Privacy Policy, or want to exercise any of your data
+          rights, we're here to help.
+        </p>
+
+        <div class="policy-contact">
+          <div>
+            <h4>Questions about your data?</h4>
+            <p>Email our privacy team or use the contact form. We aim to respond within 30 days.</p>
+          </div>
+          <a class="contact-btn" href="contact.html">Contact Us →</a>
+        </div>
+      </section>
+
+    </article>
+  </div>
+
+  <!-- CTA -->
+  <section class="policy-cta">
+    <h2>Want to see our terms too?</h2>
+    <p>Review our Terms of Service or head back to the dashboard to keep building.</p>
+    <div class="cta-row">
+      <a class="cta-primary" href="forms.html">Go to Dashboard →</a>
+      <a class="cta-secondary" href="contact.html">Contact Support</a>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============================= FOOTER ============================= -->
+<footer class="site-footer">
+  <div class="footer-inner">
+
+    <div class="footer-top">
+
+      <!-- Brand block -->
+      <div class="footer-brand-block">
+        <a class="brand" href="index.html">
+          <img class="brand-logo" src="Glogo.png" alt="PutForm logo"
+               onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 46 46%22><rect width=%2246%22 height=%2246%22 rx=%2212%22 fill=%22%2317b8a6%22/><text x=%2250%25%22 y=%2258%25%22 text-anchor=%22middle%22 font-family=%22Arial%22 font-size=%2224%22 font-weight=%22bold%22 fill=%22white%22>P</text></svg>';">
+          Put<span>Form</span>
+        </a>
+        <p class="footer-tagline">
+          Build beautiful forms, collect responses, and connect them to your backend —
+          all from one clean, developer-friendly platform.
+        </p>
+      </div>
+
+      <!-- Product links -->
+      <div class="footer-col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="forms.html">Dashboard</a></li>
+          <li><a href="creatform.html">Create a Form</a></li>
+          <li><a href="api.html">Developer API</a></li>
+        </ul>
+      </div>
+
+      <!-- Company links -->
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+          <li><a href="profile.html">Profile</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="footer-bottom">
+      <div class="copy">© 2026 <strong>PutForm</strong>. All rights reserved.</div>
+      <div class="footer-legal">
+        <a href="privacy.html" style="color:#a7eee2">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+        <a href="#">Cookies</a>
+      </div>
+    </div>
+
+  </div>
+</footer>
+
+<script>
+  const API_URL = 'https://putform.onrender.com/api/forms';
+  const LOGOUT_URL = 'https://putform.onrender.com/api/auth/logout';
+
+  const themeToggle = document.getElementById('themeToggle');
+  const authContainer = document.getElementById('authContainer');
+  const menuToggle = document.getElementById('menuToggle');
+  const navLinks = document.getElementById('navLinks');
+  const tocLinks = document.querySelectorAll('.policy-toc a');
+  const sections = document.querySelectorAll('.policy-content section');
+
+  /* ---------------- THEME ---------------- */
+  function applyTheme(theme) {
+    const dark = theme === 'dark';
+    document.body.classList.toggle('dark', dark);
+    themeToggle.innerHTML = dark
+      ? '<span class="theme-icon">☀️</span><span class="theme-label">Light mode</span>'
+      : '<span class="theme-icon">🌙</span><span class="theme-label">Dark mode</span>';
+    localStorage.setItem('putform-theme', dark ? 'dark' : 'light');
+  }
+
+  applyTheme(localStorage.getItem('putform-theme') || 'light');
+
+  themeToggle.addEventListener('click', () => {
+    applyTheme(document.body.classList.contains('dark') ? 'light' : 'dark');
+  });
+
+  /* ---------------- MOBILE MENU ---------------- */
+  function closeMenu() {
+    navLinks.classList.remove('open');
+    menuToggle.setAttribute('aria-expanded', 'false');
+  }
+
+  menuToggle.addEventListener('click', () => {
+    const isOpen = navLinks.classList.toggle('open');
+    menuToggle.setAttribute('aria-expanded', String(isOpen));
+  });
+
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', closeMenu);
+  });
+
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 960) closeMenu();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeMenu();
+  });
+
+  /* ---------------- TOC HIGHLIGHT ON SCROLL ---------------- */
+  function highlightToc() {
+    let current = '';
+    sections.forEach(section => {
+      const top = section.getBoundingClientRect().top;
+      if (top <= 140) current = section.id;
+    });
+    if (!current && sections.length) current = sections[0].id;
+
+    tocLinks.forEach(link => {
+      link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+    });
+  }
+
+  window.addEventListener('scroll', highlightToc, { passive: true });
+  window.addEventListener('load', highlightToc);
+
+  /* ---------------- AUTH STATE ---------------- */
+  async function checkUserSession() {
+    try {
+      const response = await fetch(API_URL, {
+        method: 'GET',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' }
+      });
+
+      if (response.ok) {
+        authContainer.innerHTML = `
+          <button class="btn-login" id="logoutBtn" type="button">Logout</button>
+        `;
+        document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+      } else {
+        renderLoginButton();
+      }
+    } catch (error) {
+      renderLoginButton();
+    }
+  }
+
+  function renderLoginButton() {
+    authContainer.innerHTML = `<a class="btn-login" href="login.html">Login</a>`;
+  }
+
+  async function handleLogout() {
+    try {
+      await fetch(LOGOUT_URL, { method: 'POST', credentials: 'include' });
+    } catch (error) {
+      console.error('Logout error:', error);
+    } finally {
+      window.location.href = 'login.html';
+    }
+  }
+
+  checkUserSession();
+</script>
+</body>
+</html>

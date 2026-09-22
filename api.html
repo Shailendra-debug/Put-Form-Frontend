@@ -1,0 +1,2271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API Documentation | PutForm</title>
+  <style>
+    :root{
+      --bg:#f4f7f6; --surface:#fff; --surface-2:#f8fbfa;
+      --text:#17212b; --muted:#6b7785; --line:#dfe7e4;
+      --teal:#0f766e; --teal-dark:#0b5d56; --teal-soft:#e7f5f2;
+      --gold:#d68b34; --red:#b54840; --success:#10b981;
+      --purple:#6366f1; --pink:#db2777; --blue:#2563eb;
+      --shadow:0 10px 30px rgba(23,33,43,.07);
+      --shadow-hover:0 18px 42px rgba(23,33,43,.12);
+      --code-bg:#0f172a;
+      --code-text:#e2e8f0;
+    }
+    body.dark{
+      --bg:#101716; --surface:#1b2422; --surface-2:#202b28;
+      --text:#f1f5f4; --muted:#aebbb7; --line:#34423e;
+      --teal-soft:#183c38; --gold:#e0a04c;
+      --shadow:0 12px 32px rgba(0,0,0,.28);
+      --shadow-hover:0 18px 42px rgba(0,0,0,.38);
+      --code-bg:#0a0f1d;
+      --code-text:#e2e8f0;
+      background:radial-gradient(circle at 10% 0%,rgba(34,145,133,.12),transparent 30%),var(--bg);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0; min-width:320px;
+      background:radial-gradient(circle at 10% 0%, rgba(15,118,110,.08), transparent 30%), var(--bg);
+      color:var(--text);
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+      transition:background .25s ease,color .25s ease;
+      overflow-x:hidden;
+      min-height:100vh;
+      display:flex; flex-direction:column;
+    }
+    main{flex:1 0 auto}
+    button,input,select{font:inherit}
+    button,a{-webkit-tap-highlight-color:transparent}
+    a{color:inherit;text-decoration:none}
+
+    /* ============================================================
+       TOPBAR
+       ============================================================ */
+    .topbar {
+      align-items:center;
+      background:var(--teal-dark);
+      display:flex;
+      justify-content:space-between;
+      min-height:76px;
+      padding:0 clamp(24px,4vw,88px);
+      position:sticky;
+      top:0;
+      z-index:50;
+      gap:24px;
+      box-shadow:0 4px 24px rgba(11,93,86,.28);
+    }
+    .topbar-left{display:flex;align-items:center;gap:42px;min-width:0;flex:1}
+    .brand{
+      font-family:Arial, Helvetica, sans-serif;
+      font-size:25px; font-weight:800; color:#fff;
+      line-height:1; display:inline-flex; align-items:center; gap:5px;
+      flex-shrink:0; letter-spacing:-.02em;
+      transition:opacity .25s ease, transform .25s ease;
+      padding:4px 0; text-decoration:none;
+    }
+    .brand:hover{opacity:.95;transform:translateY(-2px)}
+    .brand-logo{
+      display:block; width:46px; height:46px; object-fit:contain;
+      border-radius:12px; background:rgba(255,255,255,.10);
+      padding:4px; box-shadow:0 4px 12px rgba(0,0,0,.18); flex-shrink:0;
+      transition: transform .35s cubic-bezier(.34,1.56,.64,1), box-shadow .25s ease;
+    }
+    .brand:hover .brand-logo {
+      transform: rotate(-6deg) scale(1.08);
+      box-shadow: 0 8px 22px rgba(0,0,0,.30);
+    }
+    .brand-text{display:inline-flex;align-items:baseline}
+    .brand span{color:#a7eee2}
+
+    .nav-links{display:flex;align-items:center;gap:6px;list-style:none;margin:0;padding:0;min-width:0}
+    .nav-link{
+      color:rgba(255,255,255,.78); display:block;
+      font-size:.9rem; font-weight:600; padding:10px 4px; margin:0 12px;
+      white-space:nowrap; position:relative; text-decoration:none;
+      transition: color .25s ease, transform .25s cubic-bezier(.34,1.56,.64,1);
+    }
+    .nav-link::after{
+      content:""; position:absolute; left:0; right:0; bottom:2px;
+      height:2px; background:#a7eee2; border-radius:2px;
+      transform:scaleX(0); transform-origin:center;
+      transition: transform .35s cubic-bezier(.34,1.56,.64,1);
+    }
+    .nav-link:hover{color:#fff; transform:translateY(-2px)}
+    .nav-link:hover::after{transform:scaleX(1)}
+    .nav-link.active{color:#a7eee2; font-weight:700}
+    .nav-link.active::after{transform:scaleX(1)}
+    .nav-link:active{transform:translateY(0) scale(.97)}
+    .nav-item-mobile{display:none}
+
+    .topbar-right{display:flex;align-items:center;gap:12px;flex-shrink:0}
+    .theme-toggle,.btn-nav-action,.btn-login{
+      align-items:center; display:inline-flex; justify-content:center;
+      height:42px; font-size:.88rem; font-weight:700; white-space:nowrap; cursor:pointer;
+      text-decoration: none;
+      transition:background .2s ease,color .2s ease,border-color .2s ease,
+                 transform .25s cubic-bezier(.34,1.56,.64,1),box-shadow .25s ease;
+    }
+    .theme-toggle{
+      background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.32);
+      border-radius:999px; color:#fff; gap:8px; padding:0 18px;
+    }
+    .theme-toggle:hover{
+      background:#fff; border-color:#fff; color:var(--teal-dark);
+      transform:translateY(-2px); box-shadow:0 8px 20px rgba(0,0,0,.18);
+    }
+    .btn-nav-action{
+      background:transparent; border:1px solid rgba(255,255,255,.30);
+      border-radius:10px; color:#fff; padding:0 20px;
+    }
+    .btn-nav-action:hover{
+      background:rgba(255,255,255,.14); border-color:rgba(255,255,255,.55);
+      transform:translateY(-2px); box-shadow:0 8px 20px rgba(0,0,0,.18);
+    }
+    .btn-login{
+      background:#a7eee2; border:0; border-radius:10px; color:var(--teal-dark);
+      font-weight:800; padding:0 22px; box-shadow:0 6px 16px rgba(167,238,226,.20);
+    }
+    .btn-login:hover{
+      background:#ffffff; transform:translateY(-2px);
+      box-shadow:0 10px 22px rgba(167,238,226,.34);
+    }
+    .menu-toggle{
+      display:none; flex-direction:column; align-items:center; justify-content:center;
+      gap:5px; width:42px; height:42px; padding:0;
+      background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.30);
+      border-radius:10px; cursor:pointer; transition:background .2s ease, transform .2s ease;
+    }
+    .menu-toggle:hover{background:rgba(255,255,255,.18); transform: translateY(-2px)}
+    .menu-toggle span{
+      display:block; width:18px; height:2px; background:#fff;
+      border-radius:2px; transition:transform .28s ease,opacity .2s ease;
+    }
+    .menu-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+    .menu-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+    .menu-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+    /* ============================================================
+       PAGE LAYOUT
+       ============================================================ */
+    main { max-width:1240px; margin:0 auto; padding:38px 20px 80px; width:100%; }
+
+    .page-heading { margin:10px 0 30px; }
+    .eyebrow {
+      color:var(--teal); font-size:.73rem; font-weight:800;
+      letter-spacing:.16em; margin:0 0 12px; text-transform:uppercase;
+      display:inline-block; background:var(--teal-soft);
+      padding:6px 12px; border-radius:999px;
+    }
+    h1 {
+      font-family:Arial,sans-serif;
+      font-size:clamp(2.2rem,5vw,3.2rem);
+      font-weight:800;
+      letter-spacing:-.04em;
+      line-height:1.05;
+      margin:0 0 12px;
+    }
+    .page-heading p { color:var(--muted); margin:0; line-height:1.6; max-width: 640px; }
+
+    /* ============================================================
+       LAYOUT: SIDEBAR + CONTENT
+       ============================================================ */
+    .docs-layout {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 40px;
+      align-items: start;
+      margin-top: 30px;
+    }
+
+    .docs-sidebar {
+      position: sticky;
+      top: 100px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      padding: 24px 20px;
+      max-height: calc(100vh - 120px);
+      overflow-y: auto;
+    }
+    .docs-sidebar h4 {
+      font-size: .72rem; font-weight: 800;
+      letter-spacing: .14em; text-transform: uppercase;
+      color: var(--teal); margin: 0 0 14px;
+      padding: 0 8px;
+    }
+    .docs-sidebar h4:not(:first-child) { margin-top: 22px; }
+    .docs-sidebar ul {
+      list-style: none; margin: 0; padding: 0;
+      display: flex; flex-direction: column; gap: 2px;
+    }
+    .docs-sidebar a {
+      display: block;
+      padding: 9px 12px;
+      font-size: .86rem;
+      font-weight: 600;
+      color: var(--muted);
+      border-radius: 9px;
+      border-left: 2px solid transparent;
+      transition: background .2s ease, color .2s ease, padding-left .2s ease, border-color .2s ease;
+      text-decoration: none;
+    }
+    .docs-sidebar a:hover {
+      background: var(--teal-soft);
+      color: var(--teal);
+      padding-left: 16px;
+    }
+    .docs-sidebar a.active {
+      background: var(--teal-soft);
+      color: var(--teal);
+      border-left-color: var(--teal);
+      font-weight: 800;
+    }
+
+    .docs-content { min-width: 0; }
+
+    .doc-section {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      padding: 32px;
+      margin-bottom: 24px;
+      scroll-margin-top: 100px;
+      animation: fadeInUp .5s ease both;
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .doc-section h2 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: -.03em;
+      margin: 0 0 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .doc-section .section-desc {
+      color: var(--muted);
+      font-size: .95rem;
+      margin: 0 0 22px;
+      line-height: 1.65;
+    }
+
+    .section-num {
+      display: inline-grid;
+      place-items: center;
+      min-width: 34px; height: 34px;
+      border-radius: 10px;
+      background: var(--teal-soft);
+      color: var(--teal);
+      font-size: .82rem;
+      font-weight: 800;
+      flex-shrink: 0;
+      padding: 0 6px;
+    }
+
+    .endpoint-block { margin-top: 18px; }
+    .endpoint-block:first-child { margin-top: 0; }
+
+    .endpoint-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .method-badge {
+      display: inline-grid;
+      place-items: center;
+      min-width: 68px;
+      height: 30px;
+      padding: 0 12px;
+      border-radius: 8px;
+      font-size: .72rem;
+      font-weight: 900;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .method-badge.get    { background: #0ea5e9; }
+    .method-badge.post   { background: #10b981; }
+    .method-badge.put    { background: #f59e0b; }
+    .method-badge.patch  { background: #8b5cf6; }
+    .method-badge.delete { background: #ef4444; }
+
+    .endpoint-path {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: .92rem;
+      font-weight: 700;
+      color: var(--text);
+      word-break: break-all;
+    }
+
+    .endpoint-copy {
+      margin-left: auto;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 6px 10px;
+      cursor: pointer;
+      font-size: .72rem;
+      font-weight: 700;
+      color: var(--muted);
+      transition: all .2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .endpoint-copy:hover {
+      border-color: var(--teal);
+      color: var(--teal);
+      transform: translateY(-1px);
+    }
+
+    .endpoint-meta { display: grid; gap: 14px; margin-bottom: 20px; }
+    .endpoint-meta-label {
+      font-size: .74rem;
+      font-weight: 800;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .full-url {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: .82rem;
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 10px 12px;
+      color: var(--muted);
+      word-break: break-all;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .full-url .url-scheme { color: #94a3b8; }
+    .full-url .url-method { color: #10b981; font-weight: 800; }
+    .full-url .url-host { color: #10b981; font-weight: 700; }
+    .full-url .url-path { color: var(--text); font-weight: 700; }
+    .full-url .url-param { color: #f59e0b; font-weight: 800; }
+
+    .header-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .header-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: .8rem;
+      color: var(--text);
+      font-weight: 600;
+    }
+    .header-tag .header-key { color: #a855f7; font-weight: 800; }
+    .header-tag .header-value { color: #f59e0b; }
+
+    .code-block {
+      position: relative;
+      background: var(--code-bg);
+      color: var(--code-text);
+      border-radius: 12px;
+      padding: 20px 22px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: .84rem;
+      line-height: 1.65;
+      overflow-x: auto;
+      margin: 12px 0 16px;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
+    }
+    .code-block::before {
+      content: attr(data-label);
+      position: absolute;
+      top: 0; left: 0;
+      background: rgba(255,255,255,.08);
+      color: #cbd5e1;
+      font-size: .62rem;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border-radius: 12px 0 10px 0;
+    }
+    .code-block pre {
+      margin: 18px 0 0;
+      white-space: pre;
+      font-family: inherit;
+    }
+
+    .json-key   { color: #7dd3fc; }
+    .json-str   { color: #86efac; }
+    .json-num   { color: #fde68a; }
+    .json-bool  { color: #f0abfc; }
+    .json-null  { color: #fca5a5; }
+    .json-punc  { color: #94a3b8; }
+    .json-type  { color: #f472b6; font-style: italic; }
+
+    .code-copy-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.14);
+      color: #cbd5e1;
+      border-radius: 7px;
+      padding: 6px 10px;
+      font-size: .7rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all .2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      z-index: 2;
+    }
+    .code-copy-btn:hover {
+      background: #a7eee2;
+      border-color: #a7eee2;
+      color: var(--teal-dark);
+      transform: translateY(-1px);
+    }
+
+    .response-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: .78rem;
+      font-weight: 800;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .response-label.success { color: var(--success); }
+    .response-label.error { color: var(--red); }
+    .response-label .status-code {
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 3px 8px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: .72rem;
+      color: var(--text);
+    }
+
+    .quick-links {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .quick-link {
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 16px 18px;
+      transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+      cursor: pointer;
+      text-decoration: none;
+      display: block;
+    }
+    .quick-link:hover {
+      transform: translateY(-3px);
+      border-color: var(--teal);
+      box-shadow: 0 12px 24px rgba(15,118,110,.12);
+    }
+    .quick-link .ql-method {
+      font-size: .68rem;
+      font-weight: 900;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 6px;
+    }
+    .quick-link .ql-title {
+      font-size: .92rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .quick-link .ql-desc {
+      font-size: .78rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .note {
+      background: var(--teal-soft);
+      border-left: 4px solid var(--teal);
+      border-radius: 10px;
+      padding: 14px 18px;
+      margin: 16px 0;
+      font-size: .88rem;
+      color: var(--text);
+      line-height: 1.65;
+    }
+    .note strong { color: var(--teal-dark); }
+    body.dark .note strong { color: #a7eee2; }
+
+    .note.warn {
+      background: #fff3df;
+      border-left-color: var(--gold);
+      color: #7a4a12;
+    }
+    .note.warn strong { color: #5a3510; }
+    body.dark .note.warn {
+      background: #3d3020;
+      color: #efbd78;
+    }
+    body.dark .note.warn strong { color: #ffdda3; }
+
+    .auth-banner {
+      background: linear-gradient(135deg, var(--teal-dark), var(--teal));
+      border-radius: 16px;
+      padding: 26px 28px;
+      color: #fff;
+      margin-bottom: 22px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 12px 28px rgba(15,118,110,.22);
+    }
+    .auth-banner::before {
+      content: "";
+      position: absolute; inset: 0;
+      background: radial-gradient(circle at 85% 20%, rgba(255,255,255,.15), transparent 45%);
+      pointer-events: none;
+    }
+    .auth-banner-content { position: relative; z-index: 1; }
+    .auth-banner h3 {
+      font-size: 1.15rem;
+      font-weight: 800;
+      margin: 0 0 8px;
+      letter-spacing: -.02em;
+    }
+    .auth-banner p {
+      font-size: .9rem;
+      color: rgba(255,255,255,.85);
+      margin: 0 0 14px;
+      line-height: 1.6;
+    }
+    .auth-key {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(0,0,0,.25);
+      border: 1px solid rgba(255,255,255,.22);
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: .85rem;
+      color: #a7eee2;
+      font-weight: 700;
+      word-break: break-all;
+    }
+
+    /* Field reference table */
+    .field-ref-table {
+      display: grid;
+      gap: 0;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .field-ref-table .frt-row {
+      display: grid;
+      grid-template-columns: 200px 200px 1fr;
+      gap: 18px;
+      padding: 13px 16px;
+      border-bottom: 1px solid var(--line);
+      align-items: start;
+      font-size: .88rem;
+    }
+    .field-ref-table .frt-row:last-child { border-bottom: none; }
+    .field-ref-table .frt-head {
+      background: var(--surface-2);
+      font-size: .7rem;
+      font-weight: 800;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 10px 16px;
+    }
+    .field-ref-table code.frt-name {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      color: #a855f7;
+      font-weight: 800;
+      font-size: .85rem;
+    }
+    .field-ref-table code.frt-type {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      color: #f472b6;
+      font-weight: 700;
+      font-size: .82rem;
+      font-style: italic;
+    }
+    .field-ref-table .frt-desc {
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .field-ref-table .frt-desc code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: .82rem;
+      color: var(--success);
+      font-weight: 700;
+    }
+
+    /* Enum list */
+    .enum-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+    }
+    .enum-pill {
+      display: inline-block;
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 3px 9px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: .74rem;
+      font-weight: 700;
+      color: #f472b6;
+    }
+
+    /* ============================================================
+       BOTTOM NAVBAR / FOOTER
+       ============================================================ */
+    .site-footer {
+      background: var(--teal-dark);
+      color: #fff;
+      margin-top: auto;
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+      width: 100%;
+    }
+    .site-footer::before {
+      content: "";
+      position: absolute;
+      top: -160px; right: -160px;
+      width: 420px; height: 420px;
+      background: radial-gradient(circle, rgba(167,238,226,.14), transparent 70%);
+      pointer-events: none;
+    }
+    .site-footer::after {
+      content: "";
+      position: absolute;
+      bottom: -180px; left: -160px;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(15,118,110,.35), transparent 70%);
+      pointer-events: none;
+    }
+    .footer-inner {
+      max-width: 1240px; margin: 0 auto;
+      padding: 60px clamp(20px, 5vw, 72px) 30px;
+      position: relative; z-index: 1;
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 56px;
+      padding-bottom: 40px;
+      border-bottom: 1px solid rgba(255,255,255,.12);
+      align-items: start;
+    }
+    .footer-brand-block { max-width: 380px; }
+    .footer-brand {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 24px; font-weight: 800; letter-spacing: -.02em;
+      color: #fff; margin-bottom: 16px;
+      transition: opacity .2s ease, transform .2s ease;
+      text-decoration: none;
+    }
+    .footer-brand:hover { opacity: .95; transform: translateY(-2px); }
+    .footer-brand-logo {
+      width: 44px; height: 44px; object-fit: contain;
+      border-radius: 11px; background: rgba(255,255,255,.10);
+      padding: 4px; box-shadow: 0 4px 12px rgba(0,0,0,.20);
+      flex-shrink: 0;
+      transition: transform .35s cubic-bezier(.34,1.56,.64,1);
+    }
+    .footer-brand:hover .footer-brand-logo {
+      transform: rotate(-6deg) scale(1.08);
+    }
+    .footer-brand span { color: #a7eee2; }
+    .footer-tagline {
+      color: rgba(255,255,255,.68);
+      font-size: .9rem; line-height: 1.7; margin: 0;
+    }
+    .footer-col h4 {
+      font-size: .78rem; font-weight: 800;
+      letter-spacing: .14em; text-transform: uppercase;
+      color: #a7eee2; margin: 0 0 18px;
+    }
+    .footer-col ul {
+      list-style: none; margin: 0; padding: 0;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .footer-col a {
+      color: rgba(255,255,255,.72);
+      font-size: .88rem; font-weight: 500;
+      transition: color .2s ease, padding-left .2s ease;
+      display: inline-block; position: relative;
+      text-decoration: none;
+    }
+    .footer-col a::before {
+      content: "";
+      position: absolute; left: -14px; top: 50%;
+      transform: translateY(-50%) scaleX(0);
+      width: 8px; height: 2px; background: #a7eee2;
+      border-radius: 2px; transition: transform .2s ease;
+    }
+    .footer-col a:hover { color: #fff; padding-left: 6px; }
+    .footer-col a:hover::before { transform: translateY(-50%) scaleX(1); }
+    .footer-bottom {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-top: 24px; gap: 20px; flex-wrap: wrap;
+      font-size: .84rem; color: rgba(255,255,255,.62);
+    }
+    .footer-bottom .copy strong { color: #fff; }
+    .footer-legal { display: flex; gap: 22px; flex-wrap: wrap; }
+    .footer-legal a { color: rgba(255,255,255,.62); transition: color .2s ease; text-decoration: none; }
+    .footer-legal a:hover { color: #a7eee2; }
+
+    .toast {
+      position: fixed;
+      left: 50%; bottom: 30px;
+      transform: translateX(-50%) translateY(20px);
+      background: #17312e; color: #fff;
+      padding: 13px 22px; border-radius: 999px;
+      font-size: .88rem; font-weight: 700;
+      box-shadow: 0 12px 32px rgba(0,0,0,.25);
+      opacity: 0; pointer-events: none;
+      transition: opacity .25s ease, transform .25s ease;
+      z-index: 200;
+      display: inline-flex; align-items: center; gap: 9px;
+      max-width: calc(100% - 40px);
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .toast .toast-icon {
+      display: inline-grid; place-items: center;
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      background: #a7eee2; color: #17312e;
+      font-size: .72rem; font-weight: 900;
+      flex-shrink: 0;
+    }
+
+    /* ============================================================
+       RESPONSIVE
+       ============================================================ */
+    @media (max-width:1180px){
+      .topbar{padding:0 32px;gap:16px}
+      .topbar-left{gap:26px}
+      .nav-link{margin:0 8px;font-size:.86rem}
+      .topbar-right{gap:8px}
+      .theme-toggle,.btn-nav-action,.btn-login{height:40px;font-size:.84rem;padding:0 14px}
+      .btn-login{padding:0 18px}
+    }
+    @media (max-width:1024px){
+      .docs-layout { grid-template-columns: 1fr; gap: 24px; }
+      .docs-sidebar {
+        position: static;
+        max-height: none;
+        order: -1;
+      }
+      .docs-sidebar ul { flex-direction: row; flex-wrap: wrap; gap: 6px; }
+      .docs-sidebar a { padding: 8px 14px; border-radius: 999px; border-left: none; border: 1px solid var(--line); }
+      .docs-sidebar a:hover, .docs-sidebar a.active { padding-left: 14px; }
+      .docs-sidebar h4 { width: 100%; }
+      .footer-top{grid-template-columns:1fr 1fr; gap:40px}
+      .footer-brand-block{grid-column:1 / -1; max-width:520px}
+      .field-ref-table .frt-row { grid-template-columns: 160px 160px 1fr; gap: 12px; }
+    }
+    @media (max-width:960px){
+      .topbar{padding:0 20px;min-height:68px}
+      .menu-toggle{display:flex}
+      .topbar-right .btn-nav-action{display:none}
+      .nav-item-mobile{display:block}
+      .topbar-left{gap:0}
+      .nav-links{
+        position:absolute; top:100%; left:0; right:0;
+        flex-direction:column; align-items:stretch; gap:2px;
+        padding:0 20px;
+        background:var(--teal-dark);
+        border-top:1px solid rgba(255,255,255,.14);
+        box-shadow:0 20px 34px rgba(0,0,0,.28);
+        max-height:0; opacity:0; visibility:hidden; overflow:hidden;
+        transition:max-height .32s ease,opacity .25s ease,
+                   padding .32s ease,visibility .32s ease;
+      }
+      .nav-links.open{
+        max-height:400px; opacity:1; visibility:visible;
+        padding:12px 20px 16px;
+      }
+      .nav-link{font-size:.95rem;padding:12px 8px;margin:0}
+      .nav-link::after{display:none}
+      .nav-link.active{
+        background:rgba(167,238,226,.12);
+        border-radius:10px; padding-left:14px;
+      }
+    }
+    @media (max-width:640px){
+      .theme-label{display:none}
+      .theme-toggle{padding:0 14px;gap:0}
+      .brand{font-size:21px;gap:9px}
+      .brand-logo{width:38px;height:38px;padding:3px}
+      main { padding:24px 14px 60px; }
+      .doc-section { padding: 24px 20px; }
+      .endpoint-header { padding: 12px 14px; }
+      .endpoint-copy { margin-left: 0; width: 100%; justify-content: center; }
+      .auth-banner { padding: 22px; }
+      .code-block { padding: 30px 16px 16px; font-size: .78rem; }
+      .field-ref-table .frt-row { grid-template-columns: 1fr; gap: 6px; }
+      .field-ref-table .frt-head { display: none; }
+      .footer-inner{padding:48px 24px 24px}
+      .footer-top{grid-template-columns:1fr 1fr; gap:36px 24px}
+      .footer-brand-block{grid-column:1 / -1}
+    }
+    @media (max-width:580px){
+      .footer-bottom{flex-direction:column; text-align:center; align-items:center}
+    }
+    @media (max-width:460px){
+      .topbar{padding:0 12px;min-height:62px}
+      .brand{font-size:19px;gap:8px}
+      .brand-logo{width:34px;height:34px;padding:2px;border-radius:10px}
+      .nav-links{padding:0 12px}
+      .nav-links.open{padding:10px 12px 14px}
+      .btn-login{padding:0 14px;font-size:.82rem}
+      .footer-top{grid-template-columns:1fr; gap:32px}
+    }
+    @media (prefers-reduced-motion:reduce) {
+      .doc-section { animation: none; }
+      .card, .quick-link, .nav-link, .brand, .brand-logo { transition: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ============================= TOPBAR ============================= -->
+<header class="topbar">
+  <div class="topbar-left">
+    <a class="brand" href="index.html">
+      <img class="brand-logo" src="Glogo.png" alt="PutForm logo"
+           onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 46 46%22><rect width=%2246%22 height=%2246%22 rx=%2212%22 fill=%22%2317b8a6%22/><text x=%2250%25%22 y=%2258%25%22 text-anchor=%22middle%22 font-family=%22Arial%22 font-size=%2224%22 font-weight=%22bold%22 fill=%22white%22>P</text></svg>';">
+      Put<span>Form</span></span>
+    </a>
+
+    <ul class="nav-links" id="navLinks">
+      <li><a class="nav-link" href="index.html">Home</a></li>
+      <li><a class="nav-link" href="forms.html">Dashboard</a></li>
+      <li><a class="nav-link active" href="api.html" aria-current="page">API</a></li>
+      <li><a class="nav-link" href="about.html">About</a></li>
+      <li><a class="nav-link" href="contact.html">Contact Us</a></li>
+      <li class="nav-item-mobile"><a class="nav-link" href="profile.html">Profile</a></li>
+    </ul>
+  </div>
+
+  <div class="topbar-right">
+    <a class="btn-nav-action" href="profile.html">Profile</a>
+
+    <div id="authContainer" style="display:flex; align-items:center;">
+      <a class="btn-login" href="login.html">Login</a>
+    </div>
+
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme">
+      <span class="theme-icon">🌙</span><span class="theme-label">Dark mode</span>
+    </button>
+
+    <button class="menu-toggle" id="menuToggle" type="button"
+            aria-label="Toggle navigation menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- ============================= MAIN ============================= -->
+<main>
+  <section class="page-heading">
+    <p class="eyebrow">Developer resources</p>
+    <h1>API Documentation</h1>
+    <p>Everything you need to integrate PutForm into your own apps — create forms, collect responses, and manage submissions with a simple REST API.</p>
+  </section>
+
+  <div class="docs-layout">
+
+    <!-- ============== SIDEBAR ============== -->
+    <aside class="docs-sidebar">
+      <h4>Getting Started</h4>
+      <ul>
+        <li><a href="#overview" class="active">Overview</a></li>
+        <li><a href="#auth">Authentication</a></li>
+        <li><a href="#models">Data Models</a></li>
+        <li><a href="#errors">Error Responses</a></li>
+      </ul>
+
+      <h4>Forms API</h4>
+      <ul>
+        <li><a href="#create">1. Create Form</a></li>
+        <li><a href="#list">2. Get My Forms</a></li>
+        <li><a href="#get">3. Get Form</a></li>
+        <li><a href="#update">4. Update Form</a></li>
+        <li><a href="#publish">5. Publish Form</a></li>
+        <li><a href="#close">6. Close Form</a></li>
+        <li><a href="#archive">7. Archive Form</a></li>
+        <li><a href="#delete">8. Delete Form</a></li>
+      </ul>
+
+      <h4>Responses API</h4>
+      <ul>
+        <li><a href="#submit">9. Submit Response</a></li>
+      </ul>
+    </aside>
+
+    <!-- ============== CONTENT ============== -->
+    <div class="docs-content">
+
+      <!-- Overview -->
+      <section class="doc-section" id="overview">
+        <h2><span class="section-num">i</span>Overview</h2>
+        <p class="section-desc">
+          The PutForm API lets you manage forms programmatically. All endpoints use JSON over HTTP,
+          require an API key, and return structured responses that are easy to consume from any language.
+        </p>
+
+        <div class="endpoint-meta">
+          <div>
+            <span class="endpoint-meta-label">Base URL</span>
+            <div class="full-url">
+              <span class="url-scheme">http://</span><span class="url-host">localhost:8080</span>
+            </div>
+          </div>
+        </div>
+
+        <h3 style="font-size:.95rem; font-weight:800; margin:22px 0 12px; color:var(--text);">Quick links</h3>
+        <div class="quick-links">
+          <a class="quick-link" href="#create">
+            <div class="ql-method">POST</div>
+            <div class="ql-title">Create Form</div>
+            <div class="ql-desc">Create a new form with questions.</div>
+          </a>
+          <a class="quick-link" href="#list">
+            <div class="ql-method">GET</div>
+            <div class="ql-title">List Forms</div>
+            <div class="ql-desc">Fetch all forms for the current user.</div>
+          </a>
+          <a class="quick-link" href="#update">
+            <div class="ql-method">PUT</div>
+            <div class="ql-title">Update Form</div>
+            <div class="ql-desc">Edit form details and questions.</div>
+          </a>
+          <a class="quick-link" href="#models">
+            <div class="ql-method">SCHEMA</div>
+            <div class="ql-title">Data Models</div>
+            <div class="ql-desc">Form &amp; question field reference.</div>
+          </a>
+          <a class="quick-link" href="#publish">
+            <div class="ql-method">PATCH</div>
+            <div class="ql-title">Publish Form</div>
+            <div class="ql-desc">Make a form live for respondents.</div>
+          </a>
+          <a class="quick-link" href="#submit">
+            <div class="ql-method">POST</div>
+            <div class="ql-title">Submit Response</div>
+            <div class="ql-desc">Answer a published form.</div>
+          </a>
+          <a class="quick-link" href="#errors">
+            <div class="ql-method">ERRORS</div>
+            <div class="ql-title">Error Codes</div>
+            <div class="ql-desc">401, 403, 404, 400 responses.</div>
+          </a>
+        </div>
+      </section>
+
+      <!-- Authentication -->
+      <section class="doc-section" id="auth">
+        <h2><span class="section-num">🔐</span>Authentication</h2>
+        <p class="section-desc">
+          Every Forms API request must include your API key in the <code>X-API-KEY</code> request header.
+          The public <a href="#submit" style="color:var(--teal);font-weight:800;text-decoration:underline;">Submit Response</a> endpoint is the exception and does not require a key.
+        </p>
+
+        <div class="auth-banner">
+          <div class="auth-banner-content">
+            <h3>Header</h3>
+            <p>Include your API key as a header on every request:</p>
+            <div class="auth-key">X-API-KEY: gf_live_xxxxxxxxxxxxxxxxx</div>
+          </div>
+        </div>
+
+        <div class="note warn">
+          <strong>Keep your API key secret.</strong> Do not expose it in frontend JavaScript or commit it to Git. Generate and manage your keys from your <a href="profile.html" style="color:inherit;font-weight:800;text-decoration:underline;">Profile page</a>.
+        </div>
+
+        <div class="code-block" data-label="Header example">
+          <button class="code-copy-btn" data-copy="X-API-KEY: gf_live_xxxxxxxxxxxxxxxxx">📋 Copy</button>
+<pre>X-API-KEY: gf_live_xxxxxxxxxxxxxxxxx</pre>
+        </div>
+      </section>
+
+      <!-- Data Models -->
+      <section class="doc-section" id="models">
+        <h2><span class="section-num">📦</span>Data Models</h2>
+        <p class="section-desc">
+          The main response model returned by every Forms API endpoint. Each field's Java type is shown alongside the field name.
+        </p>
+
+        <!-- FormResponse schema -->
+        <h3 style="font-size:1.05rem; font-weight:800; margin:6px 0 12px; color:var(--text); display:flex; align-items:center; gap:8px;">
+          <span style="font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace; color:#a855f7;">FormResponse</span>
+          <span style="font-size:.72rem; font-weight:700; color:var(--muted); letter-spacing:.08em; text-transform:uppercase;">Root object</span>
+        </h3>
+
+        <div class="code-block" data-label="JSON Shape">
+          <button class="code-copy-btn" data-copy='{
+  "id": "UUID",
+  "ownerId": "Long",
+  "title": "String",
+  "description": "String",
+  "status": "FormStatus (ENUM)",
+  "plan": "FormPlan (ENUM)",
+  "responseLimit": "Long",
+  "fillingAmount": "BigDecimal",
+  "totalCollectionAmount": "BigDecimal",
+  "questions": [
+    {
+      "id": "UUID",
+      "formId": "UUID",
+      "question": "String",
+      "type": "QuestionType (ENUM)",
+      "required": "Boolean",
+      "questionOrder": "Integer",
+      "configuration": {}
+    }
+  ],
+  "expiresAt": "ISO-8601 LocalDateTime",
+  "createdAt": "ISO-8601 LocalDateTime",
+  "updatedAt": "ISO-8601 LocalDateTime"
+}'>📋 Copy</button>
+<pre>{
+  <span class="json-key">"id"</span><span class="json-punc">:</span> <span class="json-type">"UUID"</span><span class="json-punc">,</span>
+  <span class="json-key">"ownerId"</span><span class="json-punc">:</span> <span class="json-type">"Long"</span><span class="json-punc">,</span>
+  <span class="json-key">"title"</span><span class="json-punc">:</span> <span class="json-type">"String"</span><span class="json-punc">,</span>
+  <span class="json-key">"description"</span><span class="json-punc">:</span> <span class="json-type">"String"</span><span class="json-punc">,</span>
+  <span class="json-key">"status"</span><span class="json-punc">:</span> <span class="json-type">"FormStatus (ENUM)"</span><span class="json-punc">,</span>
+  <span class="json-key">"plan"</span><span class="json-punc">:</span> <span class="json-type">"FormPlan (ENUM)"</span><span class="json-punc">,</span>
+  <span class="json-key">"responseLimit"</span><span class="json-punc">:</span> <span class="json-type">"Long"</span><span class="json-punc">,</span>
+  <span class="json-key">"fillingAmount"</span><span class="json-punc">:</span> <span class="json-type">"BigDecimal"</span><span class="json-punc">,</span>
+  <span class="json-key">"totalCollectionAmount"</span><span class="json-punc">:</span> <span class="json-type">"BigDecimal"</span><span class="json-punc">,</span>
+  <span class="json-key">"questions"</span><span class="json-punc">:</span> <span class="json-punc">[</span>
+    <span class="json-punc">{</span>
+      <span class="json-key">"id"</span><span class="json-punc">:</span> <span class="json-type">"UUID"</span><span class="json-punc">,</span>
+      <span class="json-key">"formId"</span><span class="json-punc">:</span> <span class="json-type">"UUID"</span><span class="json-punc">,</span>
+      <span class="json-key">"question"</span><span class="json-punc">:</span> <span class="json-type">"String"</span><span class="json-punc">,</span>
+      <span class="json-key">"type"</span><span class="json-punc">:</span> <span class="json-type">"QuestionType (ENUM)"</span><span class="json-punc">,</span>
+      <span class="json-key">"required"</span><span class="json-punc">:</span> <span class="json-type">"Boolean"</span><span class="json-punc">,</span>
+      <span class="json-key">"questionOrder"</span><span class="json-punc">:</span> <span class="json-type">"Integer"</span><span class="json-punc">,</span>
+      <span class="json-key">"configuration"</span><span class="json-punc">:</span> <span class="json-punc">{}</span>
+    <span class="json-punc">}</span>
+  <span class="json-punc">],</span>
+  <span class="json-key">"expiresAt"</span><span class="json-punc">:</span> <span class="json-type">"ISO-8601 LocalDateTime"</span><span class="json-punc">,</span>
+  <span class="json-key">"createdAt"</span><span class="json-punc">:</span> <span class="json-type">"ISO-8601 LocalDateTime"</span><span class="json-punc">,</span>
+  <span class="json-key">"updatedAt"</span><span class="json-punc">:</span> <span class="json-type">"ISO-8601 LocalDateTime"</span>
+}</pre>
+        </div>
+
+        <!-- Field reference table -->
+        <h3 style="font-size:1.05rem; font-weight:800; margin:26px 0 12px; color:var(--text);">Form fields</h3>
+
+        <div class="field-ref-table">
+          <div class="frt-row frt-head">
+            <span>Field</span>
+            <span>Type</span>
+            <span>Description</span>
+          </div>
+
+          <div class="frt-row">
+            <code class="frt-name">id</code>
+            <code class="frt-type">UUID</code>
+            <span class="frt-desc">Unique identifier for the form. Used in all URL paths and query parameters.</span>
+          </div>
+          <div class="frt-row">
+            <code class="frt-name">ownerId</code>
+            <code class="frt-type">Long</code>
+            <span class="frt-desc">ID of the user who owns the form.</span>
+          </div>
+          <div class="frt-row">
+            <code class="frt-name">title</code>
+            <code class="frt-type">String</code>
+            <span class="frt-desc">Form title. Required. Maximum 200 characters.</span>
+          </div>
+          <div class="frt-row">
+            <code class="frt-name">description</code>
+            <code class="frt-type">String</code>
+            <span class="frt-desc">Optional form description. Maximum 1000 characters.</span>
+          </div>
+          <div class="frt-row">
+            <code class="frt-name">status</code>
+            <code class="frt-type">FormStatus</code>
+            <span class="frt-desc">
+              Current lifecycle state.
+              <div class="enum-list">
+                <span class="enum-pill">DRAFT</span>
+                <span class="enum-pill">PUBLISHED</span>
+                <span class="enum-pill">CLOSED</span>
+                <span class="enum-pill">ARCHIVED</span>
+              </div>
+            </span>
+          </div>
+          <div class="frt-row">
+            <code class="frt-name">plan</code>
+            <code class="frt-type">FormPlan</code>
+            <span class="frt-desc">
+              Pricing plan for the form.
+              <div class="enum-list">
+                <span class="enum-pill">FREE</span>
+                <span class="enum-pill">BASIC</span>
+                <span class="enum-pill">PREMIUM</span>
+              </div>
+            </span>
+          </div>
+          <div class="frt-row">
+            <code class="frt-name">responseLimit</code>
+            <code class="frt-type">Long</code>
+            <span class="frt-desc">Maximum number of responses accepted. <code>null</code> means unlimited.</span>
+          </div>
+          <div class="frt-row">
+            <code class="frt-name">fillingAmount</code>
+            <code class="frt-type">BigDecimal</code>
+            <span class="frt-desc">Amount charged per response. <code>0.00</code> for free forms.</span>
+          </div>
+          <div class="frt-row">
+            <code class="frt-name">totalCollectionAmount</code>
+            <code class="frt-type">BigDecimal</code>
+            <span class="frt-desc">Running total of all paid responses. Computed by the backend.</span>
+          </div>
+          <div class="frt-row">
+            <code class="frt-name">questions</code>
+            <code class="frt-type">Question[]</code>
+            <span class="frt-desc">Array of question objects. See <a href="#question-model" style="color:var(--teal);font-weight:800;text-decoration:underline;">Question fields</a> below.</span>
+          </div>
+          <div class="frt-row">
+            <code class="frt-name">expiresAt</code>
+            <code class="frt-type">LocalDateTime</code>
+            <span class="frt-desc">ISO-8601 timestamp when the form stops accepting responses. <code>null</code> for no expiry.</span>
+          </div>
+          <div class="frt-row">
+            <code class="frt-name">createdAt</code>
+            <code class="frt-type">LocalDateTime</code>
+            <span class="frt-desc">ISO-8601 timestamp when the form was created.</span>
+          </div>
+          <div class="frt-row">
+            <code class="frt-name">updatedAt</code>
+            <code class="frt-type">LocalDateTime</code>
+            <span class="frt-desc">ISO-8601 timestamp of the last modification.</span>
+          </div>
+        </div>
+
+        <!-- Question model -->
+        <h3 id="question-model" style="font-size:1.05rem; font-weight:800; margin:32px 0 12px; color:var(--text); display:flex; align-items:center; gap:8px; scroll-margin-top:100px;">
+          <span style="font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace; color:#a855f7;">Question</span>
+          <span style="font-size:.72rem; font-weight:700; color:var(--muted); letter-spacing:.08em; text-transform:uppercase;">Nested object</span>
+        </h3>
+
+        <div class="field-ref-table">
+          <div class="frt-row frt-head">
+            <span>Field</span>
+            <span>Type</span>
+            <span>Description</span>
+          </div>
+
+          <div class="frt-row">
+            <code class="frt-name">id</code>
+            <code class="frt-type">UUID</code>
+            <span class="frt-desc">Unique identifier for the question.</span>
+          </div>
+          <div class="frt-row">
+            <code class="frt-name">formId</code>
+            <code class="frt-type">UUID</code>
+            <span class="frt-desc">ID of the parent form this question belongs to.</span>
+          </div>
+          <div class="frt-row">
+            <code class="frt-name">question</code>
+            <code class="frt-type">String</code>
+            <span class="frt-desc">Question text shown to respondents. Required. Maximum 500 characters.</span>
+          </div>
+          <div class="frt-row">
+            <code class="frt-name">type</code>
+            <code class="frt-type">QuestionType</code>
+            <span class="frt-desc">
+              Input type of the question.
+              <div class="enum-list">
+                <span class="enum-pill">SHORT_TEXT</span>
+                <span class="enum-pill">LONG_TEXT</span>
+                <span class="enum-pill">NUMBER</span>
+                <span class="enum-pill">EMAIL</span>
+                <span class="enum-pill">DATE</span>
+                <span class="enum-pill">SINGLE_CHOICE</span>
+                <span class="enum-pill">MULTIPLE_CHOICE</span>
+                <span class="enum-pill">DROPDOWN</span>
+                <span class="enum-pill">CHECKBOX</span>
+                <span class="enum-pill">FILE_UPLOAD</span>
+                <span class="enum-pill">RATING</span>
+              </div>
+            </span>
+          </div>
+          <div class="frt-row">
+            <code class="frt-name">required</code>
+            <code class="frt-type">Boolean</code>
+            <span class="frt-desc"><code>true</code> if respondents must answer this question to submit.</span>
+          </div>
+          <div class="frt-row">
+            <code class="frt-name">questionOrder</code>
+            <code class="frt-type">Integer</code>
+            <span class="frt-desc">Display position of the question, starting from <code>1</code>.</span>
+          </div>
+          <div class="frt-row">
+            <code class="frt-name">configuration</code>
+            <code class="frt-type">Map&lt;String,Object&gt;</code>
+            <span class="frt-desc">
+              Type-specific settings. For choice-based questions this contains an <code>options</code> array, e.g.
+              <code>{ "options": ["Yes", "No"] }</code>. Empty object for free-text questions.
+            </span>
+          </div>
+        </div>
+
+        <div class="note">
+          <strong>Note:</strong> All timestamps are serialized as ISO-8601 strings (e.g. <code>2026-12-31T23:59:59</code>) in the server's local timezone. All IDs are UUIDs in canonical <code>xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</code> format.
+        </div>
+      </section>
+
+      <!-- Create Form -->
+      <section class="doc-section" id="create">
+        <h2><span class="section-num">01</span>Create Form</h2>
+        <p class="section-desc">Creates a new form owned by the API key owner.</p>
+
+        <div class="endpoint-header">
+          <span class="method-badge post">POST</span>
+          <span class="endpoint-path">/api/v1/forms</span>
+          <button class="endpoint-copy" data-copy="POST http://localhost:8080/api/v1/forms">📋 Copy</button>
+        </div>
+
+        <div class="endpoint-meta">
+          <div>
+            <span class="endpoint-meta-label">Full URL</span>
+            <div class="full-url">
+              <span class="url-scheme">http://</span><span class="url-host">localhost:8080</span><span class="url-path">/api/v1/forms</span>
+            </div>
+          </div>
+
+          <div>
+            <span class="endpoint-meta-label">Headers</span>
+            <div class="header-tags">
+              <span class="header-tag"><span class="header-key">Content-Type</span>: <span class="header-value">application/json</span></span>
+              <span class="header-tag"><span class="header-key">X-API-KEY</span>: <span class="header-value">gf_live_xxxxxxxxx</span></span>
+            </div>
+          </div>
+
+          <div>
+            <span class="endpoint-meta-label">Request body</span>
+            <div class="code-block" data-label="JSON">
+              <button class="code-copy-btn" data-copy='{
+  "title": "Customer Feedback Form",
+  "description": "Collect feedback from customers",
+  "plan": "FREE",
+  "responseLimit": 100,
+  "fillingAmount": 0.00,
+  "expiresAt": "2026-12-31T23:59:59",
+  "questionRequestSet": [
+    {
+      "question": "How was our service?",
+      "type": "SHORT_TEXT",
+      "required": true,
+      "questionOrder": 1,
+      "configuration": {}
+    }
+  ]
+}'>📋 Copy</button>
+<pre>{
+  <span class="json-key">"title"</span><span class="json-punc">:</span> <span class="json-str">"Customer Feedback Form"</span><span class="json-punc">,</span>
+  <span class="json-key">"description"</span><span class="json-punc">:</span> <span class="json-str">"Collect feedback from customers"</span><span class="json-punc">,</span>
+  <span class="json-key">"plan"</span><span class="json-punc">:</span> <span class="json-str">"FREE"</span><span class="json-punc">,</span>
+  <span class="json-key">"responseLimit"</span><span class="json-punc">:</span> <span class="json-num">100</span><span class="json-punc">,</span>
+  <span class="json-key">"fillingAmount"</span><span class="json-punc">:</span> <span class="json-num">0.00</span><span class="json-punc">,</span>
+  <span class="json-key">"expiresAt"</span><span class="json-punc">:</span> <span class="json-str">"2026-12-31T23:59:59"</span><span class="json-punc">,</span>
+  <span class="json-key">"questionRequestSet"</span><span class="json-punc">:</span> <span class="json-punc">[</span>
+    <span class="json-punc">{</span>
+      <span class="json-key">"question"</span><span class="json-punc">:</span> <span class="json-str">"How was our service?"</span><span class="json-punc">,</span>
+      <span class="json-key">"type"</span><span class="json-punc">:</span> <span class="json-str">"SHORT_TEXT"</span><span class="json-punc">,</span>
+      <span class="json-key">"required"</span><span class="json-punc">:</span> <span class="json-bool">true</span><span class="json-punc">,</span>
+      <span class="json-key">"questionOrder"</span><span class="json-punc">:</span> <span class="json-num">1</span><span class="json-punc">,</span>
+      <span class="json-key">"configuration"</span><span class="json-punc">:</span> <span class="json-punc">{}</span>
+    <span class="json-punc">}</span>
+  <span class="json-punc">]</span>
+}</pre>
+            </div>
+          </div>
+
+          <div>
+            <span class="response-label success">✓ Success <span class="status-code">201 Created</span></span>
+            <div class="code-block" data-label="Response JSON">
+              <button class="code-copy-btn" data-copy='{
+  "id": "{formId}",
+  "ownerId": 1,
+  "title": "Customer Feedback Form",
+  "description": "Collect feedback from customers",
+  "status": "DRAFT",
+  "plan": "FREE",
+  "responseLimit": 100,
+  "fillingAmount": 0.00,
+  "totalCollectionAmount": 0.00,
+  "questions": [],
+  "expiresAt": "2026-12-31T23:59:59",
+  "createdAt": "2026-09-13T23:00:00",
+  "updatedAt": "2026-09-13T23:00:00"
+}'>📋 Copy</button>
+<pre>{
+  <span class="json-key">"id"</span><span class="json-punc">:</span> <span class="json-str">"{formId}"</span><span class="json-punc">,</span>
+  <span class="json-key">"ownerId"</span><span class="json-punc">:</span> <span class="json-num">1</span><span class="json-punc">,</span>
+  <span class="json-key">"title"</span><span class="json-punc">:</span> <span class="json-str">"Customer Feedback Form"</span><span class="json-punc">,</span>
+  <span class="json-key">"description"</span><span class="json-punc">:</span> <span class="json-str">"Collect feedback from customers"</span><span class="json-punc">,</span>
+  <span class="json-key">"status"</span><span class="json-punc">:</span> <span class="json-str">"DRAFT"</span><span class="json-punc">,</span>
+  <span class="json-key">"plan"</span><span class="json-punc">:</span> <span class="json-str">"FREE"</span><span class="json-punc">,</span>
+  <span class="json-key">"responseLimit"</span><span class="json-punc">:</span> <span class="json-num">100</span><span class="json-punc">,</span>
+  <span class="json-key">"fillingAmount"</span><span class="json-punc">:</span> <span class="json-num">0.00</span><span class="json-punc">,</span>
+  <span class="json-key">"totalCollectionAmount"</span><span class="json-punc">:</span> <span class="json-num">0.00</span><span class="json-punc">,</span>
+  <span class="json-key">"questions"</span><span class="json-punc">:</span> <span class="json-punc">[]</span><span class="json-punc">,</span>
+  <span class="json-key">"expiresAt"</span><span class="json-punc">:</span> <span class="json-str">"2026-12-31T23:59:59"</span><span class="json-punc">,</span>
+  <span class="json-key">"createdAt"</span><span class="json-punc">:</span> <span class="json-str">"2026-09-13T23:00:00"</span><span class="json-punc">,</span>
+  <span class="json-key">"updatedAt"</span><span class="json-punc">:</span> <span class="json-str">"2026-09-13T23:00:00"</span>
+}</pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Get My Forms -->
+      <section class="doc-section" id="list">
+        <h2><span class="section-num">02</span>Get My Forms</h2>
+        <p class="section-desc">Returns all forms associated with the API key owner.</p>
+
+        <div class="endpoint-header">
+          <span class="method-badge get">GET</span>
+          <span class="endpoint-path">/api/v1/forms/all</span>
+          <button class="endpoint-copy" data-copy="GET http://localhost:8080/api/v1/forms/all">📋 Copy</button>
+        </div>
+
+        <div class="endpoint-meta">
+          <div>
+            <span class="endpoint-meta-label">Full URL</span>
+            <div class="full-url">
+              <span class="url-scheme">http://</span><span class="url-host">localhost:8080</span><span class="url-path">/api/v1/forms/all</span>
+            </div>
+          </div>
+
+          <div>
+            <span class="endpoint-meta-label">Headers</span>
+            <div class="header-tags">
+              <span class="header-tag"><span class="header-key">X-API-KEY</span>: <span class="header-value">gf_live_xxxxxxxxx</span></span>
+            </div>
+          </div>
+
+          <div>
+            <span class="response-label success">✓ Success <span class="status-code">200 OK</span></span>
+            <div class="code-block" data-label="Response JSON">
+              <button class="code-copy-btn" data-copy='[
+  {
+    "id": "{formId}",
+    "ownerId": 1,
+    "title": "Customer Feedback Form",
+    "description": "Collect feedback from customers",
+    "status": "DRAFT",
+    "plan": "FREE",
+    "responseLimit": 100,
+    "fillingAmount": 0.00,
+    "totalCollectionAmount": 0.00,
+    "questions": [],
+    "expiresAt": "2026-12-31T23:59:59",
+    "createdAt": "2026-09-13T23:00:00",
+    "updatedAt": "2026-09-13T23:00:00"
+  }
+]'>📋 Copy</button>
+<pre><span class="json-punc">[</span>
+  <span class="json-punc">{</span>
+    <span class="json-key">"id"</span><span class="json-punc">:</span> <span class="json-str">"{formId}"</span><span class="json-punc">,</span>
+    <span class="json-key">"ownerId"</span><span class="json-punc">:</span> <span class="json-num">1</span><span class="json-punc">,</span>
+    <span class="json-key">"title"</span><span class="json-punc">:</span> <span class="json-str">"Customer Feedback Form"</span><span class="json-punc">,</span>
+    <span class="json-key">"description"</span><span class="json-punc">:</span> <span class="json-str">"Collect feedback from customers"</span><span class="json-punc">,</span>
+    <span class="json-key">"status"</span><span class="json-punc">:</span> <span class="json-str">"DRAFT"</span><span class="json-punc">,</span>
+    <span class="json-key">"plan"</span><span class="json-punc">:</span> <span class="json-str">"FREE"</span><span class="json-punc">,</span>
+    <span class="json-key">"responseLimit"</span><span class="json-punc">:</span> <span class="json-num">100</span><span class="json-punc">,</span>
+    <span class="json-key">"fillingAmount"</span><span class="json-punc">:</span> <span class="json-num">0.00</span><span class="json-punc">,</span>
+    <span class="json-key">"totalCollectionAmount"</span><span class="json-punc">:</span> <span class="json-num">0.00</span><span class="json-punc">,</span>
+    <span class="json-key">"questions"</span><span class="json-punc">:</span> <span class="json-punc">[]</span><span class="json-punc">,</span>
+    <span class="json-key">"expiresAt"</span><span class="json-punc">:</span> <span class="json-str">"2026-12-31T23:59:59"</span><span class="json-punc">,</span>
+    <span class="json-key">"createdAt"</span><span class="json-punc">:</span> <span class="json-str">"2026-09-13T23:00:00"</span><span class="json-punc">,</span>
+    <span class="json-key">"updatedAt"</span><span class="json-punc">:</span> <span class="json-str">"2026-09-13T23:00:00"</span>
+  <span class="json-punc">}</span>
+<span class="json-punc">]</span></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Get Form -->
+      <section class="doc-section" id="get">
+        <h2><span class="section-num">03</span>Get Form</h2>
+        <p class="section-desc">Returns a specific form by its ID.</p>
+
+        <div class="endpoint-header">
+          <span class="method-badge get">GET</span>
+          <span class="endpoint-path">/api/v1/forms?formId={formId}</span>
+          <button class="endpoint-copy" data-copy="GET http://localhost:8080/api/v1/forms?formId={formId}">📋 Copy</button>
+        </div>
+
+        <div class="endpoint-meta">
+          <div>
+            <span class="endpoint-meta-label">Full URL</span>
+            <div class="full-url">
+              <span class="url-scheme">http://</span><span class="url-host">localhost:8080</span><span class="url-path">/api/v1/forms?formId=</span><span class="url-param">{formId}</span>
+            </div>
+          </div>
+
+          <div>
+            <span class="endpoint-meta-label">Query parameters</span>
+            <div class="field-ref-table">
+              <div class="frt-row frt-head">
+                <span>Param</span>
+                <span>Type</span>
+                <span>Description</span>
+              </div>
+              <div class="frt-row">
+                <code class="frt-name">formId</code>
+                <code class="frt-type">UUID</code>
+                <span class="frt-desc">Required. Unique identifier of the form to fetch.</span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <span class="endpoint-meta-label">Headers</span>
+            <div class="header-tags">
+              <span class="header-tag"><span class="header-key">X-API-KEY</span>: <span class="header-value">gf_live_xxxxxxxxx</span></span>
+            </div>
+          </div>
+
+          <div>
+            <span class="response-label success">✓ Success <span class="status-code">200 OK</span></span>
+            <p style="margin:8px 0 0; color:var(--muted); font-size:.88rem;">Returns the full form object.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Update Form -->
+      <section class="doc-section" id="update">
+        <h2><span class="section-num">04</span>Update Form</h2>
+        <p class="section-desc">Updates an existing form. You can modify the form's details and its full question list in one request.</p>
+
+        <div class="endpoint-header">
+          <span class="method-badge put">PUT</span>
+          <span class="endpoint-path">/api/v1/forms?formId={formId}</span>
+          <button class="endpoint-copy" data-copy="PUT http://localhost:8080/api/v1/forms?formId={formId}">📋 Copy</button>
+        </div>
+
+        <div class="endpoint-meta">
+          <div>
+            <span class="endpoint-meta-label">Full URL</span>
+            <div class="full-url">
+              <span class="url-scheme">http://</span><span class="url-host">localhost:8080</span><span class="url-path">/api/v1/forms?formId=</span><span class="url-param">{formId}</span>
+            </div>
+          </div>
+
+          <div>
+            <span class="endpoint-meta-label">Query parameters</span>
+            <div class="field-ref-table">
+              <div class="frt-row frt-head">
+                <span>Param</span>
+                <span>Type</span>
+                <span>Description</span>
+              </div>
+              <div class="frt-row">
+                <code class="frt-name">formId</code>
+                <code class="frt-type">UUID</code>
+                <span class="frt-desc">Required. Unique identifier of the form to update.</span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <span class="endpoint-meta-label">Headers</span>
+            <div class="header-tags">
+              <span class="header-tag"><span class="header-key">Content-Type</span>: <span class="header-value">application/json</span></span>
+              <span class="header-tag"><span class="header-key">X-API-KEY</span>: <span class="header-value">gf_live_xxxxxxxxx</span></span>
+            </div>
+          </div>
+
+          <div>
+            <span class="endpoint-meta-label">Request body</span>
+            <div class="code-block" data-label="JSON">
+              <button class="code-copy-btn" data-copy='{
+  "title": "Updated Customer Feedback",
+  "description": "Updated description",
+  "plan": "FREE",
+  "responseLimit": 200,
+  "fillingAmount": 5.00,
+  "expiresAt": "2026-12-31T23:59:59",
+  "questionRequestList": [
+    {
+      "id": "{questionId}",
+      "question": "How was our service?",
+      "type": "SHORT_TEXT",
+      "required": true,
+      "questionOrder": 1,
+      "configuration": {}
+    }
+  ]
+}'>📋 Copy</button>
+<pre>{
+  <span class="json-key">"title"</span><span class="json-punc">:</span> <span class="json-str">"Updated Customer Feedback"</span><span class="json-punc">,</span>
+  <span class="json-key">"description"</span><span class="json-punc">:</span> <span class="json-str">"Updated description"</span><span class="json-punc">,</span>
+  <span class="json-key">"plan"</span><span class="json-punc">:</span> <span class="json-str">"FREE"</span><span class="json-punc">,</span>
+  <span class="json-key">"responseLimit"</span><span class="json-punc">:</span> <span class="json-num">200</span><span class="json-punc">,</span>
+  <span class="json-key">"fillingAmount"</span><span class="json-punc">:</span> <span class="json-num">5.00</span><span class="json-punc">,</span>
+  <span class="json-key">"expiresAt"</span><span class="json-punc">:</span> <span class="json-str">"2026-12-31T23:59:59"</span><span class="json-punc">,</span>
+  <span class="json-key">"questionRequestList"</span><span class="json-punc">:</span> <span class="json-punc">[</span>
+    <span class="json-punc">{</span>
+      <span class="json-key">"id"</span><span class="json-punc">:</span> <span class="json-str">"{questionId}"</span><span class="json-punc">,</span>
+      <span class="json-key">"question"</span><span class="json-punc">:</span> <span class="json-str">"How was our service?"</span><span class="json-punc">,</span>
+      <span class="json-key">"type"</span><span class="json-punc">:</span> <span class="json-str">"SHORT_TEXT"</span><span class="json-punc">,</span>
+      <span class="json-key">"required"</span><span class="json-punc">:</span> <span class="json-bool">true</span><span class="json-punc">,</span>
+      <span class="json-key">"questionOrder"</span><span class="json-punc">:</span> <span class="json-num">1</span><span class="json-punc">,</span>
+      <span class="json-key">"configuration"</span><span class="json-punc">:</span> <span class="json-punc">{}</span>
+    <span class="json-punc">}</span>
+  <span class="json-punc">]</span>
+}</pre>
+            </div>
+          </div>
+
+          <div>
+            <span class="response-label success">✓ Success <span class="status-code">200 OK</span></span>
+            <p style="margin:8px 0 0; color:var(--muted); font-size:.88rem;">Returns the updated form object.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Publish Form -->
+      <section class="doc-section" id="publish">
+        <h2><span class="section-num">05</span>Publish Form</h2>
+        <p class="section-desc">Publishes a form so respondents can start submitting responses.</p>
+
+        <div class="endpoint-header">
+          <span class="method-badge patch">PATCH</span>
+          <span class="endpoint-path">/api/v1/forms/publish?formId={formId}</span>
+          <button class="endpoint-copy" data-copy="PATCH http://localhost:8080/api/v1/forms/publish?formId={formId}">📋 Copy</button>
+        </div>
+
+        <div class="endpoint-meta">
+          <div>
+            <span class="endpoint-meta-label">Full URL</span>
+            <div class="full-url">
+              <span class="url-scheme">http://</span><span class="url-host">localhost:8080</span><span class="url-path">/api/v1/forms/publish?formId=</span><span class="url-param">{formId}</span>
+            </div>
+          </div>
+
+          <div>
+            <span class="endpoint-meta-label">Query parameters</span>
+            <div class="field-ref-table">
+              <div class="frt-row frt-head">
+                <span>Param</span>
+                <span>Type</span>
+                <span>Description</span>
+              </div>
+              <div class="frt-row">
+                <code class="frt-name">formId</code>
+                <code class="frt-type">UUID</code>
+                <span class="frt-desc">Required. Unique identifier of the form to publish.</span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <span class="endpoint-meta-label">Headers</span>
+            <div class="header-tags">
+              <span class="header-tag"><span class="header-key">X-API-KEY</span>: <span class="header-value">gf_live_xxxxxxxxx</span></span>
+            </div>
+          </div>
+
+          <div>
+            <span class="response-label success">✓ Success <span class="status-code">200 OK</span></span>
+            <div class="code-block" data-label="Response JSON">
+              <button class="code-copy-btn" data-copy='{
+  "id": "{formId}",
+  "title": "Customer Feedback Form",
+  "status": "PUBLISHED"
+}'>📋 Copy</button>
+<pre>{
+  <span class="json-key">"id"</span><span class="json-punc">:</span> <span class="json-str">"{formId}"</span><span class="json-punc">,</span>
+  <span class="json-key">"title"</span><span class="json-punc">:</span> <span class="json-str">"Customer Feedback Form"</span><span class="json-punc">,</span>
+  <span class="json-key">"status"</span><span class="json-punc">:</span> <span class="json-str">"PUBLISHED"</span>
+}</pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Close Form -->
+      <section class="doc-section" id="close">
+        <h2><span class="section-num">06</span>Close Form</h2>
+        <p class="section-desc">Closes a form. Respondents can no longer submit responses.</p>
+
+        <div class="endpoint-header">
+          <span class="method-badge patch">PATCH</span>
+          <span class="endpoint-path">/api/v1/forms/close?formId={formId}</span>
+          <button class="endpoint-copy" data-copy="PATCH http://localhost:8080/api/v1/forms/close?formId={formId}">📋 Copy</button>
+        </div>
+
+        <div class="endpoint-meta">
+          <div>
+            <span class="endpoint-meta-label">Full URL</span>
+            <div class="full-url">
+              <span class="url-scheme">http://</span><span class="url-host">localhost:8080</span><span class="url-path">/api/v1/forms/close?formId=</span><span class="url-param">{formId}</span>
+            </div>
+          </div>
+
+          <div>
+            <span class="endpoint-meta-label">Query parameters</span>
+            <div class="field-ref-table">
+              <div class="frt-row frt-head">
+                <span>Param</span>
+                <span>Type</span>
+                <span>Description</span>
+              </div>
+              <div class="frt-row">
+                <code class="frt-name">formId</code>
+                <code class="frt-type">UUID</code>
+                <span class="frt-desc">Required. Unique identifier of the form to close.</span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <span class="endpoint-meta-label">Headers</span>
+            <div class="header-tags">
+              <span class="header-tag"><span class="header-key">X-API-KEY</span>: <span class="header-value">gf_live_xxxxxxxxx</span></span>
+            </div>
+          </div>
+
+          <div>
+            <span class="response-label success">✓ Success <span class="status-code">200 OK</span></span>
+            <p style="margin:8px 0 0; color:var(--muted); font-size:.88rem;">Returns the updated FormResponse.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Archive Form -->
+      <section class="doc-section" id="archive">
+        <h2><span class="section-num">07</span>Archive Form</h2>
+        <p class="section-desc">Archives a form. Archived forms can no longer be edited or accept responses.</p>
+
+        <div class="endpoint-header">
+          <span class="method-badge patch">PATCH</span>
+          <span class="endpoint-path">/api/v1/forms/archive?formId={formId}</span>
+          <button class="endpoint-copy" data-copy="PATCH http://localhost:8080/api/v1/forms/archive?formId={formId}">📋 Copy</button>
+        </div>
+
+        <div class="endpoint-meta">
+          <div>
+            <span class="endpoint-meta-label">Full URL</span>
+            <div class="full-url">
+              <span class="url-scheme">http://</span><span class="url-host">localhost:8080</span><span class="url-path">/api/v1/forms/archive?formId=</span><span class="url-param">{formId}</span>
+            </div>
+          </div>
+
+          <div>
+            <span class="endpoint-meta-label">Query parameters</span>
+            <div class="field-ref-table">
+              <div class="frt-row frt-head">
+                <span>Param</span>
+                <span>Type</span>
+                <span>Description</span>
+              </div>
+              <div class="frt-row">
+                <code class="frt-name">formId</code>
+                <code class="frt-type">UUID</code>
+                <span class="frt-desc">Required. Unique identifier of the form to archive.</span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <span class="endpoint-meta-label">Headers</span>
+            <div class="header-tags">
+              <span class="header-tag"><span class="header-key">X-API-KEY</span>: <span class="header-value">gf_live_xxxxxxxxx</span></span>
+            </div>
+          </div>
+
+          <div>
+            <span class="response-label success">✓ Success <span class="status-code">200 OK</span></span>
+            <p style="margin:8px 0 0; color:var(--muted); font-size:.88rem;">Returns the updated FormResponse.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Delete Form -->
+      <section class="doc-section" id="delete">
+        <h2><span class="section-num">08</span>Delete Form</h2>
+        <p class="section-desc">Permanently deletes a form and all of its responses.</p>
+
+        <div class="endpoint-header">
+          <span class="method-badge delete">DELETE</span>
+          <span class="endpoint-path">/api/v1/forms?formId={formId}</span>
+          <button class="endpoint-copy" data-copy="DELETE http://localhost:8080/api/v1/forms?formId={formId}">📋 Copy</button>
+        </div>
+
+        <div class="endpoint-meta">
+          <div>
+            <span class="endpoint-meta-label">Full URL</span>
+            <div class="full-url">
+              <span class="url-scheme">http://</span><span class="url-host">localhost:8080</span><span class="url-path">/api/v1/forms?formId=</span><span class="url-param">{formId}</span>
+            </div>
+          </div>
+
+          <div>
+            <span class="endpoint-meta-label">Query parameters</span>
+            <div class="field-ref-table">
+              <div class="frt-row frt-head">
+                <span>Param</span>
+                <span>Type</span>
+                <span>Description</span>
+              </div>
+              <div class="frt-row">
+                <code class="frt-name">formId</code>
+                <code class="frt-type">UUID</code>
+                <span class="frt-desc">Required. Unique identifier of the form to delete.</span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <span class="endpoint-meta-label">Headers</span>
+            <div class="header-tags">
+              <span class="header-tag"><span class="header-key">X-API-KEY</span>: <span class="header-value">gf_live_xxxxxxxxx</span></span>
+            </div>
+          </div>
+
+          <div>
+            <span class="response-label success">✓ Success <span class="status-code">204 No Content</span></span>
+            <p style="margin:8px 0 0; color:var(--muted); font-size:.88rem;">No response body is returned.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Submit Response -->
+      <section class="doc-section" id="submit">
+        <h2><span class="section-num">09</span>Submit Response</h2>
+        <p class="section-desc">
+          Submits a respondent's answer to a published form. This is the only public
+          endpoint in the API — it does <strong>not</strong> require an API key, since it is
+          called from the form's public URL by respondents.
+        </p>
+
+        <div class="endpoint-header">
+          <span class="method-badge post">POST</span>
+          <span class="endpoint-path">/api/v1/forms/submit?formId={formId}</span>
+          <button class="endpoint-copy" data-copy="POST http://localhost:8080/api/v1/forms/submit?formId={formId}">📋 Copy</button>
+        </div>
+
+        <div class="endpoint-meta">
+          <div>
+            <span class="endpoint-meta-label">Full URL</span>
+            <div class="full-url">
+              <span class="url-scheme">http://</span><span class="url-host">localhost:8080</span><span class="url-path">/api/v1/forms/submit?formId=</span><span class="url-param">{formId}</span>
+            </div>
+          </div>
+
+          <div>
+            <span class="endpoint-meta-label">Query parameters</span>
+            <div class="field-ref-table">
+              <div class="frt-row frt-head">
+                <span>Param</span>
+                <span>Type</span>
+                <span>Description</span>
+              </div>
+              <div class="frt-row">
+                <code class="frt-name">formId</code>
+                <code class="frt-type">UUID</code>
+                <span class="frt-desc">Required. ID of the form the response belongs to.</span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <span class="endpoint-meta-label">Headers</span>
+            <div class="header-tags">
+              <span class="header-tag"><span class="header-key">Content-Type</span>: <span class="header-value">application/json</span></span>
+            </div>
+          </div>
+
+          <div>
+            <span class="endpoint-meta-label">Request body</span>
+            <div class="code-block" data-label="JSON">
+              <button class="code-copy-btn" data-copy='{
+  "respondentEmail": "jane@example.com",
+  "answers": {
+    "{questionId}": "Great service!",
+    "{questionId2}": ["Yes", "Fast delivery"]
+  }
+}'>📋 Copy</button>
+<pre>{
+  <span class="json-key">"respondentEmail"</span><span class="json-punc">:</span> <span class="json-str">"jane@example.com"</span><span class="json-punc">,</span>
+  <span class="json-key">"answers"</span><span class="json-punc">:</span> <span class="json-punc">{</span>
+    <span class="json-key">"{questionId}"</span><span class="json-punc">:</span> <span class="json-str">"Great service!"</span><span class="json-punc">,</span>
+    <span class="json-key">"{questionId2}"</span><span class="json-punc">:</span> <span class="json-punc">[</span><span class="json-str">"Yes"</span><span class="json-punc">,</span> <span class="json-str">"Fast delivery"</span><span class="json-punc">]</span>
+  <span class="json-punc">}</span>
+}</pre>
+            </div>
+          </div>
+
+          <div>
+            <span class="endpoint-meta-label">Request fields</span>
+            <div class="field-ref-table">
+              <div class="frt-row frt-head">
+                <span>Field</span>
+                <span>Type</span>
+                <span>Description</span>
+              </div>
+              <div class="frt-row">
+                <code class="frt-name">respondentEmail</code>
+                <code class="frt-type">String</code>
+                <span class="frt-desc">Optional. Must be a valid email address — the server validates this with <code>@Email</code> and returns <code>400 Bad Request</code> if the format is wrong.</span>
+              </div>
+              <div class="frt-row">
+                <code class="frt-name">answers</code>
+                <code class="frt-type">Map&lt;String,Object&gt;</code>
+                <span class="frt-desc">
+                  Required. Keys are question UUIDs; values depend on the question's <code>type</code>:
+                  a plain string for text/number/date/email, an array of strings for choice questions
+                  (<code>MULTIPLE_CHOICE</code>, <code>CHECKBOX</code>), a number for <code>RATING</code>, and
+                  a URL or file reference for <code>FILE_UPLOAD</code>.
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <span class="response-label success">✓ Success <span class="status-code">201 Created</span></span>
+            <div class="code-block" data-label="Response JSON">
+              <button class="code-copy-btn" data-copy='{
+  "id": "{responseId}",
+  "formId": "{formId}",
+  "respondentEmail": "jane@example.com",
+  "answers": {
+    "{questionId}": "Great service!",
+    "{questionId2}": ["Yes", "Fast delivery"]
+  },
+  "submittedAt": "2026-09-13T23:12:00"
+}'>📋 Copy</button>
+<pre>{
+  <span class="json-key">"id"</span><span class="json-punc">:</span> <span class="json-str">"{responseId}"</span><span class="json-punc">,</span>
+  <span class="json-key">"formId"</span><span class="json-punc">:</span> <span class="json-str">"{formId}"</span><span class="json-punc">,</span>
+  <span class="json-key">"respondentEmail"</span><span class="json-punc">:</span> <span class="json-str">"jane@example.com"</span><span class="json-punc">,</span>
+  <span class="json-key">"answers"</span><span class="json-punc">:</span> <span class="json-punc">{</span>
+    <span class="json-key">"{questionId}"</span><span class="json-punc">:</span> <span class="json-str">"Great service!"</span><span class="json-punc">,</span>
+    <span class="json-key">"{questionId2}"</span><span class="json-punc">:</span> <span class="json-punc">[</span><span class="json-str">"Yes"</span><span class="json-punc">,</span> <span class="json-str">"Fast delivery"</span><span class="json-punc">]</span>
+  <span class="json-punc">}</span><span class="json-punc">,</span>
+  <span class="json-key">"submittedAt"</span><span class="json-punc">:</span> <span class="json-str">"2026-09-13T23:12:00"</span>
+}</pre>
+            </div>
+          </div>
+
+          <div>
+            <span class="response-label error">Invalid Email <span class="status-code">400 Bad Request</span></span>
+            <div class="code-block" data-label="JSON">
+              <button class="code-copy-btn" data-copy='{
+  "status": 400,
+  "error": "Bad Request",
+  "message": "Validation failed",
+  "errors": {
+    "respondentEmail": "Invalid email address"
+  }
+}'>📋 Copy</button>
+<pre>{
+  <span class="json-key">"status"</span><span class="json-punc">:</span> <span class="json-num">400</span><span class="json-punc">,</span>
+  <span class="json-key">"error"</span><span class="json-punc">:</span> <span class="json-str">"Bad Request"</span><span class="json-punc">,</span>
+  <span class="json-key">"message"</span><span class="json-punc">:</span> <span class="json-str">"Validation failed"</span><span class="json-punc">,</span>
+  <span class="json-key">"errors"</span><span class="json-punc">:</span> <span class="json-punc">{</span>
+    <span class="json-key">"respondentEmail"</span><span class="json-punc">:</span> <span class="json-str">"Invalid email address"</span>
+  <span class="json-punc">}</span>
+}</pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="note">
+          <strong>Note:</strong> This endpoint is public by design and does not send
+          <code>X-API-KEY</code>. The server rejects submissions to forms that are not in
+          <code>PUBLISHED</code> status, that have expired, or that have reached their
+          <code>responseLimit</code> — each returns a <code>4xx</code> error.
+        </div>
+      </section>
+
+      <!-- Error Responses -->
+      <section class="doc-section" id="errors">
+        <h2><span class="section-num">⚠</span>Error Responses</h2>
+        <p class="section-desc">The API returns standard HTTP status codes along with a JSON error body.</p>
+
+        <div class="endpoint-meta">
+
+          <div>
+            <span class="response-label error">Missing API Key <span class="status-code">401 Unauthorized</span></span>
+            <div class="code-block" data-label="JSON">
+              <button class="code-copy-btn" data-copy='{
+  "status": 401,
+  "error": "Unauthorized",
+  "message": "API key is required"
+}'>📋 Copy</button>
+<pre>{
+  <span class="json-key">"status"</span><span class="json-punc">:</span> <span class="json-num">401</span><span class="json-punc">,</span>
+  <span class="json-key">"error"</span><span class="json-punc">:</span> <span class="json-str">"Unauthorized"</span><span class="json-punc">,</span>
+  <span class="json-key">"message"</span><span class="json-punc">:</span> <span class="json-str">"API key is required"</span>
+}</pre>
+            </div>
+          </div>
+
+          <div>
+            <span class="response-label error">Invalid API Key <span class="status-code">401 Unauthorized</span></span>
+            <div class="code-block" data-label="JSON">
+              <button class="code-copy-btn" data-copy='{
+  "status": 401,
+  "error": "Unauthorized",
+  "message": "Invalid API key"
+}'>📋 Copy</button>
+<pre>{
+  <span class="json-key">"status"</span><span class="json-punc">:</span> <span class="json-num">401</span><span class="json-punc">,</span>
+  <span class="json-key">"error"</span><span class="json-punc">:</span> <span class="json-str">"Unauthorized"</span><span class="json-punc">,</span>
+  <span class="json-key">"message"</span><span class="json-punc">:</span> <span class="json-str">"Invalid API key"</span>
+}</pre>
+            </div>
+          </div>
+
+          <div>
+            <span class="response-label error">Expired/Revoked API Key <span class="status-code">401 Unauthorized</span></span>
+            <div class="code-block" data-label="JSON">
+              <button class="code-copy-btn" data-copy='{
+  "status": 401,
+  "error": "Unauthorized",
+  "message": "API key is expired or revoked"
+}'>📋 Copy</button>
+<pre>{
+  <span class="json-key">"status"</span><span class="json-punc">:</span> <span class="json-num">401</span><span class="json-punc">,</span>
+  <span class="json-key">"error"</span><span class="json-punc">:</span> <span class="json-str">"Unauthorized"</span><span class="json-punc">,</span>
+  <span class="json-key">"message"</span><span class="json-punc">:</span> <span class="json-str">"API key is expired or revoked"</span>
+}</pre>
+            </div>
+          </div>
+
+          <div>
+            <span class="response-label error">Access Denied <span class="status-code">403 Forbidden</span></span>
+            <div class="code-block" data-label="JSON">
+              <button class="code-copy-btn" data-copy='{
+  "status": 403,
+  "error": "Forbidden",
+  "message": "You do not have permission to access this resource"
+}'>📋 Copy</button>
+<pre>{
+  <span class="json-key">"status"</span><span class="json-punc">:</span> <span class="json-num">403</span><span class="json-punc">,</span>
+  <span class="json-key">"error"</span><span class="json-punc">:</span> <span class="json-str">"Forbidden"</span><span class="json-punc">,</span>
+  <span class="json-key">"message"</span><span class="json-punc">:</span> <span class="json-str">"You do not have permission to access this resource"</span>
+}</pre>
+            </div>
+          </div>
+
+          <div>
+            <span class="response-label error">Form Not Found <span class="status-code">404 Not Found</span></span>
+            <div class="code-block" data-label="JSON">
+              <button class="code-copy-btn" data-copy='{
+  "status": 404,
+  "error": "Not Found",
+  "message": "Form not found"
+}'>📋 Copy</button>
+<pre>{
+  <span class="json-key">"status"</span><span class="json-punc">:</span> <span class="json-num">404</span><span class="json-punc">,</span>
+  <span class="json-key">"error"</span><span class="json-punc">:</span> <span class="json-str">"Not Found"</span><span class="json-punc">,</span>
+  <span class="json-key">"message"</span><span class="json-punc">:</span> <span class="json-str">"Form not found"</span>
+}</pre>
+            </div>
+          </div>
+
+          <div>
+            <span class="response-label error">Validation Error <span class="status-code">400 Bad Request</span></span>
+            <div class="code-block" data-label="JSON">
+              <button class="code-copy-btn" data-copy='{
+  "status": 400,
+  "error": "Bad Request",
+  "message": "Validation failed",
+  "errors": {
+    "title": "Title is required"
+  }
+}'>📋 Copy</button>
+<pre>{
+  <span class="json-key">"status"</span><span class="json-punc">:</span> <span class="json-num">400</span><span class="json-punc">,</span>
+  <span class="json-key">"error"</span><span class="json-punc">:</span> <span class="json-str">"Bad Request"</span><span class="json-punc">,</span>
+  <span class="json-key">"message"</span><span class="json-punc">:</span> <span class="json-str">"Validation failed"</span><span class="json-punc">,</span>
+  <span class="json-key">"errors"</span><span class="json-punc">:</span> <span class="json-punc">{</span>
+    <span class="json-key">"title"</span><span class="json-punc">:</span> <span class="json-str">"Title is required"</span>
+  <span class="json-punc">}</span>
+}</pre>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+  </div>
+</main>
+
+<!-- ============================= BOTTOM NAVBAR / FOOTER ============================= -->
+<footer class="site-footer">
+  <div class="footer-inner">
+
+    <div class="footer-top">
+      <div class="footer-brand-block">
+        <a class="footer-brand" href="index.html">
+          <img class="footer-brand-logo" src="Glogo.png" alt="PutForm logo"
+               onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 46 46%22><rect width=%2246%22 height=%2246%22 rx=%2212%22 fill=%22%2317b8a6%22/><text x=%2250%25%22 y=%2258%25%22 text-anchor=%22middle%22 font-family=%22Arial%22 font-size=%2224%22 font-weight=%22bold%22 fill=%22white%22>P</text></svg>';">
+          Put<span>Form</span>
+        </a>
+        <p class="footer-tagline">
+          Build beautiful forms, collect responses, and connect them to your backend —
+          all from one clean, developer-friendly platform.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="forms.html">Dashboard</a></li>
+          <li><a href="creatform.html">Create a Form</a></li>
+          <li><a href="api.html">Developer API</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+          <li><a href="profile.html">Profile</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="copy">© 2026 <strong>PutForm</strong>. All rights reserved.</div>
+      <div class="footer-legal">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+        <a href="#">Cookies</a>
+      </div>
+    </div>
+
+  </div>
+</footer>
+
+<!-- Toast -->
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <span class="toast-icon" id="toastIcon">✓</span>
+  <span id="toastMsg">Copied</span>
+</div>
+
+<script>
+  /* ============================================================
+     CONFIG
+     ============================================================ */
+  const API_BASE = 'https://putform.onrender.com';
+  const API_V1   = API_BASE + '/api/v1';
+
+  /* ============================================================
+     THEME
+     ============================================================ */
+  const themeToggle = document.getElementById('themeToggle');
+  const menuToggle = document.getElementById('menuToggle');
+  const navLinks = document.getElementById('navLinks');
+  const authContainer = document.getElementById('authContainer');
+  const toast = document.getElementById('toast');
+  const toastIcon = document.getElementById('toastIcon');
+  const toastMsg = document.getElementById('toastMsg');
+
+  let toastTimer = null;
+
+  function applyTheme(theme) {
+    const dark = theme === 'dark';
+    document.body.classList.toggle('dark', dark);
+    themeToggle.innerHTML = dark
+      ? '<span class="theme-icon">☀️</span><span class="theme-label">Light mode</span>'
+      : '<span class="theme-icon">🌙</span><span class="theme-label">Dark mode</span>';
+    localStorage.setItem('putform-theme', dark ? 'dark' : 'light');
+  }
+  applyTheme(localStorage.getItem('putform-theme') || 'light');
+
+  themeToggle.addEventListener('click', () => {
+    applyTheme(document.body.classList.contains('dark') ? 'light' : 'dark');
+  });
+
+  /* ============================================================
+     MOBILE MENU
+     ============================================================ */
+  function closeMenu() {
+    navLinks.classList.remove('open');
+    menuToggle.setAttribute('aria-expanded', 'false');
+  }
+  menuToggle.addEventListener('click', () => {
+    const isOpen = navLinks.classList.toggle('open');
+    menuToggle.setAttribute('aria-expanded', String(isOpen));
+  });
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', closeMenu);
+  });
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 960) closeMenu();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeMenu();
+  });
+
+  /* ============================================================
+     AUTH STATE
+     ============================================================ */
+  async function checkUserSession() {
+    try {
+      const response = await fetch(API_V1 + '/forms/all', {
+        method: 'GET',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' }
+      });
+
+      if (response.ok) {
+        authContainer.innerHTML =
+          '<button class="btn-login" id="logoutBtn" type="button">Logout</button>';
+        document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+      } else {
+        renderLoginButton();
+      }
+    } catch (error) {
+      renderLoginButton();
+    }
+  }
+
+  function renderLoginButton() {
+    authContainer.innerHTML = '<a class="btn-login" href="login.html">Login</a>';
+  }
+
+  async function handleLogout() {
+    try {
+      await fetch(API_BASE + '/api/auth/logout', {
+        method: 'POST',
+        credentials: 'include'
+      });
+    } catch (error) {
+      console.error('Logout error:', error);
+    } finally {
+      window.location.href = 'login.html';
+    }
+  }
+
+  /* ============================================================
+     TOAST
+     ============================================================ */
+  function showToast(message, type = 'success') {
+    toastMsg.textContent = message;
+    toastIcon.textContent = type === 'error' ? '!' : '✓';
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 2000);
+  }
+
+  /* ============================================================
+     COPY TO CLIPBOARD
+     ============================================================ */
+  async function copyText(text, label = 'Copied to clipboard') {
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch {
+      const input = document.createElement('textarea');
+      input.value = text;
+      input.style.position = 'fixed';
+      input.style.opacity = '0';
+      document.body.appendChild(input);
+      input.focus();
+      input.select();
+      document.execCommand('copy');
+      input.remove();
+    }
+    showToast(label);
+  }
+
+  document.querySelectorAll('[data-copy]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      copyText(btn.dataset.copy, 'Copied to clipboard');
+    });
+  });
+
+  /* ============================================================
+     SIDEBAR ACTIVE LINK ON SCROLL
+     ============================================================ */
+  const sidebarLinks = document.querySelectorAll('.docs-sidebar a[href^="#"]');
+  const sections = document.querySelectorAll('.doc-section');
+
+  function highlightSidebar() {
+    let current = '';
+    sections.forEach(section => {
+      const top = section.getBoundingClientRect().top;
+      if (top <= 140) current = section.id;
+    });
+    if (!current && sections.length) current = sections[0].id;
+
+    sidebarLinks.forEach(link => {
+      link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+    });
+  }
+
+  window.addEventListener('scroll', highlightSidebar, { passive: true });
+  window.addEventListener('load', highlightSidebar);
+
+  sidebarLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      closeMenu();
+    });
+  });
+
+  /* ============================================================
+     INIT
+     ============================================================ */
+  checkUserSession();
+</script>
+</body>
+</html>

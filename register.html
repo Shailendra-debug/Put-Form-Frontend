@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Create Account - GetForm</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Inter, Arial, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f0fdfa, #ecfeff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #17211f;
+        }
+
+        /* =========================
+           CONTAINER
+        ========================= */
+
+        .container {
+            width: 100%;
+            max-width: 1050px;
+            min-height: 620px;
+            margin: 20px;
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            box-shadow: 0 20px 60px rgba(15, 118, 110, 0.15);
+        }
+
+
+        /* =========================
+           LEFT SIDE
+        ========================= */
+
+        .left {
+            background: linear-gradient(145deg, #0f766e, #0b5d56);
+            color: white;
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .left::before {
+            content: "";
+            position: absolute;
+            width: 320px;
+            height: 320px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.07);
+            top: -120px;
+            right: -120px;
+        }
+
+        .left::after {
+            content: "";
+            position: absolute;
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            bottom: -100px;
+            left: -100px;
+        }
+
+
+        /* =========================
+           BRAND
+        ========================= */
+
+
+        .brand{
+            font-family:Arial, Helvetica, sans-serif;
+            font-size:55px; font-weight:800; color:#fff;
+            line-height:1; display:inline-flex; align-items:center; gap:5px;
+            flex-shrink:0; letter-spacing:-.02em;
+            transition:opacity .25s ease, transform .25s ease;
+            padding:4px 0; text-decoration:none;
+        }
+        .brand:hover{opacity:.95;transform:translateY(-2px)}
+        .brand-logo{
+            display:block; width:60px; height:60px; object-fit:contain;
+            border-radius:12px; background:rgba(255,255,255,.10);
+            padding:4px; box-shadow:0 4px 12px rgba(0,0,0,.18); flex-shrink:0;
+            transition: transform .35s cubic-bezier(.34,1.56,.64,1), box-shadow .25s ease;
+        }
+        .brand:hover .brand-logo {
+            transform: rotate(-6deg) scale(1.08);
+            box-shadow: 0 8px 22px rgba(0,0,0,.30);
+        }
+        .brand span{color:#a7eee2}
+
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .hero {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 46px;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            letter-spacing: -1.5px;
+        }
+
+        .hero p {
+            color: #ccfbf1;
+            font-size: 16px;
+            line-height: 1.7;
+            max-width: 390px;
+        }
+
+
+        /* =========================
+           FEATURES
+        ========================= */
+
+        .features {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #e6fffb;
+            font-size: 14px;
+        }
+
+        .feature-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 9px;
+            background: rgba(255, 255, 255, 0.12);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 15px;
+        }
+
+
+        /* =========================
+           RIGHT SIDE
+        ========================= */
+
+        .right {
+            padding: 50px 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .register-box {
+            width: 100%;
+            max-width: 390px;
+        }
+
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .register-box h2 {
+            font-size: 32px;
+            margin-bottom: 8px;
+            color: #17211f;
+            letter-spacing: -0.7px;
+        }
+
+        .subtitle {
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 28px;
+            line-height: 1.5;
+        }
+
+
+        /* =========================
+           MESSAGE
+        ========================= */
+
+        .message {
+            display: none;
+            margin-bottom: 18px;
+            padding: 12px 14px;
+            border-radius: 9px;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        .message.error {
+            display: block;
+            background: #fef2f2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+        }
+
+        .message.success {
+            display: block;
+            background: #f0fdf4;
+            color: #15803d;
+            border: 1px solid #bbf7d0;
+        }
+
+
+        /* =========================
+           FORM
+        ========================= */
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #334155;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            font-size: 17px;
+            pointer-events: none;
+        }
+
+        input[type="email"],
+        input[type="password"],
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            height: 50px;
+
+            border: 1px solid #dbe4e1;
+            border-radius: 11px;
+
+            padding: 0 45px;
+
+            font-size: 14px;
+            outline: none;
+
+            transition: 0.2s;
+
+            background: #fbfdfc;
+        }
+
+        input:focus {
+            border-color: #0f766e;
+
+            box-shadow:
+                0 0 0 4px rgba(15, 118, 110, 0.08);
+
+            background: white;
+        }
+
+        input::placeholder {
+            color: #a0aab5;
+        }
+
+
+        /* =========================
+           PASSWORD BUTTON
+        ========================= */
+
+        .password-toggle {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+
+            border: none;
+            background: transparent;
+
+            cursor: pointer;
+
+            color: #64748b;
+            font-size: 17px;
+
+            padding: 3px;
+        }
+
+        .password-toggle:hover {
+            color: #0f766e;
+        }
+
+
+        /* =========================
+           REGISTER BUTTON
+        ========================= */
+
+        .register-btn {
+            width: 100%;
+            height: 51px;
+
+            border: none;
+            border-radius: 11px;
+
+            background: #0f766e;
+            color: white;
+
+            font-size: 15px;
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+
+            box-shadow:
+                0 8px 20px rgba(15, 118, 110, 0.20);
+        }
+
+        .register-btn:hover {
+            background: #0b5d56;
+
+            transform: translateY(-1px);
+
+            box-shadow:
+                0 10px 25px rgba(15, 118, 110, 0.25);
+        }
+
+        .register-btn:active {
+            transform: translateY(0);
+        }
+
+        .register-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+
+        /* =========================
+           LOGIN LINK
+        ========================= */
+
+        .login-link {
+            text-align: center;
+            margin-top: 25px;
+
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .login-link a {
+            color: #0f766e;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        .footer {
+            text-align: center;
+            margin-top: 28px;
+
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 800px) {
+
+            .container {
+                grid-template-columns: 1fr;
+                max-width: 480px;
+                min-height: auto;
+            }
+
+            .left {
+                display: none;
+            }
+
+            .right {
+                padding: 45px 30px;
+            }
+        }
+
+        @media (max-width: 400px) {
+
+            body {
+                background: white;
+            }
+
+            .container {
+                margin: 0;
+                border-radius: 0;
+                box-shadow: none;
+                min-height: 100vh;
+            }
+
+            .right {
+                padding: 35px 22px;
+            }
+
+            .register-box h2 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+
+
+<body>
+
+<div class="container">
+
+
+    <!-- =================================
+         LEFT SECTION
+    ================================== -->
+
+    <section class="left">
+
+
+        <a class="brand" href="index.html">
+          <img class="brand-logo" src="Glogo.png" alt="PutForm logo"
+              onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 46 46%22><rect width=%2246%22 height=%2246%22 rx=%2212%22 fill=%22%2317b8a6%22/><text x=%2250%25%22 y=%2258%25%22 text-anchor=%22middle%22 font-family=%22Arial%22 font-size=%2224%22 font-weight=%22bold%22 fill=%22white%22>P</text></svg>';">
+          Put<span>Form</span></span>
+        </a>
+
+        <div class="hero">
+
+            <h1>
+                Create.<br>
+                Share.<br>
+                Collect.
+            </h1>
+
+            <p>
+                Build powerful forms, collect responses,
+                and manage everything from one simple platform.
+            </p>
+
+        </div>
+
+
+        <div class="features">
+
+            <div class="feature">
+
+                <div class="feature-icon">
+                    ✓
+                </div>
+
+                Easy form creation
+
+            </div>
+
+
+            <div class="feature">
+
+                <div class="feature-icon">
+                    ✓
+                </div>
+
+                Secure response collection
+
+            </div>
+
+
+            <div class="feature">
+
+                <div class="feature-icon">
+                    ✓
+                </div>
+
+                Simple response management
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================
+         RIGHT SECTION
+    ================================== -->
+
+    <section class="right">
+
+        <div class="register-box">
+
+
+            <h2 id="formTitle">
+                Create account
+            </h2>
+
+
+            <p class="subtitle" id="formSubtitle">
+                Create your GetForm account to get started.
+            </p>
+
+
+            <!-- MESSAGE -->
+
+            <div
+                id="message"
+                class="message">
+            </div>
+
+
+            <!-- REGISTER FORM -->
+
+            <form id="registerForm">
+
+
+                <!-- NAME -->
+
+                <div class="form-group">
+
+                    <label for="name">
+                        Name
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-icon">
+                            👤
+                        </span>
+
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            placeholder="Enter your name"
+                            required
+                            autocomplete="name">
+
+                    </div>
+
+                </div>
+
+
+                <!-- EMAIL -->
+
+                <div class="form-group">
+
+                    <label for="email">
+                        Email
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-icon">
+                            ✉
+                        </span>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="you@example.com"
+                            required
+                            autocomplete="email">
+
+                    </div>
+
+                </div>
+
+
+                <!-- PASSWORD -->
+
+                <div class="form-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-icon">
+                            🔒
+                        </span>
+
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Create your password"
+                            minlength="6"
+                            required
+                            autocomplete="new-password">
+
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            id="togglePassword"
+                            aria-label="Show password">
+
+                            👁
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- CONFIRM PASSWORD -->
+
+                <div class="form-group">
+
+                    <label for="confirmPassword">
+                        Confirm password
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-icon">
+                            🔒
+                        </span>
+
+                        <input
+                            type="password"
+                            id="confirmPassword"
+                            name="confirmPassword"
+                            placeholder="Confirm your password"
+                            minlength="6"
+                            required
+                            autocomplete="new-password">
+
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            id="toggleConfirmPassword"
+                            aria-label="Show password">
+
+                            👁
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- REGISTER BUTTON -->
+
+                <button
+                    type="submit"
+                    class="register-btn"
+                    id="registerBtn">
+
+                    Create Account
+
+                </button>
+
+            </form>
+
+
+            <!-- OTP VERIFICATION FORM (HIDDEN INITIALLY) -->
+
+            <form id="otpForm" style="display: none;">
+
+
+                <!-- OTP INPUT -->
+
+                <div class="form-group">
+
+                    <label for="otp">
+                        Verification Code
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-icon">
+                            🔑
+                        </span>
+
+                        <input
+                            type="text"
+                            id="otp"
+                            name="otp"
+                            placeholder="Enter 6-digit OTP"
+                            pattern="\d{6}"
+                            maxlength="6"
+                            inputmode="numeric"
+                            required
+                            autocomplete="one-time-code">
+
+                    </div>
+
+                </div>
+
+
+                <!-- VERIFY BUTTON -->
+
+                <button
+                    type="submit"
+                    class="register-btn"
+                    id="verifyBtn">
+
+                    Verify & Create Account
+
+                </button>
+
+            </form>
+
+
+            <!-- LOGIN -->
+
+            <div class="login-link" id="loginLink">
+
+                Already have an account?
+
+                <a href="login.html">
+                    Sign in
+                </a>
+
+            </div>
+
+
+            <!-- FOOTER -->
+
+            <div class="footer">
+
+                © 2026 GetForm. All rights reserved.
+
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+
+<script>
+
+    /* =================================
+       ELEMENTS
+    ================================= */
+
+    const registerForm =
+        document.getElementById("registerForm");
+
+    const otpForm =
+        document.getElementById("otpForm");
+
+    const registerBtn =
+        document.getElementById("registerBtn");
+
+    const verifyBtn =
+        document.getElementById("verifyBtn");
+
+    const message =
+        document.getElementById("message");
+
+    const nameInput =
+        document.getElementById("name");
+
+    const emailInput =
+        document.getElementById("email");
+
+    const passwordInput =
+        document.getElementById("password");
+
+    const confirmPasswordInput =
+        document.getElementById("confirmPassword");
+
+    const otpInput =
+        document.getElementById("otp");
+
+    const togglePassword =
+        document.getElementById("togglePassword");
+
+    const toggleConfirmPassword =
+        document.getElementById("toggleConfirmPassword");
+
+    const formTitle =
+        document.getElementById("formTitle");
+
+    const formSubtitle =
+        document.getElementById("formSubtitle");
+
+    const loginLink =
+        document.getElementById("loginLink");
+
+
+    /* =================================
+       SHOW / HIDE PASSWORD
+    ================================= */
+
+    togglePassword.addEventListener("click", function () {
+
+        if (passwordInput.type === "password") {
+
+            passwordInput.type = "text";
+
+            togglePassword.textContent = "🙈";
+
+            togglePassword.setAttribute(
+                "aria-label",
+                "Hide password"
+            );
+
+        } else {
+
+            passwordInput.type = "password";
+
+            togglePassword.textContent = "👁";
+
+            togglePassword.setAttribute(
+                "aria-label",
+                "Show password"
+            );
+        }
+
+    });
+
+
+    toggleConfirmPassword.addEventListener(
+        "click",
+        function () {
+
+            if (
+                confirmPasswordInput.type ===
+                "password"
+            ) {
+
+                confirmPasswordInput.type =
+                    "text";
+
+                toggleConfirmPassword.textContent =
+                    "🙈";
+
+                toggleConfirmPassword.setAttribute(
+                    "aria-label",
+                    "Hide password"
+                );
+
+            } else {
+
+                confirmPasswordInput.type =
+                    "password";
+
+                toggleConfirmPassword.textContent =
+                    "👁";
+
+                toggleConfirmPassword.setAttribute(
+                    "aria-label",
+                    "Show password"
+                );
+            }
+
+        }
+    );
+
+
+    /* =================================
+       SHOW MESSAGE
+    ================================= */
+
+    function showMessage(type, text) {
+
+        message.className =
+            "message " + type;
+
+        message.textContent = text;
+    }
+
+
+    /* =================================
+       REGISTER (STEP 1)
+    ================================= */
+
+    registerForm.addEventListener(
+        "submit",
+        async function (event) {
+
+            event.preventDefault();
+
+
+            const name =
+                nameInput.value.trim();
+
+            const email =
+                emailInput.value.trim();
+
+            const password =
+                passwordInput.value;
+
+            const confirmPassword =
+                confirmPasswordInput.value;
+
+
+            /* Clear previous message */
+
+            message.className = "message";
+
+            message.textContent = "";
+
+
+            /* Check password */
+
+            if (password !== confirmPassword) {
+
+                showMessage(
+                    "error",
+                    "Passwords do not match."
+                );
+
+                return;
+            }
+
+
+            if (password.length < 6) {
+
+                showMessage(
+                    "error",
+                    "Password must be at least 6 characters."
+                );
+
+                return;
+            }
+
+
+            /* Disable button */
+
+            registerBtn.disabled = true;
+
+            registerBtn.textContent =
+                "Creating account...";
+
+
+            try {
+
+                const response = await fetch(
+                    "https://putform.onrender.com/api/auth/register",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        credentials: "include",
+
+                        body: JSON.stringify({
+
+                            name: name,
+
+                            email: email,
+
+                            password: password
+
+                        })
+                    }
+                );
+
+
+                /* Read response */
+
+                let data;
+
+                try {
+
+                    data =
+                        await response.json();
+
+                } catch {
+
+                    data = {
+                        message:
+                            "Unexpected server response."
+                    };
+
+                }
+
+
+                /* Registration failed */
+
+                if (!response.ok) {
+
+                    showMessage(
+                        "error",
+                        data.message ||
+                        "Registration failed."
+                    );
+
+                    return;
+                }
+
+
+                /* Registration successful -> Switch to OTP form */
+
+                showMessage(
+                    "success",
+                    data.message ||
+                    "Account created! Please check your email for the OTP."
+                );
+
+                // Switch UI
+                registerForm.style.display = "none";
+                otpForm.style.display = "block";
+                formTitle.textContent = "Verify Email";
+                formSubtitle.textContent = "Enter the 6-digit code sent to your email.";
+                loginLink.style.display = "none"; // Hide login link during OTP
+
+            } catch (error) {
+
+                console.error(
+                    "Registration error:",
+                    error
+                );
+
+                showMessage(
+                    "error",
+                    "Unable to connect to the server. Please try again."
+                );
+
+
+            } finally {
+
+                registerBtn.disabled = false;
+
+                registerBtn.textContent =
+                    "Create Account";
+            }
+
+        }
+    );
+
+
+    /* =================================
+       VERIFY OTP (STEP 2)
+    ================================= */
+
+    otpForm.addEventListener(
+        "submit",
+        async function (event) {
+
+            event.preventDefault();
+
+            const email = emailInput.value.trim();
+            const otp = otpInput.value.trim();
+
+            // Clear previous message
+            message.className = "message";
+            message.textContent = "";
+
+            if (otp.length !== 6) {
+                showMessage("error", "Please enter a valid 6-digit OTP.");
+                return;
+            }
+
+            /* Disable button */
+            verifyBtn.disabled = true;
+            verifyBtn.textContent = "Verifying...";
+
+            try {
+
+                const response = await fetch(
+                    "http://localhost:8080/api/auth/verify-register-otp",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+
+                        credentials: "include",
+
+                        body: JSON.stringify({
+                            email: email,
+                            otp: otp
+                        })
+                    }
+                );
+
+                let data;
+                try {
+                    data = await response.json();
+                } catch {
+                    data = { message: "Unexpected server response." };
+                }
+
+                if (!response.ok) {
+                    showMessage(
+                        "error",
+                        data.message || "OTP verification failed."
+                    );
+                    return;
+                }
+
+                /* Verification successful */
+                showMessage(
+                    "success",
+                    data.message || "Account verified successfully! Redirecting to login..."
+                );
+
+                // Redirect to login after a short delay
+                setTimeout(function () {
+                    window.location.href = "login.html";
+                }, 1500);
+
+            } catch (error) {
+
+                console.error("OTP verification error:", error);
+                showMessage(
+                    "error",
+                    "Unable to connect to the server. Please try again."
+                );
+
+            } finally {
+
+                verifyBtn.disabled = false;
+                verifyBtn.textContent = "Verify & Create Account";
+            }
+
+        }
+    );
+
+</script>
+
+</body>
+</html>

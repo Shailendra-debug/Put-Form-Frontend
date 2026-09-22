@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About | PutForm</title>
+  <style>
+    :root{
+      --bg:#f4f7f6; --surface:#fff; --surface-2:#f8fbfa;
+      --text:#17212b; --muted:#6b7785; --line:#dfe7e4;
+      --teal:#0f766e; --teal-dark:#0b5d56; --teal-soft:#e7f5f2;
+      --gold:#d68b34; --red:#b54840;
+      --shadow:0 10px 30px rgba(23,33,43,.07);
+      --shadow-hover:0 18px 42px rgba(23,33,43,.12);
+    }
+    body.dark{
+      --bg:#101716; --surface:#1b2422; --surface-2:#202b28;
+      --text:#f1f5f4; --muted:#aebbb7; --line:#34423e;
+      --teal-soft:#183c38; --gold:#e0a04c;
+      --shadow:0 12px 32px rgba(0,0,0,.28);
+      --shadow-hover:0 18px 42px rgba(0,0,0,.38);
+      background:radial-gradient(circle at 10% 0%,rgba(34,145,133,.12),transparent 30%),var(--bg);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0; min-width:320px; background:
+      radial-gradient(circle at 10% 0%, rgba(15,118,110,.08), transparent 30%),
+      var(--bg); color:var(--text);
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+      transition:background .25s ease,color .25s ease;
+      overflow-x:hidden;
+    }
+    button,input,select{font:inherit}
+    button,a{-webkit-tap-highlight-color:transparent}
+    a{color:inherit;text-decoration:none}
+
+    /* ============================================================
+       TOPBAR / NAVIGATION
+       ============================================================ */
+    .topbar {
+      align-items:center;
+      background:var(--teal-dark);
+      display:flex;
+      justify-content:space-between;
+      min-height:76px;
+      padding:0 clamp(24px,4vw,88px);
+      position:sticky;
+      top:0;
+      z-index:50;
+      gap:24px;
+      box-shadow:0 4px 24px rgba(11,93,86,.28);
+    }
+    .topbar-left{display:flex;align-items:center;gap:42px;min-width:0;flex:1}
+    .brand{
+      font-family:Arial, Helvetica, sans-serif;
+      font-size:25px; font-weight:800; color:#fff;
+      line-height:1; display:inline-flex; align-items:center; gap:5px;
+      flex-shrink:0; letter-spacing:-.02em;
+      transition:opacity .25s ease, transform .25s ease;
+      padding:4px 0; text-decoration:none;
+    }
+    .brand:hover{opacity:.95;transform:translateY(-2px)}
+    .brand-logo{
+      display:block; width:46px; height:46px; object-fit:contain;
+      border-radius:12px; background:rgba(255,255,255,.10);
+      padding:4px; box-shadow:0 4px 12px rgba(0,0,0,.18); flex-shrink:0;
+      transition: transform .35s cubic-bezier(.34,1.56,.64,1), box-shadow .25s ease;
+    }
+    .brand:hover .brand-logo {
+      transform: rotate(-6deg) scale(1.08);
+      box-shadow: 0 8px 22px rgba(0,0,0,.30);
+    }
+    .brand span{color:#a7eee2}
+
+    .nav-links{display:flex;align-items:center;gap:6px;list-style:none;margin:0;padding:0;min-width:0}
+    .nav-link{
+      color:rgba(255,255,255,.78); display:block;
+      font-size:.9rem; font-weight:600; padding:10px 4px; margin:0 12px;
+      white-space:nowrap; position:relative; transition:color .2s ease;
+    }
+    .nav-link::after{
+      content:""; position:absolute; left:0; right:0; bottom:4px;
+      height:2px; background:#a7eee2; border-radius:2px;
+      transform:scaleX(0); transform-origin:center; transition:transform .25s ease;
+    }
+    .nav-link:hover{color:#fff}
+    .nav-link:hover::after{transform:scaleX(1)}
+    .nav-link.active{color:#a7eee2;font-weight:700}
+    .nav-link.active::after{transform:scaleX(1)}
+    .nav-item-mobile{display:none}
+
+    .topbar-right{display:flex;align-items:center;gap:12px;flex-shrink:0}
+    .theme-toggle,.btn-nav-action,.btn-login{
+      align-items:center; display:inline-flex; justify-content:center;
+      height:42px; font-size:.88rem; font-weight:700; white-space:nowrap; cursor:pointer;
+      transition:background .2s ease,color .2s ease,border-color .2s ease,
+                 transform .2s ease,box-shadow .2s ease;
+    }
+    .theme-toggle{
+      background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.32);
+      border-radius:999px; color:#fff; gap:8px; padding:0 18px;
+    }
+    .theme-toggle:hover{
+      background:#fff; border-color:#fff; color:var(--teal-dark);
+      transform:translateY(-1px); box-shadow:0 8px 20px rgba(0,0,0,.18);
+    }
+    .btn-nav-action{
+      background:transparent; border:1px solid rgba(255,255,255,.30);
+      border-radius:10px; color:#fff; padding:0 20px;
+    }
+    .btn-nav-action:hover{
+      background:rgba(255,255,255,.14); border-color:rgba(255,255,255,.55);
+      transform:translateY(-1px);
+    }
+    .btn-login{
+      background:#a7eee2; border:0; border-radius:10px; color:var(--teal-dark);
+      font-weight:800; padding:0 22px; box-shadow:0 6px 16px rgba(167,238,226,.20);
+    }
+    .btn-login:hover{
+      background:#ffffff; transform:translateY(-1px);
+      box-shadow:0 10px 22px rgba(167,238,226,.34);
+    }
+    .menu-toggle{
+      display:none; flex-direction:column; align-items:center; justify-content:center;
+      gap:5px; width:42px; height:42px; padding:0;
+      background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.30);
+      border-radius:10px; cursor:pointer; transition:background .2s ease;
+    }
+    .menu-toggle:hover{background:rgba(255,255,255,.18)}
+    .menu-toggle span{
+      display:block; width:18px; height:2px; background:#fff;
+      border-radius:2px; transition:transform .28s ease,opacity .2s ease;
+    }
+    .menu-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+    .menu-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+    .menu-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+    /* ============================================================
+       ABOUT PAGE CONTENT
+       ============================================================ */
+    main{margin:0 auto; max-width:1240px; padding:64px clamp(18px,5vw,72px) 90px}
+
+    .about-hero{
+      text-align:center; max-width:780px; margin:0 auto 72px;
+      animation:fadeInUp .7s cubic-bezier(.16,1,.3,1) forwards;
+    }
+    @keyframes fadeInUp{
+      from{opacity:0;transform:translateY(24px)}
+      to{opacity:1;transform:translateY(0)}
+    }
+    .eyebrow{
+      color:var(--teal); font-size:.74rem; font-weight:800;
+      letter-spacing:.16em; text-transform:uppercase;
+      display:inline-block; background:var(--teal-soft);
+      padding:7px 14px; border-radius:999px; margin:0 0 18px;
+    }
+    .about-hero h1{
+      font-size:clamp(2.3rem,5vw,3.8rem); font-weight:800;
+      letter-spacing:-.05em; line-height:1.08; margin:0 0 20px;
+    }
+    .about-hero h1 span{color:var(--teal)}
+    .about-hero p{
+      color:var(--muted); font-size:1.08rem; line-height:1.65;
+      margin:0 auto; max-width:640px;
+    }
+
+    /* Stats strip */
+    .about-stats{
+      display:grid; grid-template-columns:repeat(4,1fr); gap:20px;
+      background:var(--surface); border:1px solid var(--line);
+      border-radius:18px; padding:32px; margin-bottom:80px;
+      box-shadow:var(--shadow);
+    }
+    .about-stat{text-align:center}
+    .about-stat-value{
+      font-size:2.2rem; font-weight:800; color:var(--teal);
+      line-height:1; margin-bottom:8px; letter-spacing:-.03em;
+    }
+    .about-stat-label{font-size:.82rem; color:var(--muted); font-weight:700}
+
+    /* Mission */
+    .mission{
+      display:grid; grid-template-columns:1fr 1fr; gap:56px;
+      align-items:center; margin-bottom:90px;
+    }
+    .mission-copy h2{
+      font-size:clamp(1.8rem,3.5vw,2.6rem); font-weight:800;
+      letter-spacing:-.04em; line-height:1.12; margin:0 0 18px;
+    }
+    .mission-copy h2 span{color:var(--teal)}
+    .mission-copy p{
+      color:var(--muted); font-size:1rem; line-height:1.7;
+      margin:0 0 16px;
+    }
+    .mission-copy p:last-child{margin-bottom:0}
+    .mission-visual{
+      position:relative; aspect-ratio:1/1; max-width:440px;
+      margin:0 auto; width:100%;
+    }
+    .mission-card{
+      position:absolute; inset:0; border-radius:24px;
+      background:linear-gradient(135deg, var(--teal-dark), var(--teal));
+      box-shadow:0 24px 60px rgba(15,118,110,.28);
+      display:grid; place-items:center; overflow:hidden;
+    }
+    .mission-card::before{
+      content:""; position:absolute; inset:0;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,.18), transparent 40%),
+        radial-gradient(circle at 80% 80%, rgba(167,238,226,.22), transparent 45%);
+    }
+    .mission-emblem{
+      position:relative; width:120px; height:120px; border-radius:28px;
+      background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.28);
+      display:grid; place-items:center; font-size:3rem;
+      backdrop-filter:blur(4px); box-shadow:0 12px 30px rgba(0,0,0,.18);
+    }
+    .mission-float{
+      position:absolute; background:#fff; border-radius:14px;
+      padding:14px 18px; box-shadow:0 14px 34px rgba(23,33,43,.16);
+      display:flex; align-items:center; gap:10px;
+      font-size:.82rem; font-weight:800; color:var(--text);
+      animation:float 6s ease-in-out infinite;
+    }
+    body.dark .mission-float{background:var(--surface);color:var(--text)}
+    .mission-float.f1{top:6%; left:-8%; animation-delay:0s}
+    .mission-float.f2{bottom:10%; right:-8%; animation-delay:1.5s}
+    .mission-float .dot{width:9px; height:9px; border-radius:50%; background:var(--teal)}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+
+    /* Section head */
+    .section-head{text-align:center; max-width:600px; margin:0 auto 48px}
+    .section-head h2{
+      font-size:clamp(1.8rem,3.4vw,2.4rem); font-weight:800;
+      letter-spacing:-.04em; margin:10px 0 12px;
+    }
+    .section-head p{color:var(--muted); font-size:.98rem; margin:0; line-height:1.6}
+
+    /* Values grid */
+    .values-grid{
+      display:grid; grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:24px; margin-bottom:90px;
+    }
+    .value-card{
+      background:var(--surface); border:1px solid var(--line);
+      border-radius:18px; padding:30px 26px; box-shadow:var(--shadow);
+      transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease;
+      position:relative; overflow:hidden;
+    }
+    .value-card::before{
+      content:""; position:absolute; inset:0 0 auto; height:4px;
+      background:linear-gradient(90deg,var(--teal),#55aaa2); opacity:.85;
+    }
+    .value-card:hover{
+      transform:translateY(-5px); box-shadow:var(--shadow-hover);
+      border-color:#c9d9d5;
+    }
+    .value-icon{
+      width:52px; height:52px; border-radius:14px;
+      background:var(--teal-soft); color:var(--teal);
+      display:grid; place-items:center; font-size:1.5rem;
+      margin-bottom:20px;
+    }
+    .value-card h3{
+      font-size:1.2rem; font-weight:750; letter-spacing:-.02em;
+      margin:0 0 10px;
+    }
+    .value-card p{color:var(--muted); font-size:.9rem; line-height:1.65; margin:0}
+
+    /* Timeline */
+    .timeline{margin-bottom:90px}
+    .timeline-track{
+      position:relative; max-width:840px; margin:0 auto;
+      padding-left:36px;
+    }
+    .timeline-track::before{
+      content:""; position:absolute; left:11px; top:8px; bottom:8px;
+      width:2px; background:linear-gradient(180deg,var(--teal),#c9d9d5);
+      border-radius:2px;
+    }
+    .timeline-item{position:relative; padding:0 0 36px 8px}
+    .timeline-item:last-child{padding-bottom:0}
+    .timeline-item::before{
+      content:""; position:absolute; left:-30px; top:4px;
+      width:16px; height:16px; border-radius:50%;
+      background:var(--surface); border:3px solid var(--teal);
+      box-shadow:0 0 0 4px var(--teal-soft);
+    }
+    .timeline-year{
+      font-size:.76rem; font-weight:800; color:var(--teal);
+      letter-spacing:.1em; text-transform:uppercase; margin-bottom:6px;
+    }
+    .timeline-item h3{
+      font-size:1.15rem; font-weight:750; margin:0 0 6px;
+      letter-spacing:-.02em;
+    }
+    .timeline-item p{
+      color:var(--muted); font-size:.9rem; line-height:1.65; margin:0;
+      max-width:620px;
+    }
+
+    /* CTA */
+    .about-cta{
+      background:linear-gradient(135deg, var(--teal-dark), var(--teal));
+      border-radius:24px; padding:56px 32px; text-align:center;
+      color:#fff; box-shadow:0 18px 42px rgba(15,118,110,.25);
+    }
+    .about-cta h2{
+      font-size:clamp(1.7rem,4vw,2.6rem); font-weight:800;
+      margin:0 0 14px; letter-spacing:-.03em;
+    }
+    .about-cta p{
+      font-size:1.02rem; color:#a7eee2; max-width:520px;
+      margin:0 auto 28px; line-height:1.6;
+    }
+    .about-cta .cta-row{
+      display:flex; gap:14px; justify-content:center; flex-wrap:wrap;
+    }
+    .cta-primary{
+      background:#fff; color:var(--teal-dark); font-size:.98rem;
+      font-weight:800; padding:14px 28px; border-radius:12px;
+      display:inline-block; transition:all .2s ease;
+      box-shadow:0 8px 20px rgba(0,0,0,.15);
+    }
+    .cta-primary:hover{background:#a7eee2; transform:translateY(-2px)}
+    .cta-secondary{
+      background:rgba(255,255,255,.12); color:#fff; font-size:.98rem;
+      font-weight:700; padding:14px 26px; border-radius:12px;
+      display:inline-block; border:1px solid rgba(255,255,255,.35);
+      transition:all .2s ease;
+    }
+    .cta-secondary:hover{background:rgba(255,255,255,.22); transform:translateY(-2px)}
+
+    /* ============================================================
+       FOOTER
+       ============================================================ */
+    .site-footer{
+      background:var(--teal-dark);
+      color:#fff;
+      margin-top:40px;
+      position:relative;
+      overflow:hidden;
+    }
+    .site-footer::before{
+      content:"";
+      position:absolute;
+      top:-160px; right:-160px;
+      width:420px; height:420px;
+      background:radial-gradient(circle, rgba(167,238,226,.14), transparent 70%);
+      pointer-events:none;
+    }
+    .site-footer::after{
+      content:"";
+      position:absolute;
+      bottom:-180px; left:-160px;
+      width:400px; height:400px;
+      background:radial-gradient(circle, rgba(15,118,110,.35), transparent 70%);
+      pointer-events:none;
+    }
+    .footer-inner{
+      max-width:1240px;
+      margin:0 auto;
+      padding:64px clamp(20px,5vw,72px) 32px;
+      position:relative;
+      z-index:1;
+    }
+    .footer-top{
+      display:grid;
+      grid-template-columns:1.6fr 1fr 1fr;
+      gap:48px;
+      padding-bottom:48px;
+      border-bottom:1px solid rgba(255,255,255,.12);
+    }
+    .footer-brand-block{max-width:360px}
+    .footer-brand{
+      display:inline-flex;
+      align-items:center;
+      gap:2px;
+      font-family:Arial, Helvetica, sans-serif;
+      font-size:24px;
+      font-weight:800;
+      letter-spacing:-.02em;
+      color:#fff;
+      margin-bottom:16px;
+    }
+    .footer-brand-logo{
+      width:44px; height:44px; object-fit:contain;
+      border-radius:11px;
+      background:rgba(255,255,255,.10);
+      padding:4px;
+      box-shadow:0 4px 12px rgba(0,0,0,.20);
+    }
+    .footer-brand span{color:#a7eee2}
+    .footer-tagline{
+      color:rgba(255,255,255,.68);
+      font-size:.9rem;
+      line-height:1.7;
+      margin:0;
+    }
+    .footer-col h4{
+      font-size:.78rem;
+      font-weight:800;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      color:#a7eee2;
+      margin:0 0 18px;
+    }
+    .footer-col ul{
+      list-style:none;
+      margin:0;
+      padding:0;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .footer-col a{
+      color:rgba(255,255,255,.72);
+      font-size:.88rem;
+      font-weight:500;
+      transition:color .2s ease,padding-left .2s ease;
+      display:inline-block;
+      position:relative;
+    }
+    .footer-col a::before{
+      content:"";
+      position:absolute;
+      left:-14px;
+      top:50%;
+      transform:translateY(-50%) scaleX(0);
+      width:8px;
+      height:2px;
+      background:#a7eee2;
+      border-radius:2px;
+      transition:transform .2s ease;
+    }
+    .footer-col a:hover{
+      color:#fff;
+      padding-left:6px;
+    }
+    .footer-col a:hover::before{transform:translateY(-50%) scaleX(1)}
+    .footer-bottom{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding-top:26px;
+      gap:20px;
+      flex-wrap:wrap;
+      font-size:.84rem;
+      color:rgba(255,255,255,.62);
+    }
+    .footer-bottom .copy strong{color:#fff}
+    .footer-legal{
+      display:flex;
+      gap:22px;
+      flex-wrap:wrap;
+    }
+    .footer-legal a{
+      color:rgba(255,255,255,.62);
+      transition:color .2s ease;
+    }
+    .footer-legal a:hover{color:#a7eee2}
+
+    /* ============================================================
+       RESPONSIVE
+       ============================================================ */
+    @media (max-width:1180px){
+      .topbar{padding:0 32px;gap:16px}
+      .topbar-left{gap:26px}
+      .nav-link{margin:0 8px;font-size:.86rem}
+      .topbar-right{gap:8px}
+      .theme-toggle,.btn-nav-action,.btn-login{height:40px;font-size:.84rem;padding:0 14px}
+      .btn-login{padding:0 18px}
+    }
+
+    @media (max-width:1024px){
+      .footer-top{grid-template-columns:1fr 1fr; gap:36px}
+      .footer-brand-block{grid-column:1 / -1; max-width:520px}
+    }
+
+    @media (max-width:960px){
+      .topbar{padding:0 20px;min-height:68px}
+      .menu-toggle{display:flex}
+      .topbar-right .btn-nav-action{display:none}
+      .nav-item-mobile{display:block}
+      .topbar-left{gap:0}
+      .nav-links{
+        position:absolute; top:100%; left:0; right:0;
+        flex-direction:column; align-items:stretch; gap:2px;
+        padding:0 20px;
+        background:var(--teal-dark);
+        border-top:1px solid rgba(255,255,255,.14);
+        box-shadow:0 20px 34px rgba(0,0,0,.28);
+        max-height:0; opacity:0; visibility:hidden; overflow:hidden;
+        transition:max-height .32s ease,opacity .25s ease,
+                   padding .32s ease,visibility .32s ease;
+      }
+      .nav-links.open{
+        max-height:400px; opacity:1; visibility:visible;
+        padding:12px 20px 16px;
+      }
+      .nav-link{font-size:.95rem;padding:12px 8px;margin:0}
+      .nav-link::after{display:none}
+      .nav-link.active{
+        background:rgba(167,238,226,.12);
+        border-radius:10px; padding-left:14px;
+      }
+    }
+
+    @media (max-width:900px){
+      .mission{grid-template-columns:1fr; gap:44px; text-align:center}
+      .mission-copy{max-width:600px; margin:0 auto}
+      .mission-visual{max-width:340px}
+      .values-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+    }
+
+    @media (max-width:640px){
+      .theme-label{display:none}
+      .theme-toggle{padding:0 14px;gap:0}
+      .brand{font-size:21px;gap:9px}
+      .brand-logo{width:38px;height:38px;padding:3px}
+      .about-stats{grid-template-columns:repeat(2,1fr); padding:24px; gap:24px}
+      .about-stat-value{font-size:1.8rem}
+
+      .footer-inner{padding:52px 24px 26px}
+      .footer-top{grid-template-columns:1fr 1fr; gap:36px 28px}
+      .footer-brand-block{grid-column:1 / -1}
+    }
+
+    @media (max-width:620px){
+      main{padding-top:40px}
+      .values-grid{grid-template-columns:1fr}
+      .about-cta{padding:44px 22px}
+      .mission-float.f1{left:0; top:-4%}
+      .mission-float.f2{right:0; bottom:-4%}
+      .footer-bottom{flex-direction:column; text-align:center; align-items:center}
+    }
+
+    @media (max-width:460px){
+      .topbar{padding:0 12px;min-height:62px}
+      .brand{font-size:19px;gap:8px}
+      .brand-logo{width:34px;height:34px;padding:2px;border-radius:10px}
+      .nav-links{padding:0 12px}
+      .nav-links.open{padding:10px 12px 14px}
+      .btn-login{padding:0 14px;font-size:.82rem}
+      .about-stats{grid-template-columns:1fr; padding:22px}
+      .footer-top{grid-template-columns:1fr; gap:32px}
+    }
+  </style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-left">
+        <a class="brand" href="index.html">
+          <img class="brand-logo" src="Glogo.png" alt="PutForm logo"
+              onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 46 46%22><rect width=%2246%22 height=%2246%22 rx=%2212%22 fill=%22%2317b8a6%22/><text x=%2250%25%22 y=%2258%25%22 text-anchor=%22middle%22 font-family=%22Arial%22 font-size=%2224%22 font-weight=%22bold%22 fill=%22white%22>P</text></svg>';">
+          Put<span>Form</span></span>
+        </a>
+
+
+    <ul class="nav-links" id="navLinks">
+      <li><a class="nav-link" href="index.html">Home</a></li>
+      <li><a class="nav-link" href="forms.html">Dashboard</a></li>
+      <li><a class="nav-link" href="api.html">API</a></li>
+      <li><a class="nav-link active" href="about.html">About</a></li>
+      <li><a class="nav-link" href="contact.html">Contact Us</a></li>
+      <li class="nav-item-mobile"><a class="nav-link" href="profile.html">Profile</a></li>
+    </ul>
+  </div>
+
+  <div class="topbar-right">
+    <a class="btn-nav-action" href="profile.html">Profile</a>
+
+    <div id="authContainer" style="display:flex; align-items:center;">
+      <a class="btn-login" href="login.html">Login</a>
+    </div>
+
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme">
+      <span class="theme-icon">🌙</span><span class="theme-label">Dark mode</span>
+    </button>
+
+    <button class="menu-toggle" id="menuToggle" type="button"
+            aria-label="Toggle navigation menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- ============================= MAIN ============================= -->
+<main>
+
+  <!-- Hero -->
+  <section class="about-hero">
+    <span class="eyebrow">About PutForm</span>
+    <h1>We build tools that help teams <span>listen better</span>.</h1>
+    <p>
+      PutForm started with a simple belief: collecting feedback should be effortless for
+      the people filling out a form — and powerful for the teams acting on it.
+    </p>
+  </section>
+
+  <!-- Stats strip -->
+  <section class="about-stats">
+    <div class="about-stat">
+      <div class="about-stat-value">12k+</div>
+      <div class="about-stat-label">Active creators</div>
+    </div>
+    <div class="about-stat">
+      <div class="about-stat-value">2.4M</div>
+      <div class="about-stat-label">Responses collected</div>
+    </div>
+    <div class="about-stat">
+      <div class="about-stat-value">99.9%</div>
+      <div class="about-stat-label">Platform uptime</div>
+    </div>
+    <div class="about-stat">
+      <div class="about-stat-value">40+</div>
+      <div class="about-stat-label">Countries served</div>
+    </div>
+  </section>
+
+  <!-- Mission -->
+  <section class="mission">
+    <div class="mission-copy">
+      <span class="eyebrow">Our mission</span>
+      <h2>Simple forms. <span>Serious results.</span></h2>
+      <p>
+        Every great product decision begins with a question — and someone willing to
+        answer it. Our mission is to remove every point of friction between the two.
+      </p>
+      <p>
+        From a quick survey to a full customer intake pipeline, PutForm gives you a
+        clean builder, reliable infrastructure, and a developer API that fits right
+        into your existing stack — without the enterprise bloat.
+      </p>
+    </div>
+
+    <div class="mission-visual">
+      <div class="mission-card">
+        <div class="mission-emblem">📝</div>
+      </div>
+      <div class="mission-float f1"><span class="dot"></span> 2.4M responses</div>
+      <div class="mission-float f2"><span class="dot"></span> Live · Always on</div>
+    </div>
+  </section>
+
+  <!-- Values -->
+  <section>
+    <div class="section-head">
+      <span class="eyebrow">What we value</span>
+      <h2>The principles behind PutForm</h2>
+      <p>Six ideas shape every feature we ship and every line of code we write.</p>
+    </div>
+
+    <div class="values-grid">
+      <article class="value-card">
+        <div class="value-icon">🎯</div>
+        <h3>Clarity first</h3>
+        <p>Powerful tools shouldn't feel complicated. We strip away noise so you can focus on the response, not the interface.</p>
+      </article>
+
+      <article class="value-card">
+        <div class="value-icon">🔐</div>
+        <h3>Privacy by default</h3>
+        <p>Your data belongs to you. We use cookie-based sessions, encrypted transport, and never sell or share your submissions.</p>
+      </article>
+
+      <article class="value-card">
+        <div class="value-icon">⚡</div>
+        <h3>Speed matters</h3>
+        <p>Forms load in milliseconds, submissions land instantly, and the API responds fast enough to feel invisible.</p>
+      </article>
+
+      <article class="value-card">
+        <div class="value-icon">🛠️</div>
+        <h3>Built for builders</h3>
+        <p>REST endpoints, session checks, and clean JSON — everything a developer needs to plug PutForm into any product.</p>
+      </article>
+
+      <article class="value-card">
+        <div class="value-icon">🌍</div>
+        <h3>Accessible everywhere</h3>
+        <p>Light and dark themes, responsive layouts, and keyboard-friendly navigation across every page we ship.</p>
+      </article>
+
+      <article class="value-card">
+        <div class="value-icon">🤝</div>
+        <h3>Honest by design</h3>
+        <p>No dark patterns, no confusing pricing tiers. Just a clean product that does exactly what it promises.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- Timeline -->
+  <section class="timeline">
+    <div class="section-head">
+      <span class="eyebrow">The journey</span>
+      <h2>How we got here</h2>
+      <p>From a weekend prototype to a platform trusted by thousands of teams.</p>
+    </div>
+
+    <div class="timeline-track">
+      <div class="timeline-item">
+        <div class="timeline-year">2023 · The beginning</div>
+        <h3>A simple idea</h3>
+        <p>PutForm started as an internal tool to collect feedback from early users of a side project. It worked so well we decided to share it.</p>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-year">2024 · Going public</div>
+        <h3>First public release</h3>
+        <p>The form builder launched with publishing, response limits, and a lightweight dashboard. Within months, thousands of forms were created.</p>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-year">2025 · Developer API</div>
+        <h3>Opening the platform</h3>
+        <p>We shipped a REST API with cookie-based sessions so teams could embed PutForm submissions directly into their own backends.</p>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-year">2026 · Today</div>
+        <h3>Where we are now</h3>
+        <p>PutForm powers surveys, intakes, and feedback loops across 40+ countries — with the same focus on clarity we started with.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="about-cta">
+    <h2>Ready to start collecting responses?</h2>
+    <p>Open your dashboard to create a form, or explore the API to integrate PutForm into your own product.</p>
+    <div class="cta-row">
+      <a class="cta-primary" href="forms.html">Go to Dashboard →</a>
+      <a class="cta-secondary" href="api.html">View API Docs</a>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============================= FOOTER ============================= -->
+<footer class="site-footer">
+  <div class="footer-inner">
+
+    <div class="footer-top">
+
+      <!-- Brand block -->
+      <div class="footer-brand-block">
+        <a class="brand" href="index.html">
+          <img class="brand-logo" src="Glogo.png" alt="PutForm logo"
+              onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 46 46%22><rect width=%2246%22 height=%2246%22 rx=%2212%22 fill=%22%2317b8a6%22/><text x=%2250%25%22 y=%2258%25%22 text-anchor=%22middle%22 font-family=%22Arial%22 font-size=%2224%22 font-weight=%22bold%22 fill=%22white%22>P</text></svg>';">
+          Put<span>Form</span></span>
+        </a>
+
+        <p class="footer-tagline">
+          Build beautiful forms, collect responses, and connect them to your backend —
+          all from one clean, developer-friendly platform.
+        </p>
+      </div>
+
+      <!-- Product links -->
+      <div class="footer-col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="forms.html">Dashboard</a></li>
+          <li><a href="creatform.html">Create a Form</a></li>
+          <li><a href="api.html">Developer API</a></li>
+        </ul>
+      </div>
+
+      <!-- Company links -->
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+          <li><a href="profile.html">Profile</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="footer-bottom">
+      <div class="copy">© 2026 <strong>PutForm</strong>. All rights reserved.</div>
+      <div class="footer-legal">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+      </div>
+    </div>
+
+  </div>
+</footer>
+
+<script>
+  const API_URL = 'http://localhost:8080/api/forms';
+  const LOGOUT_URL = 'http://localhost:8080/api/auth/logout';
+
+  const themeToggle = document.getElementById('themeToggle');
+  const authContainer = document.getElementById('authContainer');
+  const menuToggle = document.getElementById('menuToggle');
+  const navLinks = document.getElementById('navLinks');
+
+  /* ---------------- THEME ---------------- */
+  function applyTheme(theme) {
+    const dark = theme === 'dark';
+    document.body.classList.toggle('dark', dark);
+    themeToggle.innerHTML = dark
+      ? '<span class="theme-icon">☀️</span><span class="theme-label">Light mode</span>'
+      : '<span class="theme-icon">🌙</span><span class="theme-label">Dark mode</span>';
+    localStorage.setItem('putform-theme', dark ? 'dark' : 'light');
+  }
+
+  applyTheme(localStorage.getItem('putform-theme') || 'light');
+
+  themeToggle.addEventListener('click', () => {
+    applyTheme(document.body.classList.contains('dark') ? 'light' : 'dark');
+  });
+
+  /* ---------------- MOBILE MENU ---------------- */
+  function closeMenu() {
+    navLinks.classList.remove('open');
+    menuToggle.setAttribute('aria-expanded', 'false');
+  }
+
+  menuToggle.addEventListener('click', () => {
+    const isOpen = navLinks.classList.toggle('open');
+    menuToggle.setAttribute('aria-expanded', String(isOpen));
+  });
+
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', closeMenu);
+  });
+
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 960) closeMenu();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeMenu();
+  });
+
+  /* ---------------- AUTH STATE ---------------- */
+  async function checkUserSession() {
+    try {
+      const response = await fetch(API_URL, {
+        method: 'GET',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' }
+      });
+
+      if (response.ok) {
+        authContainer.innerHTML = `
+          <button class="btn-login" id="logoutBtn" type="button">Logout</button>
+        `;
+        document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+      } else {
+        renderLoginButton();
+      }
+    } catch (error) {
+      renderLoginButton();
+    }
+  }
+
+  function renderLoginButton() {
+    authContainer.innerHTML = `<a class="btn-login" href="login.html">Login</a>`;
+  }
+
+  async function handleLogout() {
+    try {
+      await fetch(LOGOUT_URL, { method: 'POST', credentials: 'include' });
+    } catch (error) {
+      console.error('Logout error:', error);
+    } finally {
+      window.location.href = 'login.html';
+    }
+  }
+
+  checkUserSession();
+</script>
+</body>
+</html>

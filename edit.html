@@ -1,0 +1,1610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Edit Form | PutForm</title>
+  <style>
+    :root {
+      --teal:#0f766e;
+      --teal-dark:#0b5d56;
+      --teal-soft:#e8f5f2;
+      --page:#f5f7f6;
+      --surface:#fff;
+      --text:#202124;
+      --muted:#6b7280;
+      --line:#e1e5e8;
+      --red:#c0392b;
+      --shadow:0 4px 16px rgba(32,33,36,.08);
+      --shadow-hover:0 18px 42px rgba(23,33,43,.12);
+    }
+
+    body.dark {
+      --page:#111817;
+      --surface:#1d2725;
+      --text:#f3f6f5;
+      --muted:#aeb9b6;
+      --line:#35423f;
+      --teal-soft:#203d39;
+      --shadow:0 6px 20px rgba(0,0,0,.25);
+      --shadow-hover:0 18px 42px rgba(0,0,0,.38);
+      background:radial-gradient(circle at 10% 0%,rgba(34,145,133,.12),transparent 30%),var(--page);
+    }
+
+    * { box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin:0;
+      background:radial-gradient(circle at 10% 0%, rgba(15,118,110,.08), transparent 30%), var(--page);
+      color:var(--text);
+      font:15px/1.5 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      transition:background .25s ease,color .25s ease;
+      overflow-x:hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    main { flex: 1 0 auto; }
+
+    /* ============================================================
+       TOPBAR / NAVIGATION
+       ============================================================ */
+    .topbar {
+      align-items:center;
+      background:var(--teal-dark);
+      display:flex;
+      justify-content:space-between;
+      min-height:76px;
+      padding:0 clamp(24px,4vw,88px);
+      position:sticky;
+      top:0;
+      z-index:50;
+      gap:24px;
+      box-shadow:0 4px 24px rgba(11,93,86,.28);
+    }
+    .topbar-left{display:flex;align-items:center;gap:42px;min-width:0;flex:1}
+
+    .brand{
+      font-family:Arial, Helvetica, sans-serif;
+      font-size:25px; font-weight:800; color:#fff;
+      line-height:1; display:inline-flex; align-items:center; gap:5px;
+      flex-shrink:0; letter-spacing:-.02em;
+      transition:opacity .25s ease, transform .25s ease;
+      padding:4px 0; text-decoration:none;
+    }
+    .brand:hover{opacity:.95;transform:translateY(-2px)}
+    .brand-logo{
+      display:block; width:46px; height:46px; object-fit:contain;
+      border-radius:12px; background:rgba(255,255,255,.10);
+      padding:4px; box-shadow:0 4px 12px rgba(0,0,0,.18); flex-shrink:0;
+      transition: transform .35s cubic-bezier(.34,1.56,.64,1), box-shadow .25s ease;
+    }
+    .brand:hover .brand-logo {
+      transform: rotate(-6deg) scale(1.08);
+      box-shadow: 0 8px 22px rgba(0,0,0,.30);
+    }
+    .brand span{color:#a7eee2}
+
+    .nav-links{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      list-style:none;
+      margin:0;
+      padding:0;
+      min-width:0;
+    }
+
+    .nav-link{
+      color:rgba(255,255,255,.78);
+      display:block;
+      font-size:.9rem;
+      font-weight:600;
+      padding:10px 4px;
+      margin:0 12px;
+      white-space:nowrap;
+      position:relative;
+      text-decoration:none;
+      transition: color .25s ease, transform .25s cubic-bezier(.34,1.56,.64,1);
+    }
+
+    .nav-link::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 2px;
+      height: 2px;
+      background: #a7eee2;
+      border-radius: 2px;
+      transform: scaleX(0);
+      transform-origin: center;
+      transition: transform .35s cubic-bezier(.34,1.56,.64,1);
+    }
+
+    .nav-link:hover {
+      color: #fff;
+      transform: translateY(-2px);
+    }
+
+    .nav-link:hover::after { transform: scaleX(1); }
+    .nav-link.active { color: #a7eee2; font-weight: 700; }
+    .nav-link.active::after { transform: scaleX(1); }
+    .nav-link:active { transform: translateY(0) scale(.97); }
+
+    .nav-item-mobile{display:none}
+
+    .topbar-right{display:flex;align-items:center;gap:12px;flex-shrink:0}
+    .theme-toggle,.btn-nav-action,.btn-login{
+      align-items:center; display:inline-flex; justify-content:center;
+      height:42px; font-size:.88rem; font-weight:700; white-space:nowrap; cursor:pointer;
+      text-decoration: none;
+      transition:background .2s ease,color .2s ease,border-color .2s ease,
+                 transform .25s cubic-bezier(.34,1.56,.64,1),box-shadow .25s ease;
+    }
+    .theme-toggle{
+      background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.32);
+      border-radius:999px; color:#fff; gap:8px; padding:0 18px;
+    }
+    .theme-toggle:hover{
+      background:#fff; border-color:#fff; color:var(--teal-dark);
+      transform:translateY(-2px); box-shadow:0 8px 20px rgba(0,0,0,.18);
+    }
+    .theme-toggle:active{transform:translateY(0) scale(.97)}
+
+    .btn-nav-action{
+      background:transparent; border:1px solid rgba(255,255,255,.30);
+      border-radius:10px; color:#fff; padding:0 20px;
+    }
+    .btn-nav-action:hover{
+      background:rgba(255,255,255,.14); border-color:rgba(255,255,255,.55);
+      transform:translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,.18);
+    }
+    .btn-nav-action:active{transform:translateY(0) scale(.97)}
+
+    .btn-login{
+      background:#a7eee2; border:0; border-radius:10px; color:var(--teal-dark);
+      font-weight:800; padding:0 22px; box-shadow:0 6px 16px rgba(167,238,226,.20);
+    }
+    .btn-login:hover{
+      background:#ffffff; transform:translateY(-2px);
+      box-shadow:0 10px 22px rgba(167,238,226,.34);
+    }
+    .btn-login:active{transform:translateY(0) scale(.97)}
+
+    .menu-toggle{
+      display:none; flex-direction:column; align-items:center; justify-content:center;
+      gap:5px; width:42px; height:42px; padding:0;
+      background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.30);
+      border-radius:10px; cursor:pointer; transition:background .2s ease, transform .2s ease;
+    }
+    .menu-toggle:hover{background:rgba(255,255,255,.18); transform: translateY(-2px)}
+    .menu-toggle span{
+      display:block; width:18px; height:2px; background:#fff;
+      border-radius:2px; transition:transform .28s ease,opacity .2s ease;
+    }
+    .menu-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+    .menu-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+    .menu-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+    /* ============================================================
+       PAGE LAYOUT
+       ============================================================ */
+    main { max-width:980px; margin:0 auto; padding:42px 22px 72px; width: 100%; }
+
+    .page-heading { margin:8px 0 28px; }
+
+    .eyebrow {
+      color:var(--teal);
+      font-size:.72rem;
+      font-weight:800;
+      letter-spacing:.16em;
+      margin:0 0 10px;
+      text-transform:uppercase;
+      display: inline-block;
+      background: var(--teal-soft);
+      padding: 6px 12px;
+      border-radius: 999px;
+    }
+
+    h1 {
+      font-family:Arial,sans-serif;
+      font-size:clamp(2.2rem,5vw,3.5rem);
+      font-weight:800;
+      letter-spacing:-.045em;
+      line-height:1.05;
+      margin:0 0 10px;
+    }
+
+    .page-heading p { color:var(--muted); margin:0; line-height: 1.6; }
+
+    /* Progress card */
+    .progress-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      padding: 40px 32px;
+      margin: 24px auto;
+      text-align: center;
+      max-width: 560px;
+      animation: fadeInUp .4s ease both;
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .progress-icon {
+      width: 56px; height: 56px;
+      border-radius: 16px;
+      background: var(--teal-soft);
+      color: var(--teal);
+      display: grid; place-items: center;
+      font-size: 1.6rem;
+      margin: 0 auto 16px;
+      animation: spinSlow 2.2s linear infinite;
+    }
+    @keyframes spinSlow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .progress-title {
+      font-size: 1.15rem; font-weight: 800;
+      letter-spacing: -.02em; color: var(--text);
+      margin: 0 0 6px;
+    }
+    .progress-status {
+      font-size: .85rem; color: var(--muted); font-weight: 600;
+      margin: 12px 0 0; min-height: 18px;
+    }
+    .progress-bar {
+      height: 8px; background: var(--teal-soft);
+      border-radius: 999px; overflow: hidden;
+      margin-top: 20px; position: relative;
+    }
+    .progress-bar-fill {
+      height: 100%; width: 0%;
+      background: linear-gradient(90deg, var(--teal-dark), var(--teal), #55aaa2);
+      border-radius: 999px;
+      transition: width .4s cubic-bezier(.4,0,.2,1);
+      position: relative; overflow: hidden;
+    }
+    .progress-bar-fill::after {
+      content: "";
+      position: absolute; inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.35), transparent);
+      animation: shimmer 1.4s infinite;
+    }
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    .progress-card.error .progress-icon {
+      animation: none;
+      background: #fdecea;
+      color: var(--red);
+    }
+    .progress-card.error .progress-bar-fill { background: var(--red); }
+    .progress-card.error .progress-bar-fill::after { animation: none; }
+
+    .status-panel {
+      align-items:center;
+      background:var(--surface);
+      border:1px solid var(--line);
+      border-radius:14px;
+      box-shadow:var(--shadow);
+      display:flex;
+      gap:18px;
+      justify-content:space-between;
+      margin:0 0 18px;
+      padding:15px 18px;
+      flex-wrap: wrap;
+    }
+    .status-copy { align-items:center; display:flex; gap:12px; }
+    .status-label {
+      color:var(--muted); font-size:.75rem; font-weight:700;
+      letter-spacing:.08em; text-transform:uppercase;
+    }
+    .form-status {
+      background:var(--teal-soft); border-radius:999px;
+      color:var(--teal); font-size:.72rem; font-weight:800;
+      letter-spacing:.07em; padding:7px 12px;
+    }
+    .form-status.draft { background:#fff3df; color:#99601d; }
+    .form-status.closed { background:#f4e9e6; color:#80534b; }
+    .form-status.archived { background:#e9edef; color:#5f6b73; }
+
+    .lifecycle-actions { display:flex; flex-wrap:wrap; gap:8px; justify-content:flex-end;}
+
+    .card {
+      background:var(--surface);
+      border:1px solid var(--line);
+      border-radius:14px;
+      box-shadow:var(--shadow);
+      margin:18px 0;
+      padding:30px;
+      transition:box-shadow .25s ease,transform .25s ease,background .25s ease;
+    }
+    .card:hover {
+      box-shadow:var(--shadow-hover);
+      transform:translateY(-1px);
+    }
+    .hero {
+      border-top:6px solid var(--teal);
+      border-left:0;
+      padding:34px;
+    }
+
+    input, textarea, select { font:inherit; }
+
+    input[type=text], input[type=number], input[type=datetime-local], textarea, select {
+      background:var(--surface);
+      border:1px solid #cfd5da;
+      border-radius:9px;
+      color:var(--text);
+      outline:0;
+      padding:14px 15px;
+      width:100%;
+      transition:border-color .2s,box-shadow .2s;
+    }
+    body.dark input[type=text],
+    body.dark input[type=number],
+    body.dark input[type=datetime-local],
+    body.dark textarea,
+    body.dark select { border-color:#465550; }
+    input:focus, textarea:focus, select:focus {
+      border-color:var(--teal);
+      box-shadow:0 0 0 4px var(--teal-soft);
+    }
+    textarea { min-height:110px; resize:vertical; }
+
+    .form-settings {
+      border-top:1px solid var(--line);
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:18px;
+      margin-top:30px;
+      padding-top:26px;
+      align-items: end;
+    }
+    .field-label {
+      color:var(--muted);
+      display:flex; flex-direction:column;
+      font-size:12px; font-weight:700;
+      gap:8px; letter-spacing:.04em;
+      text-transform:uppercase; height: 100%;
+    }
+    .field-label > .label-text {
+      min-height: 18px;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      line-height: 1.2;
+    }
+    .field-label .req { color: var(--red); font-weight: 800; margin-left: 2px; }
+    .field-label > input, .field-label > select { margin-top: auto; }
+
+    .section-heading {
+      font-family:Arial,sans-serif;
+      font-size:1.65rem; font-weight:800;
+      letter-spacing:-.025em;
+      margin:0 0 6px;
+    }
+    .section-copy { color:var(--muted); margin:0 0 22px; }
+
+    #questions { display:flex; flex-direction:column; gap:16px; }
+
+    .question {
+      position:relative;
+      background:color-mix(in srgb,var(--surface) 96%,var(--teal-soft));
+      border:1px solid var(--line);
+      border-radius:12px;
+      margin:0;
+      padding:24px 24px 22px 58px;
+      cursor:default;
+      opacity:0;
+      transform:translateX(28px);
+      animation:questionSlide .45s cubic-bezier(.2,.8,.2,1) forwards;
+      transition:box-shadow .25s ease,transform .2s ease,border-color .2s ease,background .2s ease;
+    }
+    .question:hover {
+      border-color:#cbd5d3;
+      box-shadow:0 7px 20px rgba(32,33,36,.08);
+    }
+    .question.dragging {
+      opacity:.55; transform:scale(.985);
+      border:2px dashed var(--teal);
+      background:var(--teal-soft);
+    }
+    .question.drag-over {
+      border-color:var(--teal);
+      box-shadow:0 0 0 3px var(--teal-soft),0 -5px 0 -3px var(--teal);
+    }
+
+    .drag-handle {
+      position:absolute;
+      left:17px; top:23px;
+      width:28px; height:38px;
+      display:flex; align-items:center; justify-content:center;
+      color:var(--muted); cursor:grab;
+      border-radius:7px; user-select:none;
+      font-size:20px; letter-spacing:-4px;
+      transition:.2s ease;
+    }
+    .drag-handle:hover { color:var(--teal); background:var(--teal-soft); }
+    .drag-handle:active { cursor:grabbing; }
+
+    .move-buttons { display:flex; gap:5px; margin-right:auto; }
+    .move-button {
+      width:32px; height:32px; padding:0;
+      border:1px solid var(--line); border-radius:7px;
+      background:var(--surface); color:var(--muted);
+      cursor:pointer; font-size:16px;
+      transition:.2s ease;
+    }
+    .move-button:hover:not(:disabled) {
+      color:var(--teal); border-color:var(--teal); background:var(--teal-soft);
+    }
+    .move-button:disabled { opacity:.35; cursor:not-allowed; }
+
+    .question:nth-child(1) { animation-delay:.04s; }
+    .question:nth-child(2) { animation-delay:.10s; }
+    .question:nth-child(3) { animation-delay:.16s; }
+    .question:nth-child(4) { animation-delay:.22s; }
+    .question:nth-child(5) { animation-delay:.28s; }
+    .question:nth-child(n+6) { animation-delay:.34s; }
+
+    @keyframes questionSlide {
+      from { opacity:0; transform:translateX(28px); }
+      to { opacity:1; transform:translateX(0); }
+    }
+
+    .question-head { display:grid; grid-template-columns:minmax(0,1fr) 230px; gap:18px; }
+    .question-options { margin-top:14px; }
+    .option { align-items:center; display:flex; gap:9px; margin:9px 0; }
+    .option input { flex:1; }
+
+    .question-footer {
+      align-items:center;
+      border-top:1px solid var(--line);
+      display:flex;
+      gap:14px;
+      justify-content:flex-end;
+      margin-top:20px;
+      padding-top:18px;
+      flex-wrap: wrap;
+    }
+    .required-label {
+      align-items:center;
+      display:flex;
+      gap:7px;
+      color:var(--muted);
+      font-size:.85rem;
+      font-weight: 600;
+    }
+
+    .small-button,.add-question {
+      background:var(--surface);
+      border:1px solid var(--teal);
+      border-radius:8px;
+      color:var(--teal);
+      cursor:pointer;
+      font-size:.82rem;
+      font-weight:700;
+      padding:10px 14px;
+      transition:.25s cubic-bezier(.34,1.56,.64,1);
+    }
+    .small-button:hover,.add-question:hover {
+      background:var(--teal-soft);
+      transform:translateY(-2px);
+      box-shadow: 0 6px 16px rgba(15,118,110,.15);
+    }
+
+    .add-question {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 160px;
+      justify-content: center;
+    }
+    .add-question:disabled {
+      cursor: not-allowed;
+      opacity: .85;
+      transform: none;
+      background: var(--teal-soft);
+      box-shadow: none;
+    }
+    .add-question .add-spinner {
+      width: 14px; height: 14px;
+      border: 2px solid rgba(15,118,110,.25);
+      border-top-color: var(--teal);
+      border-radius: 50%;
+      animation: spinSlow .7s linear infinite;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+    body.dark .add-question .add-spinner {
+      border-color: rgba(167,238,226,.25);
+      border-top-color: #a7eee2;
+    }
+
+    .remove-button {
+      background:transparent;
+      border:0;
+      color:var(--red);
+      cursor:pointer;
+      font-size:.82rem;
+      font-weight:700;
+      transition: color .2s ease, transform .2s ease;
+    }
+    .remove-button:hover {
+      color: #8f2a1f;
+      transform: scale(1.05);
+    }
+
+    .actions {
+      align-items:center;
+      display:flex;
+      gap:16px;
+      justify-content:flex-end;
+      margin-top:24px;
+      flex-wrap: wrap;
+    }
+    .back { color:var(--teal); font-size:14px; }
+
+    .submit,.publish {
+      background:var(--teal);
+      border:0;
+      border-radius:9px;
+      color:#fff;
+      cursor:pointer;
+      font-size:14px;
+      font-weight:800;
+      padding:14px 24px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition:.25s cubic-bezier(.34,1.56,.64,1);
+    }
+    .submit:hover,.publish:hover {
+      background:var(--teal-dark);
+      box-shadow:0 8px 20px rgba(15,118,110,.28);
+      transform:translateY(-2px);
+    }
+    .submit:active { transform: translateY(0) scale(.97); }
+
+    .submit .spinner {
+      width: 14px; height: 14px;
+      border: 2px solid rgba(255,255,255,.35);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spinSlow .7s linear infinite;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+
+    button:disabled { cursor:not-allowed; opacity:.65; }
+
+    #status { color:var(--muted); flex:1; text-align:right; font-weight: 600; }
+    #status.error { color:var(--red); }
+    #status.success { color:#188038; }
+
+    .state { color:var(--muted); padding:50px 0; text-align:center; }
+
+    .lifecycle-button{
+      border:0;
+      border-radius:9px;
+      font-weight:800;
+      padding:10px 15px;
+      color:#fff;
+      cursor: pointer;
+      font-size: .8rem;
+      box-shadow:0 4px 10px rgba(0,0,0,.10);
+      transition:transform .25s cubic-bezier(.34,1.56,.64,1), box-shadow .25s ease, filter .18s ease;
+    }
+    .lifecycle-button:hover{
+      transform:translateY(-2px);
+      box-shadow:0 8px 20px rgba(0,0,0,.18);
+      filter:brightness(1.05);
+      color:#fff;
+    }
+    .lifecycle-button:active { transform: translateY(0) scale(.97); }
+
+    #publishForm{background:#168276;color:#fff;}
+    #closeForm{background:#d68b34;color:#fff;}
+    #copyFormLink{background:#3b7f79;color:#fff;}
+    #copyFormLink:hover{background:#326d68;color:#fff;}
+    #previewForm{background:#526b82;color:#fff;}
+    #previewForm:hover{background:#435a6f;color:#fff;}
+    #archiveForm{background:#b54840;color:#fff;}
+    .lifecycle-button:focus-visible{
+      outline:3px solid var(--teal-soft);
+      outline-offset:2px;
+    }
+
+    /* ============================================================
+       BOTTOM NAVBAR / FOOTER
+       ============================================================ */
+    .site-footer {
+      background: var(--teal-dark);
+      color: #fff;
+      margin-top: auto;
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+      width: 100%;
+    }
+    .site-footer::before {
+      content: "";
+      position: absolute;
+      top: -160px; right: -160px;
+      width: 420px; height: 420px;
+      background: radial-gradient(circle, rgba(167,238,226,.14), transparent 70%);
+      pointer-events: none;
+    }
+    .site-footer::after {
+      content: "";
+      position: absolute;
+      bottom: -180px; left: -160px;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(15,118,110,.35), transparent 70%);
+      pointer-events: none;
+    }
+    .footer-inner {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 60px clamp(20px, 5vw, 72px) 30px;
+      position: relative;
+      z-index: 1;
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 56px;
+      padding-bottom: 40px;
+      border-bottom: 1px solid rgba(255,255,255,.12);
+      align-items: start;
+    }
+    .footer-brand-block { max-width: 380px; }
+    .footer-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -.02em;
+      color: #fff;
+      margin-bottom: 16px;
+      transition: opacity .2s ease, transform .2s ease;
+      text-decoration: none;
+    }
+    .footer-brand:hover { opacity: .95; transform: translateY(-2px); }
+    .footer-brand-logo {
+      width: 44px; height: 44px;
+      object-fit: contain;
+      border-radius: 11px;
+      background: rgba(255,255,255,.10);
+      padding: 4px;
+      box-shadow: 0 4px 12px rgba(0,0,0,.20);
+      flex-shrink: 0;
+      transition: transform .35s cubic-bezier(.34,1.56,.64,1);
+    }
+    .footer-brand:hover .footer-brand-logo {
+      transform: rotate(-6deg) scale(1.08);
+    }
+    .footer-brand span { color: #a7eee2; }
+    .footer-tagline {
+      color: rgba(255,255,255,.68);
+      font-size: .9rem;
+      line-height: 1.7;
+      margin: 0;
+    }
+    .footer-col h4 {
+      font-size: .78rem; font-weight: 800;
+      letter-spacing: .14em; text-transform: uppercase;
+      color: #a7eee2; margin: 0 0 18px;
+    }
+    .footer-col ul {
+      list-style: none; margin: 0; padding: 0;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .footer-col a {
+      color: rgba(255,255,255,.72);
+      font-size: .88rem; font-weight: 500;
+      transition: color .2s ease, padding-left .2s ease;
+      display: inline-block; position: relative;
+      text-decoration: none;
+    }
+    .footer-col a::before {
+      content: "";
+      position: absolute; left: -14px; top: 50%;
+      transform: translateY(-50%) scaleX(0);
+      width: 8px; height: 2px; background: #a7eee2;
+      border-radius: 2px; transition: transform .2s ease;
+    }
+    .footer-col a:hover { color: #fff; padding-left: 6px; }
+    .footer-col a:hover::before { transform: translateY(-50%) scaleX(1); }
+    .footer-bottom {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-top: 24px; gap: 20px; flex-wrap: wrap;
+      font-size: .84rem; color: rgba(255,255,255,.62);
+    }
+    .footer-bottom .copy strong { color: #fff; }
+    .footer-legal { display: flex; gap: 22px; flex-wrap: wrap; }
+    .footer-legal a { color: rgba(255,255,255,.62); transition: color .2s ease; text-decoration: none; }
+    .footer-legal a:hover { color: #a7eee2; }
+
+    /* ============================================================
+       RESPONSIVE
+       ============================================================ */
+    @media (max-width:1180px){
+      .topbar{padding:0 32px;gap:16px}
+      .topbar-left{gap:26px}
+      .nav-link{margin:0 8px;font-size:.86rem}
+      .topbar-right{gap:8px}
+      .theme-toggle,.btn-nav-action,.btn-login{height:40px;font-size:.84rem;padding:0 14px}
+      .btn-login{padding:0 18px}
+    }
+    @media (max-width:1024px){
+      .footer-top { grid-template-columns: 1fr 1fr; gap: 40px; }
+      .footer-brand-block { grid-column: 1 / -1; max-width: 520px; }
+    }
+    @media (max-width:960px){
+      .topbar{padding:0 20px;min-height:68px}
+      .menu-toggle{display:flex}
+      .topbar-right .btn-nav-action{display:none}
+      .nav-item-mobile{display:block}
+      .topbar-left{gap:0}
+      .nav-links{
+        position:absolute; top:100%; left:0; right:0;
+        flex-direction:column; align-items:stretch; gap:2px;
+        padding:0 20px;
+        background:var(--teal-dark);
+        border-top:1px solid rgba(255,255,255,.14);
+        box-shadow:0 20px 34px rgba(0,0,0,.28);
+        max-height:0; opacity:0; visibility:hidden; overflow:hidden;
+        transition:max-height .32s ease,opacity .25s ease,
+                   padding .32s ease,visibility .32s ease;
+      }
+      .nav-links.open{
+        max-height:400px; opacity:1; visibility:visible;
+        padding:12px 20px 16px;
+      }
+      .nav-link{font-size:.95rem;padding:12px 8px;margin:0}
+      .nav-link::after{display:none}
+      .nav-link:hover { transform: none; }
+      .nav-link.active{
+        background:rgba(167,238,226,.12);
+        border-radius:10px; padding-left:14px;
+      }
+    }
+    @media (max-width:760px) { .form-settings { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+    @media (max-width:640px){
+      .theme-label{display:none}
+      .theme-toggle{padding:0 14px;gap:0}
+      .brand{font-size:21px;gap:9px}
+      .brand-logo{width:38px;height:38px;padding:3px}
+      .footer-inner{padding:48px 24px 24px}
+      .footer-top { grid-template-columns: 1fr 1fr; gap: 36px 24px; }
+      .footer-brand-block { grid-column: 1 / -1; }
+      .progress-card { padding: 32px 22px; }
+    }
+    @media (max-width:580px) {
+      main { padding:26px 14px 50px; }
+      .topbar { padding:13px 16px; min-height: 62px; }
+      .status-panel { align-items:stretch; flex-direction:column; }
+      .lifecycle-actions { display:grid; grid-template-columns:1fr 1fr; }
+      .lifecycle-button { width:100%; }
+      .card,.hero { border-radius:10px; padding:22px; }
+      .form-settings,.question-head { grid-template-columns:1fr; gap:12px; }
+      .question-footer { align-items:stretch; flex-direction:column; }
+      .actions { align-items:stretch; flex-direction:column-reverse; }
+      #status { text-align:left; }
+      .add-question { width: 100%; }
+      .footer-bottom { flex-direction: column; text-align: center; align-items: center; }
+    }
+    @media (max-width:460px){
+      .topbar{padding:0 12px;min-height:62px}
+      .brand{font-size:19px;gap:8px}
+      .brand-logo{width:34px;height:34px;padding:2px;border-radius:10px}
+      .nav-links{padding:0 12px}
+      .nav-links.open{padding:10px 12px 14px}
+      .btn-login{padding:0 14px;font-size:.82rem}
+      .footer-top { grid-template-columns: 1fr; gap: 32px; }
+    }
+    @media (prefers-reduced-motion:reduce) {
+      .question { animation:none; opacity:1; transform:none; padding-left:52px; }
+      .progress-icon { animation:none; }
+      .progress-bar-fill::after { animation:none; }
+      .progress-card { animation:none; }
+      .add-question .add-spinner { animation:none; }
+      .card,.lifecycle-button,.submit,.publish,.small-button,.add-question,
+      .nav-link,.nav-link::after,
+      .brand,.brand-logo,.btn-login,.btn-nav-action,.theme-toggle { transition:none; }
+      .nav-link:hover { transform: none; }
+      .brand:hover .brand-logo { transform: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ============================= TOPBAR ============================= -->
+<header class="topbar">
+  <div class="topbar-left">
+    <a class="brand" href="index.html">
+      <img class="brand-logo" src="Glogo.png" alt="PutForm logo"
+           onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 46 46%22><rect width=%2246%22 height=%2246%22 rx=%2212%22 fill=%22%2317b8a6%22/><text x=%2250%25%22 y=%2258%25%22 text-anchor=%22middle%22 font-family=%22Arial%22 font-size=%2224%22 font-weight=%22bold%22 fill=%22white%22>P</text></svg>';">
+      Put<span>Form</span>
+    </a>
+
+    <ul class="nav-links" id="navLinks">
+      <li><a class="nav-link" href="index.html">Home</a></li>
+      <li><a class="nav-link active" href="forms.html">Dashboard</a></li>
+      <li><a class="nav-link" href="api.html">API</a></li>
+      <li><a class="nav-link" href="about.html">About</a></li>
+      <li><a class="nav-link" href="contact.html">Contact Us</a></li>
+      <li class="nav-item-mobile"><a class="nav-link" href="profile.html">Profile</a></li>
+    </ul>
+  </div>
+
+  <div class="topbar-right">
+    <a class="btn-nav-action" href="profile.html">Profile</a>
+
+    <div id="authContainer" style="display:flex; align-items:center;">
+      <a class="btn-login" href="login.html">Login</a>
+    </div>
+
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme">
+      <span class="theme-icon">🌙</span><span class="theme-label">Dark mode</span>
+    </button>
+
+    <button class="menu-toggle" id="menuToggle" type="button"
+            aria-label="Toggle navigation menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- ============================= MAIN ============================= -->
+<main>
+  <section class="page-heading">
+    <p class="eyebrow">Workspace</p>
+    <h1>Edit form</h1>
+    <p>Update your form details before sharing it with respondents.</p>
+  </section>
+
+  <!-- Progress card -->
+  <div class="progress-card" id="loading">
+    <div class="progress-icon">⚙️</div>
+    <div class="progress-title">Loading form…</div>
+    <div class="progress-bar">
+      <div class="progress-bar-fill" id="loadingFill"></div>
+    </div>
+    <div class="progress-status" id="loadingStatus">Preparing request</div>
+  </div>
+
+  <form id="editor" hidden>
+    <section class="status-panel" aria-label="Form status and actions">
+      <div class="status-copy">
+        <span class="status-label">Status</span>
+        <span class="form-status" id="formStatus">Loading</span>
+      </div>
+      <div class="lifecycle-actions">
+        <button class="lifecycle-button" id="publishForm" type="button">Publish</button>
+        <button class="lifecycle-button" id="copyFormLink" type="button">🔗 Copy Form Link</button>
+        <button class="lifecycle-button" id="previewForm" type="button">👁️ Preview</button>
+        <button class="lifecycle-button" id="closeForm" type="button">Close form</button>
+        <button class="lifecycle-button" id="archiveForm" type="button">Archive</button>
+      </div>
+    </section>
+
+    <section class="card hero">
+      <input id="title" type="text" placeholder="Untitled form" aria-label="Form title" />
+      <textarea id="description" placeholder="Form description (optional)" aria-label="Form description" style="margin-top:16px;"></textarea>
+      <div class="form-settings">
+        <label class="field-label">
+          <span class="label-text">Plan</span>
+          <select id="plan" aria-label="Plan">
+            <option value="FREE">Free</option>
+            <option value="BASIC">Basic</option>
+            <option value="PREMIUM">Premium</option>
+          </select>
+        </label>
+        <label class="field-label">
+          <span class="label-text">Response limit</span>
+          <input id="responseLimit" type="number" min="1" step="1" placeholder="Optional" aria-label="Response limit" />
+        </label>
+        <label class="field-label">
+          <span class="label-text">Filling amount</span>
+          <input id="fillingAmount" type="number" min="0" step="0.01" aria-label="Filling amount" />
+        </label>
+        <label class="field-label">
+          <span class="label-text">Expires at</span>
+          <input id="expiresAt" type="datetime-local" aria-label="Expires at" />
+        </label>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 class="section-heading">Questions</h2>
+      <p class="section-copy">Edit, remove, or add questions for this form. All changes are saved together when you click <strong>Save changes</strong>.</p>
+      <div id="questions"></div>
+      <button class="add-question" id="addQuestion" type="button" style="margin-top:18px;">+ Add question</button>
+    </section>
+
+    <div class="actions">
+      <button class="submit" type="button" onclick="window.location.href='forms.html';">← Back</button>
+      <span id="status" aria-live="polite"></span>
+      <button class="submit" id="saveForm" type="submit">Save changes</button>
+    </div>
+  </form>
+</main>
+
+<!-- ============================= BOTTOM NAVBAR / FOOTER ============================= -->
+<footer class="site-footer">
+  <div class="footer-inner">
+
+    <div class="footer-top">
+      <div class="footer-brand-block">
+        <a class="brand" href="index.html">
+          <img class="brand-logo" src="Glogo.png" alt="PutForm logo"
+              onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 46 46%22><rect width=%2246%22 height=%2246%22 rx=%2212%22 fill=%22%2317b8a6%22/><text x=%2250%25%22 y=%2258%25%22 text-anchor=%22middle%22 font-family=%22Arial%22 font-size=%2224%22 font-weight=%22bold%22 fill=%22white%22>P</text></svg>';">
+          Put<span>Form</span>
+        </a>
+        <p class="footer-tagline">
+          Build beautiful forms, collect responses, and connect them to your backend —
+          all from one clean, developer-friendly platform.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="forms.html">Dashboard</a></li>
+          <li><a href="creatform.html">Create a Form</a></li>
+          <li><a href="api.html">Developer API</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+          <li><a href="profile.html">Profile</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="copy">© 2026 <strong>PutForm</strong>. All rights reserved.</div>
+      <div class="footer-legal">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+        <a href="#">Cookies</a>
+      </div>
+    </div>
+
+  </div>
+</footer>
+
+<script>
+  /* ============================================================
+     ELEMENT REFERENCES
+     ============================================================ */
+  const themeToggle = document.getElementById('themeToggle');
+  const menuToggle = document.getElementById('menuToggle');
+  const navLinks = document.getElementById('navLinks');
+  const authContainer = document.getElementById('authContainer');
+  const API_URL = 'https://putform.onrender.com/api/forms';
+  const LOGOUT_URL = 'https://putform.onrender.com/api/auth/logout';
+  const formId = new URLSearchParams(window.location.search).get('id');
+  const loadingPanel = document.getElementById('loading');
+  const loadingFill = document.getElementById('loadingFill');
+  const loadingStatus = document.getElementById('loadingStatus');
+  const editor = document.getElementById('editor');
+  const status = document.getElementById('status');
+  const questions = document.getElementById('questions');
+  const formStatusBadge = document.getElementById('formStatus');
+  const addQuestionBtn = document.getElementById('addQuestion');
+  const optionTypes = ['SINGLE_CHOICE', 'MULTIPLE_CHOICE', 'CHECKBOX', 'DROPDOWN'];
+  let formStatus = '';
+
+  /* ============================================================
+     PROGRESS BAR
+     ============================================================ */
+  function setProgress(percent, message) {
+    const clamped = Math.max(0, Math.min(100, percent));
+    loadingFill.style.width = clamped + '%';
+    if (message) loadingStatus.textContent = message;
+  }
+
+  function showLoadingError(message) {
+    loadingPanel.classList.add('error');
+    const title = loadingPanel.querySelector('.progress-title');
+    if (title) title.textContent = 'Could not load form';
+    loadingStatus.textContent = message;
+    setProgress(100, message);
+  }
+
+  /* ============================================================
+     THEME
+     ============================================================ */
+  function setTheme(theme) {
+    const dark = theme === 'dark';
+    document.body.classList.toggle('dark', dark);
+    themeToggle.innerHTML = dark
+      ? '<span class="theme-icon">☀️</span><span class="theme-label">Light mode</span>'
+      : '<span class="theme-icon">🌙</span><span class="theme-label">Dark mode</span>';
+    localStorage.setItem('putform-theme', dark ? 'dark' : 'light');
+  }
+
+  setTheme(localStorage.getItem('putform-theme') || 'light');
+
+  themeToggle.addEventListener('click', () => {
+    setTheme(document.body.classList.contains('dark') ? 'light' : 'dark');
+  });
+
+  /* ============================================================
+     MOBILE MENU
+     ============================================================ */
+  function closeMenu() {
+    navLinks.classList.remove('open');
+    menuToggle.setAttribute('aria-expanded', 'false');
+  }
+
+  menuToggle.addEventListener('click', () => {
+    const isOpen = navLinks.classList.toggle('open');
+    menuToggle.setAttribute('aria-expanded', String(isOpen));
+  });
+
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', closeMenu);
+  });
+
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 960) closeMenu();
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeMenu();
+  });
+
+  /* ============================================================
+     AUTH STATE
+     ============================================================ */
+  async function checkUserSession() {
+    try {
+      const response = await fetch(API_URL, {
+        method: 'GET',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' }
+      });
+
+      if (response.ok) {
+        authContainer.innerHTML =
+          '<button class="btn-login" id="logoutBtn" type="button">Logout</button>';
+        document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+      } else {
+        renderLoginButton();
+      }
+    } catch (error) {
+      renderLoginButton();
+    }
+  }
+
+  function renderLoginButton() {
+    authContainer.innerHTML = '<a class="btn-login" href="login.html">Login</a>';
+  }
+
+  async function handleLogout() {
+    try {
+      await fetch(LOGOUT_URL, { method: 'POST', credentials: 'include' });
+    } catch (error) {
+      console.error('Logout error:', error);
+    } finally {
+      window.location.href = 'login.html';
+    }
+  }
+
+  /* ============================================================
+     HELPERS
+     ============================================================ */
+  function setDateTime(value) {
+    if (!value) return '';
+    return String(value).slice(0, 16);
+  }
+
+  function escapeHtml(value) {
+    return String(value ?? '').replace(/[&<>'"]/g, character => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+    }[character]));
+  }
+
+  function showStatus(message, error = false) {
+    status.textContent = message;
+    status.className = error ? 'error' : 'success';
+  }
+
+  /* ============================================================
+     QUESTION OPTIONS
+     ============================================================ */
+  function renderOptions(card, values = []) {
+    const type = card.querySelector('.question-type').value;
+    const area = card.querySelector('.question-options');
+    area.innerHTML = '';
+    if (!optionTypes.includes(type)) return;
+
+    const options = values.length ? values : ['', ''];
+    options.forEach(value => {
+      const row = document.createElement('div');
+      row.className = 'option';
+      row.innerHTML = `<input class="option-text" type="text" placeholder="Option" value="${escapeHtml(value)}" /><button class="remove-button" type="button" aria-label="Remove option">Remove</button>`;
+      row.querySelector('.remove-button').addEventListener('click', () => row.remove());
+      area.append(row);
+    });
+
+    const add = document.createElement('button');
+    add.className = 'small-button';
+    add.type = 'button';
+    add.textContent = '+ Add option';
+    add.addEventListener('click', () => {
+      const row = document.createElement('div');
+      row.className = 'option';
+      row.innerHTML = '<input class="option-text" type="text" placeholder="Option" /><button class="remove-button" type="button">Remove</button>';
+      row.querySelector('.remove-button').addEventListener('click', () => row.remove());
+      area.insertBefore(row, add);
+    });
+    area.append(add);
+  }
+
+  /* ============================================================
+     MOVE / DRAG
+     ============================================================ */
+  let draggedQuestion = null;
+
+  function updateMoveButtons() {
+    const cards = [...questions.querySelectorAll('.question')];
+    cards.forEach((card, index) => {
+      const up = card.querySelector('.move-up');
+      const down = card.querySelector('.move-down');
+      if (up) up.disabled = index === 0;
+      if (down) down.disabled = index === cards.length - 1;
+    });
+  }
+
+  function moveQuestion(card, direction) {
+    const cards = [...questions.querySelectorAll('.question')];
+    const index = cards.indexOf(card);
+    if (index === -1) return;
+
+    if (direction < 0 && index > 0) {
+      questions.insertBefore(card, cards[index - 1]);
+    } else if (direction > 0 && index < cards.length - 1) {
+      questions.insertBefore(card, cards[index + 1].nextSibling);
+    }
+
+    updateMoveButtons();
+    showStatus('Question moved. Click Save changes to save the new order.');
+  }
+
+  /* ============================================================
+     QUESTION CARD
+     ============================================================ */
+  function questionCard(question = {}) {
+    const card = document.createElement('div');
+    card.className = 'question';
+    card.draggable = true;
+
+    // Existing questions keep their real database UUID.
+    // New questions have no ID; the backend/Hibernate generates it.
+    card.dataset.id = question.id || '';
+
+    card.innerHTML = `
+      <div class="drag-handle" draggable="true" title="Drag to move question" aria-label="Drag to move question">⋮⋮</div>
+      <div class="question-head">
+        <input class="question-title" type="text" maxlength="500" placeholder="Question" value="${escapeHtml(question.question || '')}" required />
+        <select class="question-type" aria-label="Question type">
+          <option value="SHORT_TEXT">Short answer</option>
+          <option value="LONG_TEXT">Paragraph</option>
+          <option value="NUMBER">Number</option>
+          <option value="EMAIL">Email</option>
+          <option value="DATE">Date</option>
+          <option value="SINGLE_CHOICE">Single choice</option>
+          <option value="MULTIPLE_CHOICE">Multiple choice</option>
+          <option value="DROPDOWN">Dropdown</option>
+          <option value="CHECKBOX">Checkboxes</option>
+          <option value="FILE_UPLOAD">File upload</option>
+          <option value="RATING">Rating</option>
+        </select>
+      </div>
+      <div class="question-options"></div>
+      <div class="question-footer">
+        <div class="move-buttons" aria-label="Move question">
+          <button class="move-button move-up" type="button" title="Move up">↑</button>
+          <button class="move-button move-down" type="button" title="Move down">↓</button>
+        </div>
+        <button class="remove-button delete-question" type="button">Remove question</button>
+        <label class="required-label">
+          <input class="required" type="checkbox" ${question.required ? 'checked' : ''} /> Required
+        </label>
+      </div>`;
+
+    card.querySelector('.question-type').value = question.type || 'SHORT_TEXT';
+    card.querySelector('.question-type').addEventListener('change', () => renderOptions(card));
+    card.querySelector('.delete-question').addEventListener('click', () => {
+      card.remove();
+      updateMoveButtons();
+      showStatus('Question removed. Click Save changes to save.');
+    });
+
+    card.querySelector('.move-up').addEventListener('click', () => moveQuestion(card, -1));
+    card.querySelector('.move-down').addEventListener('click', () => moveQuestion(card, 1));
+
+    card.addEventListener('dragstart', event => {
+      if (event.target.closest('input, select, textarea, button')) {
+        event.preventDefault();
+        return;
+      }
+      draggedQuestion = card;
+      card.classList.add('dragging');
+      event.dataTransfer.effectAllowed = 'move';
+    });
+
+    card.addEventListener('dragend', () => {
+      card.classList.remove('dragging');
+      questions.querySelectorAll('.question').forEach(item => item.classList.remove('drag-over'));
+      draggedQuestion = null;
+      updateMoveButtons();
+    });
+
+    card.addEventListener('dragover', event => {
+      event.preventDefault();
+      if (!draggedQuestion || draggedQuestion === card) return;
+      event.dataTransfer.dropEffect = 'move';
+      card.classList.add('drag-over');
+    });
+
+    card.addEventListener('dragleave', event => {
+      if (!card.contains(event.relatedTarget)) card.classList.remove('drag-over');
+    });
+
+    card.addEventListener('drop', event => {
+      event.preventDefault();
+      card.classList.remove('drag-over');
+      if (!draggedQuestion || draggedQuestion === card) return;
+
+      const rect = card.getBoundingClientRect();
+      const insertBefore = event.clientY < rect.top + rect.height / 2;
+
+      if (insertBefore) questions.insertBefore(draggedQuestion, card);
+      else questions.insertBefore(draggedQuestion, card.nextSibling);
+
+      updateMoveButtons();
+      showStatus('Question moved. Click Save changes to save the new order.');
+    });
+
+    const options = question.configuration && Array.isArray(question.configuration.options)
+      ? question.configuration.options
+      : [];
+    renderOptions(card, options);
+    return card;
+  }
+
+  function renderQuestions(items) {
+    questions.innerHTML = '';
+    if (!items || !items.length) {
+      questions.innerHTML = '<p class="section-copy">This form has no questions.</p>';
+      return;
+    }
+    items.forEach(question => questions.append(questionCard(question)));
+    updateMoveButtons();
+  }
+
+  /* ============================================================
+     BUILD QUESTION LIST — matches UpdateQuestionRequest
+     ============================================================ */
+  function buildQuestionPayloadList() {
+    return [...questions.querySelectorAll('.question')].map((card, index) => {
+      const type = card.querySelector('.question-type').value;
+      const options = [...card.querySelectorAll('.option-text')]
+        .map(input => input.value.trim())
+        .filter(Boolean);
+
+      return {
+        id: card.dataset.id || null,             // Existing UUID or null for new question
+        question: card.querySelector('.question-title').value.trim(),
+        type: type,
+        required: card.querySelector('.required').checked,
+        questionOrder: index + 1,
+        configuration: { options }
+      };
+    });
+  }
+
+  /* ============================================================
+     LIFECYCLE
+     ============================================================ */
+  function updateLifecycleControls() {
+    formStatusBadge.textContent = formStatus || 'UNKNOWN';
+    formStatusBadge.className = `form-status ${String(formStatus).toLowerCase()}`;
+    const publishButton = document.getElementById('publishForm');
+    const closeButton = document.getElementById('closeForm');
+    const archiveButton = document.getElementById('archiveForm');
+
+    publishButton.hidden = !['DRAFT', 'CLOSED'].includes(String(formStatus).toUpperCase());
+    closeButton.hidden = String(formStatus).toUpperCase() !== 'PUBLISHED';
+    archiveButton.hidden = String(formStatus).toUpperCase() === 'ARCHIVED';
+
+    publishButton.textContent =
+      String(formStatus).toUpperCase() === 'CLOSED'
+        ? 'Publish again'
+        : 'Publish';
+    const locked = formStatus === 'ARCHIVED';
+    editor.querySelectorAll('input, textarea, select, .delete-question, #addQuestion, #saveForm').forEach(control => {
+      control.disabled = locked;
+    });
+  }
+
+  async function changeLifecycle(action, label, confirmation) {
+    if (!window.confirm(confirmation)) return;
+    const button = document.getElementById(`${action}Form`);
+    button.disabled = true;
+    try {
+      const response = await fetch(`${API_URL}/${encodeURIComponent(formId)}/${action}`, {
+        method:'PATCH',
+        credentials:'include'
+      });
+      if (!response.ok) throw new Error(`Server returned ${response.status}`);
+      const updated = await response.json();
+      formStatus = updated.status || action.toUpperCase();
+      updateLifecycleControls();
+      showStatus(`${label} successfully.`);
+    } catch (error) {
+      showStatus(`Could not ${label.toLowerCase()}: ${error.message}`, true);
+      button.disabled = false;
+    }
+  }
+
+  /* ============================================================
+     LOAD FORM (with progress)
+     ============================================================ */
+  async function loadForm() {
+    if (!formId) throw new Error('No form id was provided.');
+
+    setProgress(10, 'Validating form id…');
+    await new Promise(r => setTimeout(r, 120));
+
+    setProgress(35, 'Fetching form details…');
+    const response = await fetch(`${API_URL}/${encodeURIComponent(formId)}`, { credentials:'include' });
+    if (!response.ok) throw new Error(`Server returned ${response.status}`);
+
+    setProgress(60, 'Parsing response…');
+    const form = await response.json();
+    await new Promise(r => setTimeout(r, 100));
+
+    setProgress(80, 'Filling in form details…');
+    document.getElementById('title').value = form.title || '';
+    document.getElementById('description').value = form.description || '';
+    document.getElementById('plan').value = form.plan || 'FREE';
+    document.getElementById('responseLimit').value = form.responseLimit ?? '';
+    document.getElementById('fillingAmount').value = form.fillingAmount ?? '0.00';
+    document.getElementById('expiresAt').value = setDateTime(form.expiresAt);
+    await new Promise(r => setTimeout(r, 100));
+
+    setProgress(90, 'Rendering questions…');
+    // Backend may return `questionRequestSet` or `questionRequestList`
+    const loadedQuestions =
+      form.questionRequestList ||
+      form.questionRequestSet ||
+      form.questions ||
+      [];
+    renderQuestions(loadedQuestions);
+    formStatus = form.status || '';
+    updateLifecycleControls();
+    await new Promise(r => setTimeout(r, 150));
+
+    setProgress(100, 'Ready');
+    await new Promise(r => setTimeout(r, 300));
+
+    loadingPanel.remove();
+    editor.hidden = false;
+  }
+
+  /* ============================================================
+     SAVE FORM — sends UpdateFormRequest with questionRequestList
+     ============================================================ */
+  editor.addEventListener('submit', async event => {
+    event.preventDefault();
+    const save = document.getElementById('saveForm');
+    const responseLimit = document.getElementById('responseLimit').value;
+    const fillingAmount = document.getElementById('fillingAmount').value;
+    const expiresAt = document.getElementById('expiresAt').value;
+
+    // --- Validation ---
+    const title = document.getElementById('title').value.trim();
+    if (!title) {
+      showStatus('Title is required.', true);
+      document.getElementById('title').focus();
+      return;
+    }
+
+    const questionList = buildQuestionPayloadList();
+    if (questionList.some(q => !q.question)) {
+      showStatus('Every question must have a title.', true);
+      return;
+    }
+
+    if (!responseLimit || Number(responseLimit) < 1) {
+      showStatus('Response limit must be greater than 0.', true);
+      document.getElementById('responseLimit').focus();
+      return;
+    }
+
+    if (expiresAt && new Date(expiresAt).getTime() <= Date.now()) {
+      showStatus('Expiry date must be in the future.', true);
+      document.getElementById('expiresAt').focus();
+      return;
+    }
+
+    // --- Build payload matching UpdateFormRequest ---
+    const payload = {
+      title: title,
+      description: document.getElementById('description').value.trim(),
+      plan: document.getElementById('plan').value,
+      responseLimit: Number(responseLimit),
+      fillingAmount: fillingAmount || '0.00',
+      expiresAt: expiresAt || null,
+      questionRequestList: questionList
+    };
+
+    // --- Lock the save button ---
+    const originalHTML = save.innerHTML;
+    save.disabled = true;
+    save.innerHTML = '<span class="spinner"></span> Saving…';
+    status.textContent = 'Saving changes…';
+    status.className = '';
+
+    try {
+      const response = await fetch(`${API_URL}/${encodeURIComponent(formId)}`, {
+        method:'PUT',
+        credentials:'include',
+        headers:{ 'Content-Type':'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) {
+        let message = `Server returned ${response.status}`;
+        try {
+          const errorBody = await response.json();
+          if (errorBody.message) message = errorBody.message;
+          else if (errorBody.errors) message = Object.values(errorBody.errors).join(' · ');
+        } catch (_) {
+          const text = await response.text().catch(() => '');
+          if (text) message = text;
+        }
+        throw new Error(message);
+      }
+
+      // Refresh the form after save to sync backend-generated data (e.g., new question IDs)
+      const updated = await response.json().catch(() => null);
+      if (updated) {
+        // Update form status badge if it changed
+        if (updated.status) {
+          formStatus = updated.status;
+          updateLifecycleControls();
+        }
+        // Re-render questions if the backend returned them
+        const savedQuestions =
+          updated.questionRequestList ||
+          updated.questionRequestSet ||
+          updated.questions;
+        if (Array.isArray(savedQuestions)) {
+          renderQuestions(savedQuestions);
+        }
+      }
+
+      showStatus('Changes saved successfully.');
+    } catch (error) {
+      status.textContent = `Could not save changes: ${error.message}`;
+      status.className = 'error';
+    } finally {
+      save.disabled = false;
+      save.innerHTML = originalHTML;
+    }
+  });
+
+  /* ============================================================
+     ADD QUESTION — with loading state
+     ============================================================ */
+  addQuestionBtn.addEventListener('click', async () => {
+    if (addQuestionBtn.disabled) return;
+
+    const originalHTML = addQuestionBtn.innerHTML;
+    addQuestionBtn.disabled = true;
+    addQuestionBtn.innerHTML = '<span class="add-spinner"></span> Adding…';
+
+    await new Promise(r => setTimeout(r, 350));
+
+    const emptyState = questions.querySelector('.section-copy');
+    if (emptyState) emptyState.remove();
+
+    const card = questionCard(); // new question -> id is null on save
+    questions.append(card);
+    updateMoveButtons();
+
+    addQuestionBtn.disabled = false;
+    addQuestionBtn.innerHTML = originalHTML;
+
+    card.querySelector('.question-title').focus();
+    showStatus('New question added. Click Save changes to save.');
+  });
+
+  /* ============================================================
+     PREVIEW
+     ============================================================ */
+  document.getElementById('previewForm').addEventListener('click', () => {
+    const previewUrl = `${window.location.origin}/preview.html?formId=${encodeURIComponent(formId)}`;
+    window.open(previewUrl, '_blank', 'noopener,noreferrer');
+  });
+
+  /* ============================================================
+     COPY FORM LINK
+     ============================================================ */
+  document.getElementById('copyFormLink').addEventListener('click', async () => {
+    const button = document.getElementById('copyFormLink');
+    const link = `${window.location.origin}/submit.html?formId=${encodeURIComponent(formId)}`;
+
+    try {
+      await navigator.clipboard.writeText(link);
+    } catch {
+      const input = document.createElement('textarea');
+      input.value = link;
+      input.style.position = 'fixed';
+      input.style.opacity = '0';
+      document.body.appendChild(input);
+      input.focus();
+      input.select();
+      document.execCommand('copy');
+      input.remove();
+    }
+
+    const originalText = button.textContent;
+    button.textContent = '✓ Link copied';
+    setTimeout(() => button.textContent = originalText, 1800);
+  });
+
+  /* ============================================================
+     LIFECYCLE BUTTONS
+     ============================================================ */
+  document.getElementById('publishForm').addEventListener('click', () => {
+    const message = String(formStatus).toUpperCase() === 'CLOSED'
+      ? 'Publish this form again? Respondents will be able to use it.'
+      : 'Publish this form? Respondents will be able to use it.';
+    changeLifecycle('publish', 'Published', message);
+  });
+
+  document.getElementById('closeForm').addEventListener('click', () =>
+    changeLifecycle('close', 'Closed', 'Close this form? It will stop accepting responses.')
+  );
+
+  document.getElementById('archiveForm').addEventListener('click', () =>
+    changeLifecycle('archive', 'Archived', 'Archive this form? Archived forms cannot be edited.')
+  );
+
+  /* ============================================================
+     INIT
+     ============================================================ */
+  checkUserSession();
+
+  setProgress(0, 'Starting…');
+  loadForm().catch(error => {
+    console.error('Load form error:', error);
+    showLoadingError(error.message || 'Something went wrong.');
+  });
+</script>
+</body>
+</html>
