@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Contact Us | PutForm</title>
+  <link rel="icon" type="image/svg+xml" href="Glogo.png" />
   <style>
     :root{
       --bg:#f4f7f6; --surface:#fff; --surface-2:#f8fbfa;
@@ -966,7 +967,7 @@
         <h4>Product</h4>
         <ul>
           <li><a href="forms.html">Dashboard</a></li>
-          <li><a href="creatform.html">Create a Form</a></li>
+          <li><a href="createform.html">Create a Form</a></li>
           <li><a href="api.html">Developer API</a></li>
         </ul>
       </div>
@@ -978,6 +979,7 @@
           <li><a href="about.html">About</a></li>
           <li><a href="contact.html">Contact Us</a></li>
           <li><a href="profile.html">Profile</a></li>
+          
         </ul>
       </div>
 
@@ -989,6 +991,7 @@
       <div class="footer-legal">
         <a href="privacy.html">Privacy Policy</a>
         <a href="terms.html">Terms of Service</a>
+        <a href="cookies.html">Cookies</a>
       </div>
     </div>
 
@@ -996,9 +999,9 @@
 </footer>
 
 <script>
-  const API_URL = 'http://localhost:8080/api/forms';
-  const LOGOUT_URL = 'http://localhost:8080/api/auth/logout';
-  const CONTACT_URL = 'http://localhost:8080/api/public/contact';
+  const API_URL = 'https://putform.onrender.com/api/forms';
+  const LOGOUT_URL = 'https://putform.onrender.com/auth/logout';
+  const CONTACT_URL = 'https://putform.onrender.com/public/contact';
 
   const themeToggle = document.getElementById('themeToggle');
   const authContainer = document.getElementById('authContainer');

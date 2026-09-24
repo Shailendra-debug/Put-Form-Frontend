@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Terms of Service | PutForm</title>
+  <title>Cookie Policy | PutForm</title>
   <link rel="icon" type="image/svg+xml" href="Glogo.png" />
   <style>
     :root{
@@ -53,7 +53,7 @@
       box-shadow:0 4px 24px rgba(11,93,86,.28);
     }
     .topbar-left{display:flex;align-items:center;gap:42px;min-width:0;flex:1}
-        .brand{
+    .brand{
       font-family:Arial, Helvetica, sans-serif;
       font-size:25px; font-weight:800; color:#fff;
       line-height:1; display:inline-flex; align-items:center; gap:5px;
@@ -138,7 +138,7 @@
     .menu-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
 
     /* ============================================================
-       TERMS PAGE CONTENT
+       POLICY PAGE CONTENT
        ============================================================ */
     main{margin:0 auto; max-width:1240px; padding:64px clamp(18px,5vw,72px) 90px}
 
@@ -325,6 +325,74 @@
     }
     body.dark .callout.warn strong{color:#ffdda3}
 
+    /* ============================================================
+       COOKIE TABLE
+       ============================================================ */
+    .table-scroll{
+      width:100%;
+      overflow-x:auto;
+      margin:18px 0 20px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:var(--surface-2);
+      -webkit-overflow-scrolling:touch;
+    }
+    .cookie-table{
+      width:100%;
+      min-width:640px;
+      border-collapse:collapse;
+      font-size:.86rem;
+    }
+    .cookie-table th{
+      text-align:left;
+      padding:13px 16px;
+      font-size:.72rem;
+      font-weight:800;
+      letter-spacing:.1em;
+      text-transform:uppercase;
+      color:var(--teal);
+      background:var(--teal-soft);
+      white-space:nowrap;
+      border-bottom:1px solid var(--line);
+    }
+    .cookie-table td{
+      padding:13px 16px;
+      color:var(--muted);
+      line-height:1.6;
+      border-bottom:1px solid var(--line);
+      vertical-align:top;
+    }
+    .cookie-table tr:last-child td{border-bottom:none}
+    .cookie-table td strong{color:var(--text);font-weight:700}
+    .cookie-table code{
+      font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+      font-size:.82rem;
+      background:var(--teal-soft);
+      color:var(--teal);
+      padding:2px 7px;
+      border-radius:6px;
+      white-space:nowrap;
+      font-weight:600;
+    }
+    body.dark .cookie-table code{color:#a7eee2}
+
+    /* Category badges */
+    .badge{
+      display:inline-block;
+      font-size:.68rem;
+      font-weight:800;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      padding:4px 9px;
+      border-radius:999px;
+      white-space:nowrap;
+    }
+    .badge.essential{background:var(--teal-soft);color:var(--teal)}
+    .badge.analytics{background:#e8eefb;color:#3a5aa8}
+    .badge.preference{background:#f2ecfb;color:#6a4aa8}
+    body.dark .badge.analytics{background:#1c2740;color:#9db4ee}
+    body.dark .badge.preference{background:#271f3a;color:#c1aaf0}
+
     /* Contact strip inside content */
     .policy-contact{
       background:linear-gradient(135deg, var(--teal-dark), var(--teal));
@@ -365,6 +433,89 @@
       transform:translateY(-2px);
     }
 
+    /* Preference panel */
+    .pref-panel{
+      background:var(--surface-2);
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:20px 22px;
+      margin:20px 0;
+    }
+    .pref-row{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:18px;
+      padding:14px 0;
+      border-bottom:1px solid var(--line);
+    }
+    .pref-row:first-child{padding-top:0}
+    .pref-row:last-child{padding-bottom:0;border-bottom:none}
+    .pref-row h4{
+      font-size:.95rem; font-weight:750;
+      margin:0 0 4px; color:var(--text);
+      letter-spacing:-.01em;
+    }
+    .pref-row p{
+      font-size:.85rem; line-height:1.6; margin:0; color:var(--muted);
+    }
+    .pref-state{
+      flex-shrink:0;
+      font-size:.76rem;
+      font-weight:800;
+      letter-spacing:.05em;
+      text-transform:uppercase;
+      padding:6px 12px;
+      border-radius:999px;
+      background:var(--teal-soft);
+      color:var(--teal);
+      white-space:nowrap;
+    }
+    .pref-state.off{
+      background:transparent;
+      border:1px solid var(--line);
+      color:var(--muted);
+    }
+    .pref-actions{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:18px;
+    }
+    .btn-soft{
+      border:1px solid var(--line);
+      background:var(--surface);
+      color:var(--text);
+      font-size:.86rem;
+      font-weight:700;
+      padding:11px 20px;
+      border-radius:10px;
+      cursor:pointer;
+      transition:border-color .2s ease,background .2s ease,transform .2s ease;
+    }
+    .btn-soft:hover{
+      border-color:var(--teal);
+      color:var(--teal);
+      transform:translateY(-1px);
+    }
+    .btn-solid{
+      border:1px solid var(--teal);
+      background:var(--teal);
+      color:#fff;
+      font-size:.86rem;
+      font-weight:800;
+      padding:11px 20px;
+      border-radius:10px;
+      cursor:pointer;
+      transition:background .2s ease,transform .2s ease,box-shadow .2s ease;
+    }
+    .btn-solid:hover{
+      background:var(--teal-dark);
+      border-color:var(--teal-dark);
+      transform:translateY(-1px);
+      box-shadow:0 8px 20px rgba(15,118,110,.22);
+    }
+
     /* CTA at bottom */
     .policy-cta{
       margin-top:60px;
@@ -397,6 +548,64 @@
       transition:all .2s ease;
     }
     .cta-secondary:hover{background:rgba(255,255,255,.22); transform:translateY(-2px)}
+
+    /* ============================================================
+       COOKIE CONSENT BANNER
+       ============================================================ */
+    .cookie-banner{
+      position:fixed;
+      left:50%;
+      bottom:22px;
+      transform:translate(-50%,140%);
+      width:calc(100% - 40px);
+      max-width:760px;
+      background:var(--surface);
+      border:1px solid var(--line);
+      border-radius:18px;
+      box-shadow:0 22px 54px rgba(23,33,43,.22);
+      padding:22px 24px;
+      z-index:80;
+      display:flex;
+      align-items:center;
+      gap:20px;
+      flex-wrap:wrap;
+      opacity:0;
+      visibility:hidden;
+      transition:transform .4s cubic-bezier(.16,1,.3,1), opacity .3s ease, visibility .4s ease;
+    }
+    .cookie-banner.show{
+      transform:translate(-50%,0);
+      opacity:1;
+      visibility:visible;
+    }
+    .cookie-banner-text{flex:1;min-width:240px}
+    .cookie-banner-text h4{
+      margin:0 0 6px;
+      font-size:.98rem;
+      font-weight:800;
+      letter-spacing:-.01em;
+      color:var(--text);
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .cookie-banner-text p{
+      margin:0;
+      font-size:.85rem;
+      line-height:1.6;
+      color:var(--muted);
+    }
+    .cookie-banner-text a{
+      color:var(--teal);
+      font-weight:700;
+    }
+    .cookie-banner-text a:hover{text-decoration:underline}
+    .cookie-banner-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      flex-shrink:0;
+    }
 
     /* ============================================================
        FOOTER
@@ -586,6 +795,16 @@
       .policy-contact{padding:22px}
       .policy-cta{padding:42px 22px}
 
+      .cookie-banner{
+        bottom:12px;
+        padding:18px 18px;
+        border-radius:16px;
+        gap:14px;
+      }
+      .cookie-banner-actions{width:100%}
+      .cookie-banner-actions .btn-soft,
+      .cookie-banner-actions .btn-solid{flex:1;text-align:center}
+
       .footer-inner{padding:52px 24px 26px}
       .footer-top{grid-template-columns:1fr 1fr; gap:36px 28px}
       .footer-brand-block{grid-column:1 / -1}
@@ -617,7 +836,7 @@
     <a class="brand" href="index.html">
       <img class="brand-logo" src="Glogo.png" alt="PutForm logo"
            onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 46 46%22><rect width=%2246%22 height=%2246%22 rx=%2212%22 fill=%22%2317b8a6%22/><text x=%2250%25%22 y=%2258%25%22 text-anchor=%22middle%22 font-family=%22Arial%22 font-size=%2224%22 font-weight=%22bold%22 fill=%22white%22>P</text></svg>';">
-      Put<span>Form</span></span>
+      Put<span>Form</span>
     </a>
 
     <ul class="nav-links" id="navLinks">
@@ -654,10 +873,11 @@
   <!-- Hero -->
   <section class="policy-hero">
     <span class="eyebrow">Legal</span>
-    <h1>Terms of <span>Service</span></h1>
+    <h1>Cookie <span>Policy</span></h1>
     <p>
-      These Terms of Service govern your access to and use of PutForm. Please read them
-      carefully before creating an account or using any part of the platform.
+      This Cookie Policy explains what cookies are, which ones PutForm uses, why we use them,
+      and how you can control them. It should be read together with our
+      <a href="privacy.html" style="color:var(--teal);font-weight:700">Privacy Policy</a>.
     </p>
     <span class="last-updated">
       <span class="dot"></span>
@@ -672,277 +892,338 @@
     <aside class="policy-toc">
       <h4>On this page</h4>
       <ul>
-        <li><a href="#acceptance" class="active">1. Acceptance of Terms</a></li>
-        <li><a href="#eligibility">2. Eligibility</a></li>
-        <li><a href="#accounts">3. Accounts & Security</a></li>
-        <li><a href="#use">4. Acceptable Use</a></li>
-        <li><a href="#content">5. Your Content</a></li>
-        <li><a href="#ip">6. Intellectual Property</a></li>
-        <li><a href="#api">7. API & Integrations</a></li>
-        <li><a href="#plans">8. Plans & Payments</a></li>
-        <li><a href="#termination">9. Suspension & Termination</a></li>
-        <li><a href="#disclaimer">10. Disclaimers</a></li>
-        <li><a href="#liability">11. Limitation of Liability</a></li>
-        <li><a href="#changes">12. Changes to Terms</a></li>
-        <li><a href="#law">13. Governing Law</a></li>
-        <li><a href="#contact">14. Contact Us</a></li>
+        <li><a href="#what" class="active">1. What Are Cookies?</a></li>
+        <li><a href="#why">2. Why We Use Cookies</a></li>
+        <li><a href="#types">3. Types of Cookies We Use</a></li>
+        <li><a href="#list">4. Cookie Reference Table</a></li>
+        <li><a href="#session">5. Session & Auth Cookies</a></li>
+        <li><a href="#thirdparty">6. Third-Party Cookies</a></li>
+        <li><a href="#manage">7. Managing Your Cookies</a></li>
+        <li><a href="#dnt">8. Do Not Track Signals</a></li>
+        <li><a href="#retention">9. Retention Periods</a></li>
+        <li><a href="#changes">10. Changes to This Policy</a></li>
+        <li><a href="#contact">11. Contact Us</a></li>
       </ul>
     </aside>
 
     <!-- Main content -->
     <article class="policy-content">
 
-      <section id="acceptance">
+      <section id="what">
         <span class="section-number">Section 01</span>
-        <h2>Acceptance of Terms</h2>
+        <h2>What Are Cookies?</h2>
         <p>
-          By accessing or using PutForm ("the Service"), you agree to be bound by these Terms of
-          Service and our <a href="privacy.html">Privacy Policy</a>. If you do not agree to these
-          Terms, you must not use the Service.
+          Cookies are small text files that a website stores on your device (computer, tablet, or
+          phone) when you visit it. They allow the site to remember information about your visit,
+          such as your login state, your preferred theme, or how you navigate between pages.
         </p>
         <p>
-          If you are using PutForm on behalf of an organization, you represent and warrant that
-          you have the authority to bind that organization to these Terms, and "you" refers to both
-          you as an individual and the organization.
+          Cookies are not programs and cannot run code on your device. They cannot access other
+          files on your computer or read data stored by other websites. Most cookies are identified
+          by a name and a value, and they are sent back to the originating server with each request.
         </p>
+        <h3>Cookies vs. similar technologies</h3>
+        <p>
+          In this policy, "cookies" also covers similar technologies we may use, including:
+        </p>
+        <ul>
+          <li><strong>Local storage</strong> — browser storage used to keep preferences such as your chosen color theme.</li>
+          <li><strong>Session storage</strong> — temporary storage cleared automatically when you close the browser tab.</li>
+          <li><strong>Pixels and tags</strong> — tiny invisible elements used to measure page visits (only where enabled).</li>
+        </ul>
         <div class="callout">
-          <strong>Plain English:</strong> By using PutForm, you agree to follow these rules. If
-          you're using it for a company, you confirm you're allowed to accept these terms for them.
+          <strong>Plain English:</strong> Cookies are small files that help PutForm remember who you
+          are and how you like to use the site. They can't read your files or spy on other websites.
         </div>
       </section>
 
-      <section id="eligibility">
+      <section id="why">
         <span class="section-number">Section 02</span>
-        <h2>Eligibility</h2>
-        <p>To use PutForm, you must:</p>
+        <h2>Why We Use Cookies</h2>
+        <p>We use cookies for a small number of clearly defined purposes:</p>
         <ul>
-          <li>Be at least 13 years old (or 16 in jurisdictions where that is the minimum age).</li>
-          <li>Have the legal capacity to enter into a binding agreement.</li>
-          <li>Not be prohibited from using the Service under the laws of your jurisdiction.</li>
-          <li>Not have been previously suspended or removed from the Service.</li>
+          <li><strong>Keeping you signed in</strong> — so you don't have to log in on every page you visit.</li>
+          <li><strong>Securing your account</strong> — helping us detect suspicious or fraudulent sessions.</li>
+          <li><strong>Remembering preferences</strong> — such as dark mode, language, and layout choices.</li>
+          <li><strong>Understanding usage</strong> — aggregated, anonymized statistics that show which features are used and where the platform can improve.</li>
+          <li><strong>Protecting the Service</strong> — rate limiting and abuse prevention on our API and form submission endpoints.</li>
         </ul>
         <p>
-          If you are under the age of majority in your jurisdiction, you may only use PutForm with
-          the involvement and consent of a parent or legal guardian.
+          We do <strong>not</strong> use cookies to sell your personal data, and we do not use
+          advertising or cross-site tracking cookies on PutForm.
         </p>
       </section>
 
-      <section id="accounts">
+      <section id="types">
         <span class="section-number">Section 03</span>
-        <h2>Accounts & Security</h2>
-        <p>
-          To access most features of the Service, you must create an account. When you do, you agree to:
-        </p>
+        <h2>Types of Cookies We Use</h2>
+
+        <h3>By duration</h3>
         <ul>
-          <li>Provide accurate, current, and complete information during registration.</li>
-          <li>Keep your password confidential and not share it with anyone else.</li>
-          <li>Notify us immediately if you suspect unauthorized access to your account.</li>
-          <li>Take responsibility for all activity that occurs under your account.</li>
+          <li>
+            <strong>Session cookies</strong> — exist only while your browser is open and are deleted
+            automatically when you close it. Our authentication cookie is a session cookie.
+          </li>
+          <li>
+            <strong>Persistent cookies</strong> — remain on your device for a set period (or until
+            you delete them). These are used for preferences like theme selection.
+          </li>
         </ul>
-        <p>
-          We use cookie-based sessions to authenticate users. You are responsible for ensuring that
-          your device and browser are secure. We are not liable for losses caused by unauthorized
-          use of your account where you have failed to keep your credentials secure.
-        </p>
-        <div class="callout warn">
-          <strong>Important:</strong> Never share your password or session cookies with anyone.
-          PutForm staff will never ask you for your password.
-        </div>
+
+        <h3>By source</h3>
+        <ul>
+          <li>
+            <strong>First-party cookies</strong> — set directly by PutForm and used only by us.
+          </li>
+          <li>
+            <strong>Third-party cookies</strong> — set by external services we rely on, such as
+            infrastructure or error-monitoring providers. These are limited and described in
+            Section 06.
+          </li>
+        </ul>
+
+        <h3>By purpose</h3>
+        <ul>
+          <li><strong>Strictly necessary</strong> — required for the platform to function. These cannot be switched off.</li>
+          <li><strong>Preference</strong> — remember choices you make, such as dark mode.</li>
+          <li><strong>Analytics</strong> — help us understand aggregate usage. Optional.</li>
+        </ul>
       </section>
 
-      <section id="use">
+      <section id="list">
         <span class="section-number">Section 04</span>
-        <h2>Acceptable Use</h2>
-        <p>You agree <strong>not</strong> to use PutForm to:</p>
-        <ul>
-          <li>Collect, store, or process data in violation of any applicable law (including GDPR, CCPA, or similar regulations).</li>
-          <li>Create forms that harvest passwords, payment card numbers, or sensitive personal data without proper safeguards.</li>
-          <li>Send spam, phishing messages, or misleading content through forms or submission endpoints.</li>
-          <li>Distribute malware, viruses, or any code designed to harm systems or users.</li>
-          <li>Attempt to gain unauthorized access to other accounts, servers, or networks.</li>
-          <li>Reverse engineer, scrape, or overload the Service (including the API) beyond reasonable use.</li>
-          <li>Impersonate another person or organization, or misrepresent your affiliation.</li>
-          <li>Publish content that is hateful, defamatory, obscene, or violates anyone's rights.</li>
-        </ul>
+        <h2>Cookie Reference Table</h2>
         <p>
-          We reserve the right to remove any content or suspend any account that violates these rules,
-          with or without notice.
+          The table below lists the cookies PutForm currently sets, along with their purpose and
+          typical lifetime. Names may change slightly as the platform evolves.
         </p>
-      </section>
 
-      <section id="content">
-        <span class="section-number">Section 05</span>
-        <h2>Your Content</h2>
-        <p>
-          You retain full ownership of the forms you create and the responses you collect ("Your
-          Content"). We do not claim any ownership over Your Content.
-        </p>
-        <p>
-          By using PutForm, you grant us a limited, non-exclusive, worldwide license to host, store,
-          process, and display Your Content solely for the purpose of operating and improving the
-          Service. This license ends when you delete Your Content or your account, except where we
-          are legally required to retain it.
-        </p>
-        <h3>Your responsibilities</h3>
-        <ul>
-          <li>You are solely responsible for the lawfulness and accuracy of Your Content.</li>
-          <li>You must have the necessary rights and consents to collect any data you gather through forms.</li>
-          <li>You must provide appropriate privacy notices to your form respondents where required by law.</li>
-          <li>You must not upload content that infringes third-party intellectual property rights.</li>
-        </ul>
-      </section>
+        <div class="table-scroll">
+          <table class="cookie-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Purpose</th>
+                <th>Lifetime</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>pf_session</code></td>
+                <td><span class="badge essential">Essential</span></td>
+                <td>Authenticates your session so you stay logged in across pages.</td>
+                <td>Session</td>
+              </tr>
+              <tr>
+                <td><code>pf_csrf</code></td>
+                <td><span class="badge essential">Essential</span></td>
+                <td>Protects against cross-site request forgery on form submissions.</td>
+                <td>Session</td>
+              </tr>
+              <tr>
+                <td><code>pf_consent</code></td>
+                <td><span class="badge essential">Essential</span></td>
+                <td>Stores your cookie choices so we don't ask again on every visit.</td>
+                <td>12 months</td>
+              </tr>
+              <tr>
+                <td><code>putform-theme</code></td>
+                <td><span class="badge preference">Preference</span></td>
+                <td>Remembers whether you selected light or dark mode.</td>
+                <td>12 months</td>
+              </tr>
+              <tr>
+                <td><code>pf_analytics</code></td>
+                <td><span class="badge analytics">Analytics</span></td>
+                <td>Anonymous, aggregated page-view counts used to improve the product.</td>
+                <td>6 months</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
-      <section id="ip">
-        <span class="section-number">Section 06</span>
-        <h2>Intellectual Property</h2>
-        <p>
-          The PutForm platform — including its source code, design, logos, trademarks, and
-          documentation — is owned by us or our licensors and is protected by copyright, trademark,
-          and other intellectual property laws.
-        </p>
-        <p>
-          You may not copy, modify, distribute, sell, or lease any part of the Service, or reverse
-          engineer or attempt to extract the source code, unless we have given you written permission
-          or the law expressly permits it.
-        </p>
-        <p>
-          Nothing in these Terms grants you the right to use the PutForm name, logo, or branding
-          without our prior written consent.
-        </p>
-      </section>
-
-      <section id="api">
-        <span class="section-number">Section 07</span>
-        <h2>API & Integrations</h2>
-        <p>
-          PutForm provides public and authenticated REST endpoints for integrating the platform into
-          your own products. When using our API, you agree to:
-        </p>
-        <ul>
-          <li>Keep any API credentials and session cookies secure.</li>
-          <li>Respect rate limits and avoid abusive request patterns.</li>
-          <li>Not use the API to build a competing form-builder product.</li>
-          <li>Comply with all applicable data protection laws when handling data received via the API.</li>
-        </ul>
-        <p>
-          We may modify, deprecate, or restrict API endpoints at any time. Where possible, we will
-          provide advance notice of breaking changes.
-        </p>
-      </section>
-
-      <section id="plans">
-        <span class="section-number">Section 08</span>
-        <h2>Plans & Payments</h2>
-        <p>
-          PutForm offers free and paid plans. If you subscribe to a paid plan:
-        </p>
-        <ul>
-          <li>Fees are billed in advance on a recurring basis (monthly or annually).</li>
-          <li>All fees are non-refundable except where required by law.</li>
-          <li>You authorize us to charge your chosen payment method on each renewal date.</li>
-          <li>You are responsible for any taxes applicable to your subscription.</li>
-        </ul>
-        <p>
-          You can cancel your subscription at any time from your account settings. Cancellation takes
-          effect at the end of the current billing period. Access to paid features continues until
-          that date, but no further charges will be made.
-        </p>
-      </section>
-
-      <section id="termination">
-        <span class="section-number">Section 09</span>
-        <h2>Suspension & Termination</h2>
-        <p>
-          You may delete your account at any time. Once deleted, your forms and responses will be
-          removed within 30 days, subject to any legal retention requirements.
-        </p>
-        <p>We may suspend or terminate your access to PutForm if:</p>
-        <ul>
-          <li>You violate these Terms of Service.</li>
-          <li>We are required to do so by law.</li>
-          <li>Your use of the Service poses a security or legal risk to us or other users.</li>
-          <li>Your account has been inactive for an extended period (we will provide notice first).</li>
-        </ul>
-        <p>
-          Upon termination, your right to use the Service ends immediately. Sections relating to
-          intellectual property, liability, and governing law survive termination.
-        </p>
-      </section>
-
-      <section id="disclaimer">
-        <span class="section-number">Section 10</span>
-        <h2>Disclaimers</h2>
-        <p>
-          PutForm is provided <strong>"as is"</strong> and <strong>"as available"</strong>, without
-          warranties of any kind, whether express or implied. We disclaim all warranties, including
-          merchantability, fitness for a particular purpose, and non-infringement.
-        </p>
-        <p>
-          We do not warrant that the Service will be uninterrupted, error-free, or completely secure.
-          While we work to keep uptime high, occasional downtime or bugs may occur.
-        </p>
         <div class="callout warn">
-          <strong>Note:</strong> You are responsible for the accuracy and legality of the forms you
-          create and the data you collect. PutForm is a tool — it does not review or validate your
-          content for legal compliance.
+          <strong>Note:</strong> This table is provided for transparency. If you clear your browser
+          storage, all of these cookies — including your consent record — will be removed and you
+          will be asked again.
         </div>
       </section>
 
-      <section id="liability">
-        <span class="section-number">Section 11</span>
-        <h2>Limitation of Liability</h2>
+      <section id="session">
+        <span class="section-number">Section 05</span>
+        <h2>Session &amp; Authentication Cookies</h2>
         <p>
-          To the maximum extent permitted by law, PutForm and its team shall not be liable for any
-          indirect, incidental, special, consequential, or punitive damages, including lost profits,
-          lost data, or business interruption, arising from your use of the Service.
+          PutForm uses <strong>cookie-based sessions</strong> to authenticate users. When you log in,
+          our server issues a session cookie that identifies your account on subsequent requests.
+          This is why you can move between your dashboard, forms, and profile without logging in
+          again.
+        </p>
+        <p>Because these cookies are essential to how the Service works:</p>
+        <ul>
+          <li>They cannot be disabled while you are logged in.</li>
+          <li>They are marked <code>HttpOnly</code> so client-side scripts cannot read them.</li>
+          <li>They are marked <code>Secure</code> so they are only sent over HTTPS connections.</li>
+          <li>They are invalidated immediately when you log out or delete your account.</li>
+        </ul>
+        <div class="callout warn">
+          <strong>Important:</strong> Never share your session cookie with anyone. Anyone who
+          possesses it can act as you until it expires. PutForm staff will never ask for your
+          session cookie or password.
+        </div>
+        <p>
+          If you use our public API with server-side credentials, those credentials are sent in
+          request headers and do not rely on browser cookies.
+        </p>
+      </section>
+
+      <section id="thirdparty">
+        <span class="section-number">Section 06</span>
+        <h2>Third-Party Cookies</h2>
+        <p>
+          Some parts of PutForm are delivered through trusted third-party providers. These providers
+          may set their own cookies when you interact with their services. We keep this list as
+          short as possible and only work with vendors who process data on our instructions.
+        </p>
+        <ul>
+          <li>
+            <strong>Infrastructure &amp; hosting</strong> — our backend runs on a cloud platform that
+            may set short-lived technical cookies for load balancing and security.
+          </li>
+          <li>
+            <strong>Payment processing</strong> — if you subscribe to a paid plan, our payment
+            provider may set cookies to prevent fraud and complete checkout securely. We never
+            receive or store your full card details.
+          </li>
+          <li>
+            <strong>Error monitoring</strong> — used to detect crashes and broken pages. These
+            records are aggregated and do not identify you personally.
+          </li>
+        </ul>
+        <p>
+          We do not permit third parties to use cookies on PutForm for advertising or to build
+          cross-site profiles of your behavior.
+        </p>
+      </section>
+
+      <section id="manage">
+        <span class="section-number">Section 07</span>
+        <h2>Managing Your Cookies</h2>
+        <p>
+          You are in control of cookies. You can manage them in two ways: through the preference
+          panel below, and through your browser settings.
+        </p>
+
+        <div class="pref-panel" id="prefPanel">
+          <div class="pref-row">
+            <div>
+              <h4>Strictly necessary</h4>
+              <p>Required for login, security, and core platform functionality.</p>
+            </div>
+            <span class="pref-state">Always on</span>
+          </div>
+
+          <div class="pref-row">
+            <div>
+              <h4>Preferences</h4>
+              <p>Remembers your theme and display choices between visits.</p>
+            </div>
+            <span class="pref-state" id="prefStatePreference">Allowed</span>
+          </div>
+
+          <div class="pref-row">
+            <div>
+              <h4>Analytics</h4>
+              <p>Anonymous usage statistics that help us improve the product.</p>
+            </div>
+            <span class="pref-state" id="prefStateAnalytics">Allowed</span>
+          </div>
+
+          <div class="pref-actions">
+            <button class="btn-solid" type="button" id="acceptAllCookies">Accept all</button>
+            <button class="btn-soft" type="button" id="essentialOnlyCookies">Essential only</button>
+          </div>
+        </div>
+
+        <h3>Through your browser</h3>
+        <p>
+          Every major browser lets you view, block, and delete cookies. Look under
+          <strong>Settings → Privacy and security</strong> in your browser. Useful starting points:
+        </p>
+        <ul>
+          <li>Chrome — "Third-party cookies" and "Site data"</li>
+          <li>Safari — "Prevent cross-site tracking" and "Manage Website Data"</li>
+          <li>Firefox — "Cookies and Site Data"</li>
+          <li>Edge — "Cookies and site permissions"</li>
+        </ul>
+        <p>
+          Blocking all cookies will prevent you from logging in to PutForm, since our authentication
+          relies on a session cookie. Clearing cookies will log you out and reset your saved theme.
+        </p>
+      </section>
+
+      <section id="dnt">
+        <span class="section-number">Section 08</span>
+        <h2>Do Not Track Signals</h2>
+        <p>
+          Some browsers can send a "Do Not Track" (DNT) signal to websites. There is still no common
+          industry standard for how DNT should be interpreted, so PutForm does not currently respond
+          to DNT headers.
         </p>
         <p>
-          Our total liability to you for any claim arising out of or relating to these Terms or the
-          Service is limited to the greater of: (a) the amount you paid us in the twelve months
-          preceding the claim, or (b) one hundred US dollars (US $100).
+          However, because we do not run advertising or cross-site tracking cookies, there is no
+          behavioral profile to opt out of in the first place. If a legal standard for DNT is
+          adopted in your jurisdiction, we will revisit this position.
+        </p>
+      </section>
+
+      <section id="retention">
+        <span class="section-number">Section 09</span>
+        <h2>Retention Periods</h2>
+        <p>
+          Cookies stay on your device only as long as necessary for the purpose they were set:
+        </p>
+        <ul>
+          <li>Session cookies are removed when you close your browser or log out.</li>
+          <li>Preference cookies are kept for up to 12 months, or until you clear them.</li>
+          <li>Analytics cookies are kept for up to 6 months in aggregate form.</li>
+          <li>Your consent record is kept for 12 months before we ask you again.</li>
+        </ul>
+        <p>
+          When you delete your PutForm account, server-side session records are invalidated
+          immediately and any remaining client-side cookies expire on their normal schedule or can
+          be cleared manually from your browser.
         </p>
       </section>
 
       <section id="changes">
-        <span class="section-number">Section 12</span>
-        <h2>Changes to These Terms</h2>
+        <span class="section-number">Section 10</span>
+        <h2>Changes to This Policy</h2>
         <p>
-          We may update these Terms from time to time. When we make material changes, we will notify
-          you by email or by posting a prominent notice on the platform before the changes take
-          effect.
+          We may update this Cookie Policy when we add or remove cookies, change providers, or when
+          the law requires it. When we make material changes, we will update the "Last updated" date
+          at the top of this page and, where appropriate, notify you by email or with an in-app
+          notice.
         </p>
         <p>
-          Your continued use of PutForm after the changes take effect constitutes acceptance of the
-          revised Terms. If you do not agree with the changes, you must stop using the Service.
-        </p>
-      </section>
-
-      <section id="law">
-        <span class="section-number">Section 13</span>
-        <h2>Governing Law</h2>
-        <p>
-          These Terms are governed by and construed in accordance with the laws of the State of
-          California, United States, without regard to its conflict of law principles.
-        </p>
-        <p>
-          Any legal action or proceeding arising under these Terms shall be brought exclusively in
-          the state or federal courts located in San Francisco County, California, and you consent
-          to the personal jurisdiction of those courts.
+          Your continued use of PutForm after an update takes effect means you accept the revised
+          policy. If you do not agree, you can adjust your cookie preferences or stop using the
+          Service.
         </p>
       </section>
 
       <section id="contact">
-        <span class="section-number">Section 14</span>
+        <span class="section-number">Section 11</span>
         <h2>Contact Us</h2>
         <p>
-          If you have any questions about these Terms of Service, or want to report a violation,
-          please reach out to us.
+          If you have questions about this Cookie Policy, want to know which cookies are active on
+          your account, or want to exercise a privacy right, please reach out.
         </p>
 
         <div class="policy-contact">
           <div>
-            <h4>Questions about these Terms?</h4>
-            <p>Reach our legal team by email or through the contact form. We respond within 30 days.</p>
+            <h4>Questions about cookies?</h4>
+            <p>Reach our privacy team by email or through the contact form. We respond within 30 days.</p>
           </div>
           <a class="contact-btn" href="contact.html">Contact Us →</a>
         </div>
@@ -953,15 +1234,30 @@
 
   <!-- CTA -->
   <section class="policy-cta">
-    <h2>Want to review our privacy practices too?</h2>
-    <p>Read our Privacy Policy or head back to the dashboard to keep building.</p>
+    <h2>Want the full picture on privacy?</h2>
+    <p>Read our Privacy Policy or review the terms that govern your account.</p>
     <div class="cta-row">
       <a class="cta-primary" href="privacy.html">View Privacy Policy →</a>
-      <a class="cta-secondary" href="forms.html">Go to Dashboard</a>
+      <a class="cta-secondary" href="terms.html">Read Terms of Service</a>
     </div>
   </section>
 
 </main>
+
+<!-- ============================= COOKIE BANNER ============================= -->
+<div class="cookie-banner" id="cookieBanner" role="dialog" aria-live="polite" aria-label="Cookie preferences">
+  <div class="cookie-banner-text">
+    <h4>🍪 We use cookies</h4>
+    <p>
+      PutForm uses essential cookies to keep you signed in, plus optional preference and analytics
+      cookies. Read our <a href="cookies.html">Cookie Policy</a> to learn more.
+    </p>
+  </div>
+  <div class="cookie-banner-actions">
+    <button class="btn-soft" type="button" id="bannerEssential">Essential only</button>
+    <button class="btn-solid" type="button" id="bannerAccept">Accept all</button>
+  </div>
+</div>
 
 <!-- ============================= FOOTER ============================= -->
 <footer class="site-footer">
@@ -973,8 +1269,8 @@
       <div class="footer-brand-block">
         <a class="brand" href="index.html">
           <img class="brand-logo" src="Glogo.png" alt="PutForm logo"
-              onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 46 46%22><rect width=%2246%22 height=%2246%22 rx=%2212%22 fill=%22%2317b8a6%22/><text x=%2250%25%22 y=%2258%25%22 text-anchor=%22middle%22 font-family=%22Arial%22 font-size=%2224%22 font-weight=%22bold%22 fill=%22white%22>P</text></svg>';">
-          Put<span>Form</span></span>
+               onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 46 46%22><rect width=%2246%22 height=%2246%22 rx=%2212%22 fill=%22%2317b8a6%22/><text x=%2250%25%22 y=%2258%25%22 text-anchor=%22middle%22 font-family=%22Arial%22 font-size=%2224%22 font-weight=%22bold%22 fill=%22white%22>P</text></svg>';">
+          Put<span>Form</span>
         </a>
         <p class="footer-tagline">
           Build beautiful forms, collect responses, and connect them to your backend —
@@ -1010,8 +1306,8 @@
       <div class="copy">© 2026 <strong>PutForm</strong>. All rights reserved.</div>
       <div class="footer-legal">
         <a href="privacy.html">Privacy Policy</a>
-        <a href="terms.html" style="color:#a7eee2">Terms of Service</a>
-        <a href="cookies.html">Cookies</a>
+        <a href="terms.html">Terms of Service</a>
+        <a href="cookies.html" style="color:#a7eee2">Cookies</a>
       </div>
     </div>
 
@@ -1028,6 +1324,12 @@
   const navLinks = document.getElementById('navLinks');
   const tocLinks = document.querySelectorAll('.policy-toc a');
   const sections = document.querySelectorAll('.policy-content section');
+
+  const cookieBanner = document.getElementById('cookieBanner');
+  const prefStatePreference = document.getElementById('prefStatePreference');
+  const prefStateAnalytics = document.getElementById('prefStateAnalytics');
+
+  const CONSENT_KEY = 'putform-cookie-consent';
 
   /* ---------------- THEME ---------------- */
   function applyTheme(theme) {
@@ -1084,6 +1386,76 @@
 
   window.addEventListener('scroll', highlightToc, { passive: true });
   window.addEventListener('load', highlightToc);
+
+  /* ---------------- COOKIE CONSENT ---------------- */
+  function readConsent() {
+    try {
+      const raw = localStorage.getItem(CONSENT_KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch (err) {
+      return null;
+    }
+  }
+
+  function writeConsent(preferences, analytics) {
+    const consent = {
+      necessary: true,
+      preferences: preferences,
+      analytics: analytics,
+      timestamp: new Date().toISOString()
+    };
+    try {
+      localStorage.setItem(CONSENT_KEY, JSON.stringify(consent));
+    } catch (err) {
+      /* storage unavailable — fail silently */
+    }
+    updatePrefPanel(consent);
+  }
+
+  function updatePrefPanel(consent) {
+    const prefs = consent ? consent.preferences : true;
+    const analytics = consent ? consent.analytics : true;
+
+    prefStatePreference.textContent = prefs ? 'Allowed' : 'Blocked';
+    prefStatePreference.classList.toggle('off', !prefs);
+
+    prefStateAnalytics.textContent = analytics ? 'Allowed' : 'Blocked';
+    prefStateAnalytics.classList.toggle('off', !analytics);
+  }
+
+  function showBanner() {
+    cookieBanner.classList.add('show');
+  }
+
+  function hideBanner() {
+    cookieBanner.classList.remove('show');
+  }
+
+  const storedConsent = readConsent();
+  updatePrefPanel(storedConsent);
+  if (!storedConsent) {
+    window.setTimeout(showBanner, 900);
+  }
+
+  document.getElementById('bannerAccept').addEventListener('click', () => {
+    writeConsent(true, true);
+    hideBanner();
+  });
+
+  document.getElementById('bannerEssential').addEventListener('click', () => {
+    writeConsent(false, false);
+    hideBanner();
+  });
+
+  document.getElementById('acceptAllCookies').addEventListener('click', () => {
+    writeConsent(true, true);
+    hideBanner();
+  });
+
+  document.getElementById('essentialOnlyCookies').addEventListener('click', () => {
+    writeConsent(false, false);
+    hideBanner();
+  });
 
   /* ---------------- AUTH STATE ---------------- */
   async function checkUserSession() {
