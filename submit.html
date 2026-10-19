@@ -736,8 +736,13 @@
   /* ============================================================
      CONFIG
      ============================================================ */
+<<<<<<< HEAD
   const API_URL = 'https://putform.onrender.com/api/public/forms';
   const LOGOUT_URL = 'https://putform.onrender.com/api/auth/logout';
+=======
+  const API_URL = 'https://putform-production.up.railway.app/api/public/forms';
+  const LOGOUT_URL = 'https://putform-production.up.railway.app/api/auth/logout';
+>>>>>>> 2550f22 (chang base url 1,0)
   const formId = new URLSearchParams(window.location.search).get('formId');
 
   const loadingPanel = document.getElementById('loading');
@@ -818,7 +823,11 @@
      ============================================================ */
   async function checkUserSession() {
     try {
+<<<<<<< HEAD
       const response = await fetch('https://putform.onrender.com/api/forms', {
+=======
+      const response = await fetch('https://putform-production.up.railway.app/api/forms', {
+>>>>>>> 2550f22 (chang base url 1,0)
         method: 'GET',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' }
